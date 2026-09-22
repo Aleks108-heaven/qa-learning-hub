@@ -1,0 +1,46 @@
+<title>QA Learning Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+
+<div class="qh-root">
+  <div class="app-shell">
+    <aside class="sidebar" id="qh-sidebar">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark">Q</div>
+          <div class="brand-text">QA Learning Hub<small id="qh-brand-tagline">Software Testing Course</small></div>
+        </div>
+        <button class="menu-btn" id="qh-menu-btn">Menu</button>
+      </div>
+      <div class="brand" style="display:none;"></div>
+      <div id="qh-sidebar-inner" class="sidebar-inner"></div>
+    </aside>
+    <main class="main" id="qh-app"></main>
+  </div>
+  <footer class="hub-foot" id="qh-footer">QA Learning Hub &middot; manual testing, test design, ad hoc &amp; exploratory testing, REST API testing, ISTQB&reg; CTFL v4.0 exam prep, a working QA toolbox &amp; career reference, test/QA architecture, application security testing, and hands-on performance, UI/UX &amp; automation testing.</footer>
+</div>
+
+<script>
+// Desktop always shows the sidebar nav; only mobile needs the toggle button + brand-in-topbar.
+document.addEventListener("DOMContentLoaded", function(){
+  var mq = window.matchMedia("(min-width: 881px)");
+  function sync(){
+    var sidebar = document.getElementById("qh-sidebar");
+    if(mq.matches){ sidebar.classList.add("open"); }
+  }
+  sync();
+  mq.addEventListener ? mq.addEventListener("change", sync) : mq.addListener(sync);
+});
+</script>
+
+<script src="data/tutorials.js"></script>
+<script src="data/glossary.js"></script>
+<script src="data/quiz.js"></script>
+<script src="data/locales/uk.js"></script>
+<script src="data/locales/pl.js"></script>
+<script src="data/locales/es.js"></script>
+<script src="data/locales/it.js"></script>
+<script src="data/locales/de.js"></script>
+<script src="app.js"></script>
