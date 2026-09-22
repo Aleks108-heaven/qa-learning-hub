@@ -159,8 +159,10 @@
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }catch(e){}
   }
   var progress = loadProgress();
+  var VALID_STATUSES = { "not-started":1, "in-progress":1, "completed":1 };
   function moduleStatus(id){
-    return (progress.modules[id] && progress.modules[id].status) || "not-started";
+    var s = progress.modules[id] && progress.modules[id].status;
+    return VALID_STATUSES[s] ? s : "not-started";
   }
   function setModuleStatus(id, status){
     progress.modules[id] = progress.modules[id] || {};
