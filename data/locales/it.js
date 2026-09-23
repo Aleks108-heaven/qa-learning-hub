@@ -361,7 +361,24 @@ window.QAHUB_LOCALES.it = {
   takeaway: "Il test esplorativo è progettazione ed esecuzione simultanea dei test — un'attività di \"pensiero\" che enfatizza l'indagine e l'apprendimento, ampiamente usata in Agile. È un test ad hoc con uno scopo: strutturato e rigoroso, non casuale.",
   lessons: [
     { h: "Cos'è il Test Esplorativo?", body: `
-      <p>I tester progettano ed eseguono i test al volo, annotando idee prima dell'esecuzione. Enfatizza la libertà personale e la responsabilità del singolo tester nel dirigere la propria indagine.</p>` },
+      <p>I tester progettano ed eseguono i test al volo, annotando idee prima dell'esecuzione. Enfatizza la libertà personale e la responsabilità del singolo tester nel dirigere la propria indagine.</p>
+      <p>ISTQB lo definisce una tecnica <strong>basata sull'esperienza</strong> in cui i test vengono progettati, eseguiti e valutati <em>contemporaneamente</em> mentre il tester impara a conoscere l'oggetto di test, usando ciò che ogni test rivela per progettarne di nuovi e migliori.</p>
+      <p>Il testing scriptato esegue analisi → progettazione → implementazione → esecuzione → valutazione come fasi separate. Il testing esplorativo le comprime in un unico ciclo di feedback continuo:</p>
+      <pre><code>Conoscere il prodotto → scegliere qualcosa di interessante/rischioso
+→ progettare un test → eseguirlo → osservare → interpretare
+→ imparare qualcosa di nuovo → progettare il test successivo ↺</code></pre>
+      <p>La proprietà chiave è l'<strong>adattamento</strong>: quando un risultato è inatteso, la scoperta cambia subito il test successivo, invece di proseguire meccanicamente con uno script fisso.</p>` },
+    { h: "Esplorativo vs. ad hoc, error guessing e checklist", body: `
+      <p><strong>Esplorativo ≠ cliccare a caso.</strong> Il testing ad hoc («clicco in giro e vedo») non ha struttura né obiettivo, quindi è difficile da misurare, ripetere, spiegare o passare ad altri. Il testing esplorativo mantiene la libertà ma aggiunge una missione, un perimetro definito, un timebox, un focus sul rischio, note, domande registrate e un seguito pianificato.</p>
+      <p><strong>Testing esplorativo = libertà + scopo + indagine + disciplina.</strong></p>
+      <p>L'<strong>error guessing</strong> <em>prevede</em> i problemi probabili in base all'esperienza («questa app si è già rotta con nomi lunghi, quindi provo nomi lunghi»). Il <strong>testing esplorativo</strong> <em>indaga e si adatta</em>: inserire un nome lungo → notare il troncamento → verificare se il database contiene il valore completo → ricaricare → leggere il record via API → provare un altro campo → confrontare UI e API. L'error guessing è spesso uno strumento usato dentro una sessione esplorativa.</p>
+      <p>Il <strong>testing basato su checklist</strong> parte da un elenco predefinito. L'esplorazione può partire dalla stessa checklist ma ampliarla strada facendo:</p>
+      <pre><code>[ ] Login non valido
+     ↓ trovati messaggi di errore diversi
+     ↓ esplorare la coerenza dei messaggi
+     ↓ trovata possibile enumerazione degli account
+     ↓ esplorare il comportamento nei vari stati dell'utente</code></pre>
+      <p>ISTQB CTFL classifica tutte e tre (checklist, error guessing, testing esplorativo) come tecniche <strong>basate sull'esperienza</strong>.</p>` },
     { h: "Test Scriptato vs. Test Esplorativo", body: `
       <div class="table-wrap"><table>
         <thead><tr><th>Test Scriptato</th><th>Test Esplorativo</th></tr></thead>
@@ -374,8 +391,13 @@ window.QAHUB_LOCALES.it = {
           <tr><td>Riguarda il controllo dei test</td><td>Riguarda il miglioramento della progettazione dei test</td></tr>
           <tr><td>Come leggere un discorso da una bozza</td><td>Come avere una conversazione spontanea</td></tr>
           <tr><td>Lo script è al comando</td><td>La mente del tester è al comando</td></tr>
+        <tr><td>Punto di forza: ripetibilità</td><td>Punto di forza: scoperta</td></tr>
+          <tr><td>Ideale per requisiti noti e regressione</td><td>Ideale per rischi sconosciuti e comportamenti inattesi</td></tr>
+          <tr><td>Documentato come test case dettagliati</td><td>Documentato come charter, note e report di sessione</td></tr>
+          <tr><td>Molto adatto all'automazione</td><td>Il giudizio umano è centrale; le scoperte si automatizzano dopo</td></tr>
         </tbody>
-      </table></div>` },
+      </table></div>
+      <p>Nessuno sostituisce l'altro. Una strategia QA matura combina <strong>test scriptati</strong> per il comportamento noto e ripetibile, <strong>regressione automatizzata</strong> per i controlli stabili e <strong>testing esplorativo</strong> per indagine e scoperta.</p>` },
     { h: "Il Processo SBTM (Session-Based Test Management)", body: `
       <ol>
         <li><strong>Crea una Tassonomia dei Bug</strong> — una classificazione dei tipi di bug che ti aspetti di trovare.</li>
@@ -383,7 +405,52 @@ window.QAHUB_LOCALES.it = {
         <li><strong>Metti la sessione in Time Box</strong> — imposta una durata fissa e rispettala.</li>
         <li><strong>Rivedi i Risultati</strong> — ripercorri quanto trovato.</li>
         <li><strong>Debrief</strong> — discuti la sessione con il team.</li>
-      </ol>` },
+      </ol>
+      <p>Il syllabus ISTQB Advanced Agile Tester descrive le sessioni come limitate nel tempo (di solito <strong>60–120 minuti</strong>), guidate da un charter e documentate con note, screenshot, registrazioni, copertura, osservazioni e anomalie.</p>` },
+    { h: "Scrivere un test charter", body: `
+      <p>Un <strong>test charter</strong> è una dichiarazione degli obiettivi di test ed eventualmente di idee su come testare, che guida una sessione. Dà una direzione senza prescrivere ogni clic. Un buon charter risponde a: cosa testiamo, perché, quale area o rischio, cosa vogliamo imparare e quali vincoli valgono?</p>
+      <ul>
+        <li><strong>Scadente:</strong> «Testare il login».</li>
+        <li><strong>Migliore:</strong> «Esplorare il flusso di login per errori di autenticazione, input insoliti, gestione della sessione e comportamento dei messaggi di errore».</li>
+        <li><strong>Più mirato:</strong> «Esplorare il login con credenziali non valide, limite e insolite, prestando particolare attenzione a blocco, gestione degli errori e sessione».</li>
+      </ul>
+      <p>Un charter dà <strong>focus</strong>, non uno script. Troppo vago e finisci a cliccare a caso; troppo restrittivo e non puoi seguire le scoperte interessanti.</p>
+      <pre><code>Charter:        Esplorare [funzione/area] per scoprire [rischio/comportamento].
+Missione:       Capire se [obiettivo].
+Focus:          [area 1] · [area 2] · [area 3]
+Rischi:         [rischio 1] · [rischio 2]
+Idee di test:   [idea] · [idea] · [idea]
+Fuori ambito:   [area]
+Ambiente:       Browser · OS · Build · Dispositivo
+Timebox:        [XX minuti]
+Tester / Data</code></pre>
+      <p><strong>Libreria di charter di esempio:</strong></p>
+      <ul>
+        <li><strong>Registrazione:</strong> esplorare validazione, account duplicati, dati limite e gestione degli errori.</li>
+        <li><strong>API REST:</strong> esplorare validazione, autenticazione, autorizzazione, richieste malformate, dati limite, richieste duplicate e gestione degli errori.</li>
+        <li><strong>Multi-tenant:</strong> esplorare se gli utenti possono accedere, cercare, modificare, esportare o dedurre dati di un altro tenant.</li>
+        <li><strong>Upload di file:</strong> esplorare tipo, dimensione, nome, duplicati, interruzione, annullamento e file malformati.</li>
+        <li><strong>Ricerca:</strong> esplorare query vuote, caratteri speciali, grandi insiemi di risultati, paginazione, filtri, ordinamento e modifiche concorrenti dei dati.</li>
+        <li><strong>Pagamento:</strong> esplorare pagamento fallito, nuovo tentativo, annullamento, invio doppio, timeout e rete interrotta.</li>
+      </ul>` },
+    { h: "Condurre una sessione: preparare, esplorare, registrare, debriefing", body: `
+      <p><strong>1. Preparare:</strong> capire la funzionalità, leggere i requisiti, identificare i rischi, rivedere i difetti precedenti, verificare la build, preparare dati e ambiente, poi definire charter e timebox.</p>
+      <p><strong>2. Esplorare:</strong> osservare, porre domande, formulare ipotesi, variare gli input, seguire percorsi interessanti, confrontare il comportamento con le aspettative, applicare euristiche, raccogliere evidenze. Quando succede qualcosa di strano: <strong>fermarsi → riprodurre → isolare → estendere → confrontare</strong>.</p>
+      <p><strong>3. Debriefing:</strong> Cosa abbiamo testato e imparato? Quali difetti abbiamo trovato? Quali domande e rischi restano? Cosa <em>non</em> è stato testato? Quali aree richiedono un'altra sessione? Quali scoperte dovrebbero diventare test scriptati o automatizzati?</p>
+      <p>Il <strong>timeboxing</strong> impedisce all'esplorazione di crescere senza limiti e rende l'impegno facile da comunicare: circa 30 min per un'indagine rapida, 60 per esplorare una funzionalità, 90 per un normale approfondimento, 120 per un'indagine più ampia.</p>
+      <p><strong>Registra, non affidarti alla memoria:</strong> azioni, dati di test, osservazioni, ipotesi, domande, ambiente e build, screenshot, registrazioni, log, richieste/risposte API, errori di console, errori di rete, difetti e aree coperte <em>e non coperte</em>.</p>
+      <pre><code>10:03 Registrato con successo un utente normale.
+10:06 Ripetuta la registrazione con la stessa email.
+10:07 La UI ha mostrato un errore generico.
+10:10 L'API ha restituito 500 invece del 4xx atteso.
+10:12 Ipotesi: la registrazione duplicata non è gestita.
+10:15 Riprodotto in un secondo browser.
+10:18 Riprodotto direttamente tramite API. Confermato.
+10:25 Creato il bug report.
+10:35 La UI accetta una password di 256 caratteri, l'API la rifiuta.
+10:40 Creato un secondo difetto.</code></pre>
+      <p>Ecco il ciclo di apprendimento in azione: <strong>osservazione → ipotesi → nuovo test → nuova evidenza → nuova ipotesi</strong>.</p>
+      <p><strong>Una sessione di 60 minuti, per esempio:</strong> 0–5 leggere i requisiti e identificare i rischi · 5–10 preparare account, dati e charter · 10–20 flusso normale · 20–30 dati non validi e limite · 30–40 interruzioni e transizioni di stato · 40–50 permessi, concorrenza o integrazioni · 50–55 riprodurre le scoperte · 55–60 documentare difetti, rischi, domande e attività successive.</p>` },
     { h: "Pro & Contro", body: `
       <p><strong>Pro:</strong> trova più bug, incoraggia la creatività, richiede meno documentazione preparatoria, si adatta rapidamente ai requisiti che cambiano.</p>
       <p><strong>Contro:</strong> dipende fortemente dalla competenza del tester, difficile misurare la copertura, difficile ripetere o riprodurre esattamente, meno adatto a rigide esigenze di conformità/audit.</p>` },
@@ -393,7 +460,18 @@ window.QAHUB_LOCALES.it = {
         <li>Prime iterazioni di una funzionalità.</li>
         <li>Applicazioni critiche che necessitano di un'indagine approfondita.</li>
         <li>Sono disponibili tester esperti.</li>
-      </ul>` },
+      <li>La funzionalità è nuova, i criteri di accettazione sono minimi o il prodotto cambia rapidamente.</li>
+        <li>Non c'è tempo per creare una suite scriptata completa.</li>
+        <li>Stai indagando su un difetto sospetto. Chiediti «cos'altro potrebbe essere collegato?», perché un difetto spesso rivela un'intera classe di problemi.</li>
+        <li>Il comportamento delle integrazioni è incerto, i flussi sono complessi o i casi limite sono probabili.</li>
+        </ul>
+      <p><strong>Esempio di flusso complesso:</strong> in un checkout (<em>Prodotto → Carrello → Sconto → Indirizzo → Pagamento → Conferma</em>) esplora interruzioni e combinazioni: rimuovere un prodotto a metà checkout, cambiare quantità dopo lo sconto, lasciar scadere la sessione, ricaricare la pagina di pagamento, premere Indietro, aprire due schede, cambiare indirizzo dopo il calcolo della spedizione, ritentare il pagamento, staccare la rete.</p>` },
+    { h: "Testing esplorativo in Agile e CI/CD", body: `
+      <p>Agile produce cambiamenti frequenti e informazioni spesso incomplete, il che si adatta bene all'esplorazione. Il materiale Agile di ISTQB la colloca durante l'esecuzione dell'iterazione, nelle review e nelle demo, dopo cambiamenti importanti e quando i criteri di accettazione sono vaghi. Esplora nuove user story, funzionalità modificate, punti di integrazione, incrementi dello sprint e aree ad alto rischio.</p>
+      <pre><code>Commit → Build → Unit tests → API tests → UI smoke tests
+→ Deploy test environment → Exploratory testing
+→ Defect investigation → Automated regression → Release</code></pre>
+      <p>L'automazione CI/CD dà <strong>feedback rapido e ripetibile</strong>; il testing esplorativo dà <strong>indagine umana adattiva</strong>. L'esplorazione collega sviluppo, requisiti, controlli automatizzati e validazione orientata all'utente.</p>` },
     { h: "Euristiche del Test Esplorativo: SFDPOT & HICCUPPS", body: `
       <p>Le euristiche danno struttura al test esplorativo senza trasformarlo in uno script — sono spunti su dove guardare dopo, non passi da seguire in ordine.</p>
       <p><strong>SFDPOT</strong> ("San Francisco Depot") è un mnemonico di mappatura della copertura per decidere quali parti di un prodotto esplorare:</p>
@@ -416,7 +494,67 @@ window.QAHUB_LOCALES.it = {
         <li><strong>P</strong>urpose (Scopo) — serve lo scopo effettivo della funzionalità?</li>
         <li><strong>S</strong>tatutes (Norme) — è conforme a leggi, regolamenti o standard?</li>
       </ul>
-      <p>Insieme trasformano "esplora l'app" da un'istruzione vaga in un insieme ripetibile di lenti che qualsiasi tester può usare.</p>` }
+      <p>Insieme trasformano "esplora l'app" da un'istruzione vaga in un insieme ripetibile di lenti che qualsiasi tester può usare.</p>` },
+    { h: "Euristiche pratiche: e se…?, dati, stato e interruzioni", body: `
+      <p>Un'euristica è una regola pratica che guida l'indagine. Tienile sempre a portata di mano:</p>
+      <ul>
+        <li><strong>E se…</strong> il valore è vuoto, enorme o minuscolo? L'utente preme Indietro, ricarica o fa doppio clic? La richiesta si ripete, la rete cade, due utenti agiscono insieme, la sessione scade o i dati cambiano in un'altra scheda?</li>
+        <li><strong>Cambia il contesto:</strong> browser, dispositivi, dimensioni dello schermo, ruoli e permessi, impostazioni locali, lingue, fusi orari, condizioni di rete, stati dell'account.</li>
+        <li><strong>Cambia i dati:</strong> vuoto, null, zero, negativo, min, max, max + 1, molto lungo, molto corto, Unicode, spazi, caratteri speciali, duplicati, valori malformati, tipi inattesi.</li>
+        <li><strong>CRUD + permessi:</strong> per Create/Read/Update/Delete, questo utente può farlo e cosa succede senza permesso? Poi prova combinazioni e transizioni non valide.</li>
+        <li><strong>Limiti:</strong> min − 1, min, min + 1, max − 1, max, max + 1.</li>
+        <li><strong>Stato:</strong> quali stati può raggiungere questo oggetto? Per <code>Draft → Submitted → Approved → Completed</code> prova passaggi non validi come <code>Completed → Draft</code>, <code>Approved → Submitted</code> o aggiornare un elemento eliminato.</li>
+        <li><strong>Concorrenza:</strong> due utenti sullo stesso record, due browser, due schede, richieste duplicate, aggiornamento/eliminazione simultanei, login simultaneo, chiamate API concorrenti.</li>
+        <li><strong>Interruzione:</strong> ricarica, Indietro, Avanti, chiudere e riaprire la scheda, scollegare e ricollegare la rete, timeout, scadenza della sessione.</li>
+        <li><strong>Coerenza:</strong> UI vs API, browser A vs B, utente A vs B, versione attuale vs precedente.</li>
+      </ul>
+      <p>Nel frattempo continua a porti le domande di un investigatore: <em>Cosa è successo? Cosa mi aspettavo? La differenza è significativa? Perché potrebbe succedere? Cosa potrebbe spiegarlo? Quale test distinguerebbe tra le spiegazioni? Cos'altro potrebbe essere coinvolto?</em></p>` },
+    { h: "Focus sul rischio ed esempi svolti", body: `
+      <p>Dai priorità con <strong>Rischio = Probabilità × Impatto</strong>. Invece di cliccare su UI a basso rischio, dedica la sessione a dove un guasto conta di più: autenticazione, autorizzazione, pagamenti, dati personali, isolamento dei tenant, permessi, cancellazione dei dati, concorrenza, integrazioni e flussi di business critici.</p>
+      <p><strong>Login.</strong> <em>Charter: esplorare l'autenticazione con input non validi, limite, inattesi e ripetuti, con focus su sicurezza, gestione degli errori e sessione.</em> Idee: credenziali valide/non valide/vuote; lunghezze min/max/max + 1; spazi, Unicode, caratteri speciali; login poi logout, ricarica, Indietro, chiusura del browser o seconda scheda; errori ripetuti e blocco; messaggi di errore coerenti; sessione invalidata dopo il logout; pagine protette dopo il logout; lo stesso account in due browser.</p>
+      <p><strong>API REST.</strong> L'esplorazione non riguarda solo la UI. Prova campi mancanti, extra o di tipo errato, null, stringhe vuote, JSON malformato, autenticazione non valida o scaduta, metodo o content type errato, richieste duplicate e ripetute, payload grandi o vuoti, ID non validi, inesistenti o eliminati, richieste concorrenti, limiti di paginazione e combinazioni di ordinamento/filtri. Osserva stato, corpo, header, schema, struttura degli errori, tempi, persistenza, autorizzazione ed effetti collaterali (vedi Modulo 6).</p>
+      <p><strong>Multi-tenant.</strong> <em>Charter: esplorare l'isolamento dei tenant quando utenti di tenant diversi accedono, creano, aggiornano, cercano ed eliminano dati di progetto contemporaneamente.</em> Metti l'utente A nel tenant A e l'utente B nel tenant B, crea progetti simili in entrambi, poi prova a cercare i dati dell'altro tenant, URL diretti, ID scambiati, pagine in cache, cambi di logout/login, esportazioni, notifiche, indici di ricerca, allegati e job in background. Proprietà attesa: nessuno vede o modifica i dati di un altro tenant, a meno che il prodotto non lo consenta esplicitamente.</p>` },
+    { h: "Oltre il funzionale: sicurezza, usabilità, compatibilità e prestazioni", body: `
+      <p><strong>Sicurezza:</strong> l'esplorazione può scoprire problemi di sicurezza, ma <em>non sostituisce</em> test di sicurezza dedicati e autorizzati. Domande utili: si può aggirare l'autorizzazione? Posso inserire l'ID di un altro utente? Le funzioni nascoste sono raggiungibili direttamente? Cosa succede dopo il logout o la scadenza della sessione? I messaggi di errore rivelano informazioni sensibili? Le richieste si possono riprodurre? Posso manipolare valori lato client? Un utente normale raggiunge funzioni di amministrazione?</p>
+      <p><strong>Usabilità:</strong> cerca navigazione confusa, controlli incoerenti, messaggi o terminologia poco chiari, cattivo recupero dagli errori, funzioni inaccessibili e azioni distruttive facili da attivare. Interpreta personas: utente alle prime armi, esperto, impaziente, incline agli errori, qualcuno con poca conoscenza del dominio.</p>
+      <p><strong>Compatibilità:</strong> Chrome, Edge, Firefox, Safari, browser mobili, versioni del sistema operativo, dimensioni dello schermo, livelli di zoom, high-DPI. Attenzione a layout rotti, controlli non supportati, comportamenti specifici del browser, errori JavaScript, differenze di rendering e di tempi, problemi di upload e tastiera.</p>
+      <p><strong>Segnali di prestazioni:</strong> l'esplorazione non sostituisce il performance testing, ma può individuare problemi: una pagina che rallenta all'improvviso, latenza che cresce con le ripetizioni, UI che degrada con molti dati, memoria in aumento, problemi di risorse con più schede. Dai seguito con un test controllato in JMeter o k6.</p>` },
+    { h: "Dalla scoperta all'automazione", body: `
+      <p>L'esplorazione si basa su osservazione e ragionamento umani, ma alimenta costantemente l'automazione:</p>
+      <pre><code>Esplorare → scoprire un comportamento importante → capire il
+comportamento atteso stabile → creare un test di regressione → automatizzare se utile</code></pre>
+      <p><em>Esempio:</em> l'esplorazione rivela che un doppio clic su <strong>Salva</strong> crea due contatti. Confermalo manualmente → apri il difetto → lo sviluppatore lo corregge → aggiungi un controllo di regressione in Playwright come <code>expect(contactCount).toBe(1)</code>. Ora l'automazione protegge il comportamento scoperto dall'esplorazione.</p>
+      <p><strong>Una routine con Playwright:</strong> distribuire la build → eseguire gli smoke test → scegliere un charter → esplorare manualmente con DevTools e log di rete → riprodurre ciò che è interessante → decidere se è un difetto → aprire il bug → automatizzarlo se importante e stabile.</p>
+      <p><strong>Strumenti di supporto:</strong> test management (Jira, Azure DevOps, TestRail, Zephyr, Xray) · note (Markdown, Notion, OneNote, Google Docs) · evidenze (screenshot, registrazioni, DevTools, log di rete/console) · esplorazione API (Postman, Insomnia, curl) · automazione successiva (Playwright, Cypress, Selenium, REST Assured, Newman) · seguito sulle prestazioni (JMeter, k6). Non sono gli strumenti a rendere esplorativa una sessione, ma l'approccio.</p>` },
+    { h: "Report, copertura, metriche e Definition of Done", body: `
+      <p><strong>Un bug trovato esplorando deve comunque essere riproducibile.</strong> Titolo di esempio: <em>L'API restituisce HTTP 500 registrando un'email già esistente.</em> Includi precondizioni (esiste un utente con <code>test@example.com</code>), passi (POST <code>/users</code> con quell'email), atteso (una risposta di errore del client secondo il contratto API), effettivo (HTTP 500), evidenze (richiesta, risposta, timestamp, ambiente, log) e l'origine (<em>trovato nella sessione «Registrazione: dati duplicati e limite»</em>).</p>
+      <p><strong>La copertura ha più dimensioni:</strong> funzionalità, rischio, dati, flusso, stato, ruolo, piattaforma e integrazione. «Ho testato la schermata» non è un'affermazione di copertura. Dovresti poter dire <strong>cosa è stato esplorato e cosa resta sconosciuto</strong>.</p>
+      <p><strong>Metriche, con cautela:</strong> durata della sessione, charter, aree coperte, rischi indagati, difetti e domande emersi, sessioni successive, test di regressione e candidati all'automazione creati, rischi irrisolti. Evita numeri di facciata («500 clic, quindi il testing è stato buono»). Chiediti invece: <em>quali informazioni importanti ha prodotto la sessione?</em></p>
+      <p><strong>Definition of Done di una sessione:</strong> il charter è stato affrontato; i rischi chiave sono stati indagati; osservazioni, evidenze e domande sono state registrate; i difetti sono stati segnalati; aree non testate e attività successive sono state individuate. Fatto non significa «tutto è testato». Significa <em>che abbiamo indagato la missione e sappiamo spiegare cosa abbiamo imparato e cosa resta sconosciuto.</em></p>` },
+    { h: "Errori comuni e riferimento rapido", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th>Errore</th><th>Meglio</th></tr></thead>
+        <tbody>
+          <tr><td>Cliccare a caso senza obiettivo</td><td>Scrivere un charter</td></tr>
+          <tr><td>Nessuna nota: le scoperte non si riproducono</td><td>Registrare azioni, osservazioni ed evidenze</td></tr>
+          <tr><td>Testare tutto allo stesso modo</td><td>Dare priorità in base al rischio</td></tr>
+          <tr><td>Trattare l'esplorazione come regressione</td><td>Usarla per indagare l'ignoto e i cambiamenti</td></tr>
+          <tr><td>Non trasformare mai le scoperte in test di regressione</td><td>Automatizzare o documentare i controlli stabili e di valore</td></tr>
+          <tr><td>Nessun timebox</td><td>Condurre sessioni mirate</td></tr>
+          <tr><td>Segnalazioni di difetti vaghe</td><td>Raccogliere evidenze durante l'esplorazione</td></tr>
+          <tr><td>Charter troppo restrittivo</td><td>Definire la missione, non ogni clic</td></tr>
+        </tbody>
+      </table></div>
+      <p>Debolezze come copertura incoerente, scarsa riproducibilità e dipendenza dall'abilità si riducono con charter, timebox, note, analisi del rischio, debriefing, raccolta di evidenze, revisione tra pari, test scriptati successivi e automazione.</p>
+      <p><strong>Trucco per l'esame:</strong></p>
+      <pre><code>SCRIPTED     Design → Execute → Evaluate
+EXPLORATORY  Learn ↔ Design ↔ Execute ↔ Evaluate
+
+Exploratory ≠ Random
+Exploratory = Mission + Timebox + Investigation
+            + Adaptation + Notes + Learning</code></pre>
+      <p><strong>Definizione in una frase:</strong> il testing esplorativo è un approccio disciplinato e basato sull'esperienza in cui il tester, contemporaneamente, impara il prodotto, progetta test, li esegue, valuta i risultati e adatta il test successivo in base a ciò che ha scoperto.</p>
+      <p><strong>Approfondimenti:</strong> <a href="https://istqb-glossary.page/" target="_blank" rel="noopener">ISTQB Glossary</a> · <a href="https://istqb.org/" target="_blank" rel="noopener">ISTQB</a> · <a href="https://martinfowler.com/bliki/ExploratoryTesting.html" target="_blank" rel="noopener">Martin Fowler: Exploratory Testing</a></p>` }
   ]
 },
 {
@@ -434,7 +572,65 @@ window.QAHUB_LOCALES.it = {
         <li><strong>POST</strong> — crea una nuova entità o invia dati al server (es. invio di moduli, caricamento di file).</li>
         <li><strong>PUT</strong> — crea una nuova entità o aggiorna una esistente.</li>
         <li><strong>DELETE</strong> — rimuove la/le risorsa/e identificata/e da un URI.</li>
-      </ul>` },
+      </ul>
+      <p>Oltre ai quattro metodi principali incontrerai spesso:</p>
+      <ul>
+        <li><strong>PATCH</strong> — di solito un aggiornamento <em>parziale</em> (modifica solo i campi inviati), mentre PUT di solito sostituisce l'intera risorsa.</li>
+        <li><strong>HEAD</strong> — restituisce solo gli header, senza il normale corpo della risposta.</li>
+        <li><strong>OPTIONS</strong> — chiede quali operazioni/capacità supporta l'endpoint (usato anche dai browser per il preflight CORS).</li>
+      </ul>
+      <p>Un tipico insieme di risorse: <code>GET /api/contacts</code>, <code>GET /api/contacts/123</code>, <code>POST /api/contacts</code>, <code>PUT</code>/<code>PATCH</code>/<code>DELETE /api/contacts/123</code>. Considera sempre il <strong>contratto dell'API come fonte di verità</strong>: le implementazioni reali non sempre seguono esattamente la semantica REST da manuale.</p>` },
+    { h: "Anatomia di richiesta e risposta", body: `
+      <p>Una richiesta percorre <strong>client QA → richiesta HTTP → API REST → logica di business → database/servizi → risposta HTTP</strong>. Testare a questo livello è più rapido e mirato dei test UI ed espone difetti nascosti sotto la UI.</p>
+      <p>Una richiesta può contenere: metodo, URL, <strong>parametri di percorso</strong>, <strong>parametri di query</strong>, header, autenticazione e un corpo.</p>
+      <pre><code>GET /api/users/123?include=orders&amp;page=2
+Authorization: Bearer abc123
+Accept: application/json</code></pre>
+      <p>Qui <code>123</code> è un parametro di percorso; <code>include=orders</code> e <code>page=2</code> sono parametri di query. Una richiesta di creazione e la sua risposta:</p>
+      <pre><code>POST /api/contacts
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{ "firstName": "John", "lastName": "Smith" }
+
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{ "id": "12345", "firstName": "John", "lastName": "Smith" }</code></pre>
+      <p><strong>Header da testare:</strong> <code>Content-Type</code>, <code>Accept</code>, <code>Authorization</code>, <code>Cache-Control</code>, <code>Location</code>, <code>ETag</code>, <code>Set-Cookie</code> e gli ID di richiesta/correlazione. Prova header mancanti, un <code>Content-Type</code> errato, valori di <code>Accept</code> non supportati e <code>Authorization</code> mancante o non valida.</p>` },
+    { h: "Codici di stato HTTP", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th>Classe</th><th>Codici comuni</th></tr></thead>
+        <tbody>
+          <tr><td><strong>2xx</strong> Successo</td><td>200 OK · 201 Created · 202 Accepted · 204 No Content</td></tr>
+          <tr><td><strong>3xx</strong> Reindirizzamento</td><td>301 Moved Permanently · 302 Found · 304 Not Modified</td></tr>
+          <tr><td><strong>4xx</strong> Errore del client</td><td>400 Bad Request · 401 Unauthorized · 403 Forbidden · 404 Not Found · 405 Method Not Allowed · 409 Conflict · 415 Unsupported Media Type · 422 Unprocessable Content · 429 Too Many Requests</td></tr>
+          <tr><td><strong>5xx</strong> Errore del server</td><td>500 Internal Server Error · 501 Not Implemented · 502 Bad Gateway · 503 Service Unavailable · 504 Gateway Timeout</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Non aspettarti un 200 da ogni richiesta riuscita.</strong> Una creazione di solito restituisce 201, una cancellazione spesso 204, un job asincrono 202: lo stato atteso dipende dall'operazione e dal contratto. E qualsiasi 5xx causato dall'input del client è un difetto: un input errato deve ricevere un 4xx.</p>` },
+    { h: "Progettare i test di input: parametri, corpi e valori limite", body: `
+      <p><strong>Parametri di percorso</strong> (<code>GET /users/{id}</code>): ID validi, ID inesistenti, zero, negativi, molto grandi, stringhe invece di numeri, valori tipo null, mancanti, malformati, caratteri speciali.</p>
+      <p><strong>Parametri di query</strong> (<code>GET /users?page=2&amp;limit=20</code>): valori normali, zero, negativi, molto grandi, limiti min/max, mancanti, vuoti, duplicati, tipi non validi, caratteri speciali, codifica URL.</p>
+      <p><strong>Corpi JSON:</strong> dati validi, campi obbligatori mancanti, stringhe vuote, null, tipi errati, formati non validi, campi inattesi, duplicati, valori sovradimensionati, JSON malformato.</p>
+      <pre><code>{"firstName":"John","lastName":"Smith","age":30}   valido
+{"firstName":"John","age":30}                       campo mancante
+{"firstName":"","lastName":"Smith"}                 valore vuoto
+{"firstName":123,"lastName":true}                   tipi errati</code></pre>
+      <p>I <strong>test positivi</strong> confermano che le richieste valide riescono come previsto. I <strong>test negativi</strong> coprono autenticazione non valida/scaduta, ID non validi, duplicati, metodi non supportati, <code>Content-Type</code> non valido, JSON malformato, richieste sovradimensionate e parametri inattesi: l'API deve rifiutare ciascun caso in modo sicuro con un 4xx chiaro.</p>
+      <p>L'<strong>analisi dei valori limite</strong> (Modulo 2) si applica a stringhe, interi, array, paginazione, dimensioni dei file, quantità, date e importi. Nome utente di 3–30 caratteri → testa <strong>2, 3, 4, 29, 30, 31</strong>. Età 18–120 → testa <strong>17, 18, 19, 119, 120, 121</strong>.</p>
+      <p><strong>Test guidati dai dati:</strong> esegui la stessa logica di test su un insieme di dati (validi, limite, non validi, duplicati, Unicode, variazioni di maiuscole, caratteri speciali) invece che su un unico esempio fisso.</p>` },
+    { h: "Validazione delle risposte, schemi e contract testing", body: `
+      <p>Valida molto più del codice di stato:</p>
+      <ul>
+        <li>codice di stato, header di risposta e <code>Content-Type</code></li>
+        <li>struttura/schema JSON, tipi di dati, campi obbligatori e valori effettivi</li>
+        <li>regole di business</li>
+        <li>stato del database, dove opportuno</li>
+        <li>tempo di risposta, quando le prestazioni contano</li>
+      </ul>
+      <p><strong>OpenAPI/Swagger</strong> e <strong>JSON Schema</strong> definiscono il contratto dell'API: metodi, parametri, schemi di richiesta/risposta, requisiti di autenticazione e risposte di errore. Il <strong>contract testing</strong> verifica che l'implementazione vi corrisponda ancora. Difetto di esempio: la documentazione dice che <code>id</code> è un intero, ma l'API restituisce una stringa. Questo è <strong>contract drift</strong> e può rompere tutti i consumatori dell'API.</p>
+      <p><strong>Validazione del database:</strong> dove aggiunge valore, conferma che un'operazione abbia prodotto lo stato persistente atteso (record, relazioni, timestamp, valori predefiniti, stato). Ma non far dipendere <em>ogni</em> test API dall'accesso diretto al DB: questo accoppiamento rende le suite più lente e fragili.</p>` },
     { h: "Come Testare un'API REST", body: `
       <p>Servono due cose: (1) uno strumento o framework di test, e (2) richieste configurate oppure codice di test personalizzato. Strumenti comuni: <strong>Advanced REST Client</strong>, <strong>Postman</strong>, <strong>cURL</strong>.</p>` },
     { h: "Flusso di Lavoro del Test Passo dopo Passo", body: `
@@ -466,7 +662,81 @@ window.QAHUB_LOCALES.it = {
       <ul>
         <li><strong>GraphQL</strong> — un singolo endpoint dove il client specifica esattamente quali dati vuole nella query. Il focus del testing si sposta verso la validazione dello schema, il controllo che le query non possano richiedere dati eccessivi/annidati (un rischio di denial-of-service unico di GraphQL), e il test delle mutation (l'equivalente GraphQL di POST/PUT) con lo stesso rigore di autorizzazione delle scritture REST.</li>
         <li><strong>gRPC</strong> — un protocollo binario, contract-first (che usa Protocol Buffers) costruito per una comunicazione veloce tra servizi. Il testing tipicamente lavora direttamente a partire dalla definizione del contratto <code>.proto</code>, e strumenti come <code>grpcurl</code> o BloomRPC svolgono per gRPC il ruolo che Postman/cURL svolgono per REST.</li>
-      </ul>` }
+      </ul>` },
+    { h: "Isolamento tra utenti e tenant", body: `
+      <p>L'<strong>autenticazione</strong> chiede <em>chi sei?</em>; l'<strong>autorizzazione</strong> chiede <em>sei autorizzato a farlo?</em> Per l'autenticazione copri Basic Auth, token Bearer, chiavi API, OAuth 2.0 e JWT con credenziali valide, non valide, mancanti, scadute, malformate, errate e revocate.</p>
+      <p>Per l'autorizzazione crea <strong>Utente A, Utente B e un Admin</strong>, quindi prova ciascuno contro le risorse degli altri e contro le operazioni privilegiate. La domanda chiave: un utente può leggere o modificare gli oggetti di un altro?</p>
+      <p>Nei sistemi <strong>multi-tenant</strong> verifica che un utente del tenant A non possa leggere, aggiornare, eliminare, cercare o anche solo <em>dedurre</em> risorse del tenant B. Esamina ID, filtri, paginazione, esportazioni, endpoint massivi e riferimenti indiretti, dove spesso si nascondono le falle.</p>` },
+    { h: "Workflow, stato e dati insidiosi", body: `
+      <p><strong>Ciclo CRUD:</strong> <code>CREATE → READ → UPDATE → READ → DELETE → READ</code>. Ogni READ dimostra che il passo precedente ha avuto davvero effetto. Poi concatena workflow reali: <em>Registrazione → Login → Ottieni token → Crea contatto → Leggi → Aggiorna → Elimina → Verifica l'eliminazione</em>.</p>
+      <p><strong>Idempotenza e duplicati:</strong> ripetere un'operazione che il contratto definisce idempotente (PUT, DELETE, spesso PATCH) deve lasciare la risorsa nello stesso stato previsto. Ripeti anche i POST: creano ordini, contatti o pagamenti duplicati?</p>
+      <p><strong>Paginazione, ordinamento, filtri:</strong> prima/intermedia/ultima pagina, oltre l'ultima, pagina zero/negativa, limite min/max/enorme, record duplicati o mancanti tra le pagine; crescente/decrescente, campi di ordinamento non validi, più campi, sensibilità alle maiuscole; filtri validi/non validi/vuoti, più filtri, filtri combinati con la paginazione.</p>
+      <p><strong>Date e orari:</strong> UTC vs ora locale, conversioni di fuso orario, passaggi all'ora legale, anni/giorni bisestili, mezzanotte/fine giornata, date passate/future e non valide, formati supportati. Definisci la semantica esatta di valori come <code>2026-09-23T10:00:00Z</code>.</p>
+      <p><strong>Concorrenza:</strong> due utenti che modificano la stessa risorsa contemporaneamente. Verifica il locking ottimistico (es. <code>ETag</code>/<code>If-Match</code> → 409/412), race condition, aggiornamenti persi, operazioni duplicate e lo stato finale.</p>` },
+    { h: "OWASP API Security Top 10 (2023)", body: `
+      <p>Usa l'elenco OWASP come checklist di sicurezza basata sul rischio, non come ripensamento dopo i controlli sui codici di stato:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Rischio</th><th>Come lo verifica il QA</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Broken Object Level Authorization (BOLA)</td><td>Richiedere l'ID oggetto di un altro utente</td></tr>
+          <tr><td>2</td><td>Broken Authentication</td><td>Token mancanti, non validi, scaduti, malformati, revocati</td></tr>
+          <tr><td>3</td><td>Broken Object Property Level Authorization</td><td>Provare a impostare campi privilegiati: <code>role</code>, <code>ownerId</code>, <code>tenantId</code>, <code>isAdmin</code></td></tr>
+          <tr><td>4</td><td>Unrestricted Resource Consumption</td><td>Payload/array enormi, paginazione estrema, alte frequenze di richieste</td></tr>
+          <tr><td>5</td><td>Broken Function Level Authorization</td><td>Chiamare endpoint admin/privilegiati con ogni ruolo</td></tr>
+          <tr><td>6</td><td>Unrestricted Access to Sensitive Business Flows</td><td>Ripetere reset password, voti, coupon, registrazioni, ordini</td></tr>
+          <tr><td>7</td><td>Server-Side Request Forgery (SSRF)</td><td>Se l'API recupera URL, verificare le restrizioni lato server (solo in ambiente di test autorizzato)</td></tr>
+          <tr><td>8</td><td>Security Misconfiguration</td><td>Info di debug, stack trace, metodi superflui, credenziali predefinite, CORS/TLS</td></tr>
+          <tr><td>9</td><td>Improper Inventory Management</td><td>Trovare versioni API obsolete, non documentate, di debug o deprecate</td></tr>
+          <tr><td>10</td><td>Unsafe Consumption of APIs</td><td>Fornire risposte di terze parti malformate, parziali, lente o sovradimensionate</td></tr>
+        </tbody>
+      </table></div>
+      <p>Il Modulo 10 approfondisce il testing della sicurezza applicativa.</p>` },
+    { h: "Strumenti, automazione e CI/CD", body: `
+      <p><strong>Postman</strong> gestisce richieste, collection, environment, variabili, script, asserzioni, autenticazione, concatenazione di richieste ed esecuzioni in CI. Usa variabili come <code>{{baseUrl}}</code>, <code>{{token}}</code>, <code>{{userId}}</code> invece di valori fissi legati all'ambiente.</p>
+      <pre><code>pm.test("Status code is 200", function () {
+  pm.response.to.have.status(200);
+});</code></pre>
+      <p><strong>Playwright</strong> (TypeScript) ha un livello integrato per le richieste API:</p>
+      <pre><code>const response = await request.post('/api/users', {
+  data: { name: 'John', email: 'john@example.com' }
+});
+expect(response.status()).toBe(201);</code></pre>
+      <p>Mantieni riutilizzabili client API, autenticazione, dati di test, schemi e asserzioni invece di ripeterli in ogni spec:</p>
+      <pre><code>tests/
+├── api/        auth/ · contacts/ · negative/
+├── fixtures/   apiClient.ts · testData.ts
+├── helpers/    auth.ts · assertions.ts
+└── schemas/</code></pre>
+      <p><strong>API + UI insieme:</strong> crea un utente via API e verifica il login nella UI, oppure crea un contatto nella UI e verificalo via API. Così isoli se un difetto è nella UI, nell'API, nell'integrazione o nella persistenza.</p>
+      <p><strong>Prestazioni:</strong> misura tempo di risposta, latenza, throughput, richieste/secondo, tasso di errore, CPU, memoria e comportamento del DB in scenari baseline, carico, stress, picco e soak, con strumenti come <strong>k6</strong> e <strong>JMeter</strong>.</p>
+      <p><strong>CI/CD:</strong> push → GitHub Actions → installa dipendenze → avvia l'app → esegui i test API (<code>npx playwright test tests/api</code>) → esegui i test UI → report → <strong>quality gate</strong>. Eseguili su pull request e branch importanti, conservando report e artefatti dei fallimenti.</p>` },
+    { h: "Template dei test case, matrice degli endpoint e checklist negativa", body: `
+      <p><strong>Campi di un test case API:</strong> ID, titolo, precondizioni, endpoint, metodo, header, autenticazione, parametri di percorso/query, corpo, dati di test, passi, stato atteso, header attesi, risposta/schema attesi, stato del DB atteso, priorità, severità.</p>
+      <p><em>Esempio: TC-API-001: Creare un contatto con dati validi. <code>POST /contacts</code> → atteso <code>201 Created</code>; verifica l'ID generato, poi <code>GET /contacts/{id}</code> per confermare che la risorsa esista.</em></p>
+      <p><strong>Per ogni endpoint chiediti:</strong> metodo e URL sono corretti? Chi può accedervi? Quali header, parametri e campi del corpo sono obbligatori o validi? Tipi di dati, codici di stato, schema e dati restituiti sono corretti? Gli errori sono sicuri e utili? I confini di autorizzazione sono rispettati? Gli effetti collaterali sono corretti? Cosa succede con concorrenza e carico?</p>
+      <p><strong>Checklist negativa essenziale:</strong> campo obbligatorio mancante · stringa vuota · null · tipo errato · formato non valido · troppo corto / troppo lungo · limite −1 / limite / +1 · negativo · zero · numero molto grande · ID sconosciuto · ID mancante · richiesta duplicata · JSON non valido · JSON vuoto · <code>Content-Type</code> mancante/errato · autenticazione mancante/non valida · token scaduto · permessi insufficienti · utente sbagliato · metodo non supportato · rate limit · payload grande · parametri inattesi · caratteri speciali · Unicode · input simile a injection · input simile a HTML/script.</p>` },
+    { h: "Mentalità QA, roadmap e portfolio", body: `
+      <ul>
+        <li><strong>Principiante:</strong> l'API restituisce 200?</li>
+        <li><strong>Più solido:</strong> restituisce stato, schema, dati, header, permessi ed effetti collaterali corretti?</li>
+        <li><strong>Avanzato:</strong> cosa succede se due utenti la chiamano insieme, il token scade, il payload è malformato, la risorsa appartiene a un altro tenant, il DB è giù, una terza parte restituisce dati spazzatura o la richiesta viene ripetuta molte volte?</li>
+      </ul>
+      <p>L'obiettivo è il <strong>testing delle API basato sul rischio</strong>, non solo l'invio di richieste.</p>
+      <p><strong>Roadmap per QA junior:</strong></p>
+      <ol>
+        <li>HTTP/HTTPS, URL, metodi, header, codici di stato, JSON</li>
+        <li>Postman: collection, environment, variabili, script, asserzioni</li>
+        <li>Positivi/negativi, valori limite, partizioni di equivalenza, tabelle decisionali, transizioni di stato, guidati dai dati</li>
+        <li>Basic Auth, Bearer, JWT, OAuth, chiavi API</li>
+        <li>CRUD, paginazione, filtri, ordinamento, upload di file, idempotenza, concorrenza, webhook, API asincrone</li>
+        <li>OpenAPI/Swagger, JSON Schema, contract testing, schema drift</li>
+        <li>OWASP API Top 10, autorizzazione, rate limiting, esposizione dei dati</li>
+        <li>Playwright API, TypeScript, script Postman e CLI</li>
+        <li>k6/JMeter: carico, stress, picco, soak</li>
+        <li>Git, GitHub Actions, Jenkins, reportistica, artefatti, quality gate</li>
+      </ol>
+      <p><strong>Schema di un progetto portfolio:</strong> strategia di test, piano di test, inventario degli endpoint, test positivi/negativi/sui limiti, test di autenticazione e autorizzazione, test CRUD, test di schema/contratto, checklist di sicurezza, collection Postman, automazione API con Playwright, gestione dei dati di test, CI/CD, report HTML/Allure, esempi di difetti e un README che spieghi l'approccio.</p>
+      <p><strong>Risorse:</strong> <a href="https://learning.postman.com/docs/tests-and-scripts/tests-and-scripts/" target="_blank" rel="noopener">Postman: test e script</a> · <a href="https://api-security.owasp.org/editions/2023/en/0x11-t10/" target="_blank" rel="noopener">OWASP API Security Top 10</a> · <a href="https://spec.openapis.org/oas/latest.html" target="_blank" rel="noopener">Specifica OpenAPI</a> · <a href="https://learning.postman.com/docs/tests-and-scripts/running-collections/running-collections-overview/" target="_blank" rel="noopener">Eseguire collection Postman in CI</a></p>` }
   ]
 },
 {
@@ -938,7 +1208,22 @@ window.QAHUB_LOCALES.it = {
       { q: "Quando è particolarmente raccomandato il Test Esplorativo, secondo questo modulo?", options: ["Solo per requisiti pienamente documentati e stabili", "Quando i requisiti mancano o sono ambigui", "Solo in rigidi audit normativi/di conformità", "Solo per tester senza esperienza di dominio"], correct: 1, explain: "Il test esplorativo brilla quando i requisiti mancano/sono ambigui, nelle prime iterazioni, su app critiche che necessitano di un'indagine approfondita, e con tester esperti." },
       { q: "Quale frase della tabella di confronto descrive il Test Scriptato?", options: ["Come avere una conversazione spontanea", "La mente del tester è al comando", "Come leggere un discorso da una bozza", "Riguarda il miglioramento della progettazione dei test"], correct: 2, explain: "Il Test Scriptato è 'come leggere un discorso da una bozza' — lo script è al comando, rispetto alla conversazione spontanea del test esplorativo." },
       { q: "Nell'euristica SFDPOT, cosa rappresenta la 'O'?", options: ["Obiettivi", "Output", "Operazioni — come il prodotto viene effettivamente usato nel mondo reale", "Ottimizzazione"], correct: 2, explain: "La O di SFDPOT è Operazioni — come il prodotto viene effettivamente usato nel mondo reale, incluso l'uso atipico, non solo la sua funzione documentata." },
-      { q: "Nell'euristica oracolo HICCUPPS, a quale domanda aiuta a rispondere 'Aspettative dell'utente'?", options: ["Se il codice si compila senza errori", "Se un comportamento osservato è un bug, controllando se corrisponde a ciò che un utente ragionevole si aspetterebbe", "Quanto velocemente il sistema risponde sotto carico", "Su quale browser è stato eseguito il test"], correct: 1, explain: "HICCUPPS è un insieme di euristiche oracolo per decidere se un comportamento inatteso conta come bug quando non c'è una specifica esplicita — 'Aspettative dell'utente' chiede se corrisponde a ciò che un utente ragionevole si aspetterebbe." }
+      { q: "Nell'euristica oracolo HICCUPPS, a quale domanda aiuta a rispondere 'Aspettative dell'utente'?", options: ["Se il codice si compila senza errori", "Se un comportamento osservato è un bug, controllando se corrisponde a ciò che un utente ragionevole si aspetterebbe", "Quanto velocemente il sistema risponde sotto carico", "Su quale browser è stato eseguito il test"], correct: 1, explain: "HICCUPPS è un insieme di euristiche oracolo per decidere se un comportamento inatteso conta come bug quando non c'è una specifica esplicita — 'Aspettative dell'utente' chiede se corrisponde a ciò che un utente ragionevole si aspetterebbe." },
+      { q: "Quale affermazione distingue meglio il testing esplorativo dal testing ad hoc?", options: ["Sono la stessa cosa","L'esplorativo aggiunge missione, timebox, focus sul rischio, note e seguito alla libertà del tester; l'ad hoc non ha struttura né obiettivo predefiniti","Il testing ad hoc usa sempre un charter scritto","L'esplorativo richiede test case completamente scriptati"], correct: 1, explain: "Testing esplorativo = libertà + scopo + indagine + disciplina. Il testing ad hoc stile «clicco e vedo» è difficile da misurare, ripetere o passare ad altri." },
+      { q: "Quale di questi test charter è il PIÙ DEBOLE?", options: ["Testare il login.","Esplorare il flusso di login per errori di autenticazione, input insoliti, gestione della sessione e messaggi di errore.","Esplorare il login con credenziali non valide, limite e insolite, con focus su blocco e sessione.","Esplorare validazione della registrazione, account duplicati, dati limite e gestione degli errori."], correct: 0, explain: "«Testare il login» non dà obiettivo, rischio né focus. Un buon charter dice cosa esplorare e cosa imparare senza scriptare ogni clic." },
+      { q: "Secondo ISTQB, cos'è un test charter?", options: ["Uno script dettagliato passo passo con risultati attesi","Una dichiarazione degli obiettivi di test ed eventualmente di idee su come testare","Un contratto firmato dal cliente","Un elenco di test di regressione automatizzati"], correct: 1, explain: "Un charter dà direzione e focus a una sessione senza prescrivere ogni azione." },
+      { q: "Secondo il syllabus ISTQB Advanced Agile Tester, quanto durano di solito le sessioni esplorative?", options: ["5–10 minuti","60–120 minuti","Un'intera giornata lavorativa","Non hanno mai un limite di tempo"], correct: 1, explain: "Le sessioni durano di solito circa 60–120 minuti, sono guidate da un charter e documentate con note, screenshot, copertura e anomalie." },
+      { q: "In cosa differisce l'error guessing dal testing esplorativo?", options: ["L'error guessing prevede i problemi probabili in base all'esperienza; l'esplorativo indaga e si adatta continuamente a ciò che impara","L'error guessing è una tecnica white-box","L'esplorativo non usa mai l'esperienza","Sono identici"], correct: 0, explain: "Error guessing = prevedere i problemi probabili. Testing esplorativo = indagare e adattarsi continuamente. L'error guessing è spesso usato dentro una sessione esplorativa." },
+      { q: "Quali tre tecniche ISTQB CTFL raggruppa come basate sull'esperienza?", options: ["Valori limite, partizioni di equivalenza, tabelle decisionali","Testing basato su checklist, error guessing, testing esplorativo","Test unitari, di integrazione, di sistema","Copertura di istruzioni, rami e percorsi"], correct: 1, explain: "Checklist, error guessing e testing esplorativo si basano su esperienza, conoscenza e intuito del tester." },
+      { q: "In una sessione la UI mostra un errore generico per una registrazione duplicata, ma l'API restituisce HTTP 500. Qual è il passo successivo migliore?", options: ["Ignorarlo; la UI l'ha gestito","Fermarsi, riprodurre, isolare (es. chiamare direttamente l'API), poi raccogliere evidenze e segnalare il difetto","Ricominciare la sessione da capo","Segnare la funzionalità come superata"], correct: 1, explain: "Quando succede qualcosa di insolito: fermarsi → riprodurre → isolare → estendere → confrontare, poi segnalarlo con evidenze. Un 5xx per un input errato del client è un difetto." },
+      { q: "Quale formula è alla base della prioritizzazione basata sul rischio nel testing esplorativo?", options: ["Rischio = Costo + Tempo","Rischio = Probabilità × Impatto","Rischio = Bug ÷ Test","Rischio = Copertura × Velocità"], correct: 1, explain: "Concentra l'esplorazione dove il guasto è probabile e dannoso: autenticazione, pagamenti, dati personali, isolamento dei tenant, cancellazione, concorrenza, integrazioni." },
+      { q: "Un ordine passa per Draft → Submitted → Approved → Completed. Quale test di esplorazione degli stati è utile?", options: ["Testare solo una volta il percorso felice","Provare transizioni non valide come Completed → Draft o Approved → Submitted","Controllare solo i colori della pagina","Saltare gli stati; non possono contenere bug"], correct: 1, explain: "L'esplorazione degli stati chiede quali stati un oggetto può raggiungere, poi prova transizioni non valide che il sistema dovrebbe rifiutare." },
+      { q: "L'esplorazione rivela che un doppio clic su Salva crea due contatti. Dopo la correzione, cosa si dovrebbe fare?", options: ["Niente; l'esplorazione non alimenta l'automazione","Aggiungere un test di regressione (es. un controllo Playwright che i contatti siano 1) perché il difetto non ritorni","Eliminare il bug report","Ripetere all'infinito la stessa sessione esplorativa"], correct: 1, explain: "L'esplorazione scopre comportamenti; l'automazione protegge poi il comportamento stabile e importante che ha trovato." },
+      { q: "Qual è la misura più significativa del valore di una sessione esplorativa?", options: ["Numero di clic","Numero di screenshot","Quali informazioni importanti ha prodotto la sessione: difetti, rischi, domande e copertura","Quanto tempo il tester è rimasto connesso"], correct: 2, explain: "Contare l'attività non misura la qualità del testing. Chiediti quali informazioni importanti ha prodotto la sessione e cosa resta sconosciuto." },
+      { q: "Cosa significa «fatto» (Done) per una sessione esplorativa?", options: ["Tutto è testato","Il charter è stato affrontato e il team sa spiegare cosa ha imparato e cosa resta sconosciuto","Non sono stati trovati difetti","Il timebox è scaduto, a prescindere dalle note"], correct: 1, explain: "Fatto significa che la missione è stata indagata, scoperte, evidenze e domande sono state registrate, e aree non coperte e attività successive sono state individuate, non che tutto sia testato." },
+      { q: "Dove si colloca di solito il testing esplorativo in una pipeline CI/CD?", options: ["Sostituisce i test unitari","Dopo che i controlli automatizzati hanno distribuito un ambiente di test, come indagine umana adattiva prima della regressione e del rilascio","Solo dopo il rilascio in produzione","Non si adatta alla CI/CD"], correct: 1, explain: "L'automazione CI/CD dà feedback rapido e ripetibile; il testing esplorativo aggiunge indagine umana adattiva sulla build distribuita." },
+      { q: "Quale di questi è un errore comune nel testing esplorativo?", options: ["Usare un charter","Limitare la sessione nel tempo","Scrivere un charter troppo restrittivo che impedisce al tester di seguire scoperte utili","Raccogliere evidenze durante la sessione"], correct: 2, explain: "Un charter deve definire la missione, non ogni clic. Se è troppo restrittivo, l'esplorazione non può adattarsi." },
+      { q: "Esplorando, noti che una pagina rallenta ogni volta che ripeti un'azione. Cosa dovrebbe seguire?", options: ["Dichiarare concluso il performance testing","Trattarlo come un segnale e dargli seguito con un test di prestazioni controllato (es. JMeter o k6)","Ignorarlo; l'esplorazione non copre le prestazioni","Segnalarlo solo come difetto di usabilità"], correct: 1, explain: "L'esplorazione non sostituisce il performance testing, ma può individuare segnali sospetti che giustificano un test controllato con strumenti adeguati." } // __EXPL_V2__
     ],
     "rest-api-testing": [
       { q: "Quale metodo HTTP crea sia una nuova entità SIA può aggiornarne una esistente?", options: ["GET", "POST", "PUT", "DELETE"], correct: 2, explain: "PUT può creare una nuova entità o aggiornare una esistente, a seconda che la risorsa esista già." },
@@ -949,7 +1234,22 @@ window.QAHUB_LOCALES.it = {
       { q: "Cosa dovresti validare dopo aver inviato una richiesta API, secondo il flusso di lavoro passo dopo passo?", options: ["Solo il codice di stato HTTP", "Solo se il server non si è bloccato", "Codice di stato, corpo/schema della risposta e header", "Nulla — un invio riuscito è sufficiente"], correct: 2, explain: "Il flusso di lavoro richiede di validare il codice di stato, il corpo o lo schema della risposta e gli header rispetto ai risultati attesi." },
       { q: "Quale tra questi è elencato come una sfida reale del test delle API?", options: ["Troppa interfaccia grafica da cliccare", "Verificare solo l'output senza un'interfaccia grafica", "Le API non necessitano mai del sequenziamento delle chiamate", "Ci sono troppi pochi metodi HTTP tra cui scegliere"], correct: 1, explain: "Senza un'interfaccia grafica, verificare solo la risposta in output richiede competenze di validazione diverse rispetto al tipico test dell'interfaccia." },
       { q: "Quando si testa un flusso di autenticazione basato su JWT, cosa dovrebbe essere verificato riguardo alla validazione della firma?", options: ["Le firme non devono essere controllate se il token sembra ben formato", "Un token manomesso deve essere rifiutato — il server non deve fidarsi dei claim senza verificare la firma", "Conta solo la scadenza del token, non la sua firma", "I JWT non possono essere testati per problemi di sicurezza"], correct: 1, explain: "I claim di un JWT sono attendibili solo se la firma viene verificata — un server che si fida dei claim senza controllare la firma può essere ingannato da un token manomesso." },
-      { q: "Qual è una preoccupazione di test unica di GraphQL che non si applica allo stesso modo ai tipici endpoint REST?", options: ["GraphQL non può restituire JSON", "Le query che richiedono dati eccessivi o profondamente annidati possono rappresentare un rischio di denial-of-service", "GraphQL non ha alcun concetto di autenticazione", "GraphQL supporta solo richieste GET"], correct: 1, explain: "Poiché un client GraphQL può richiedere dati profondamente annidati o eccessivi in un'unica query, il testing deve verificare che lo schema si protegga da query che potrebbero sovraccaricare il server." }
+      { q: "Qual è una preoccupazione di test unica di GraphQL che non si applica allo stesso modo ai tipici endpoint REST?", options: ["GraphQL non può restituire JSON", "Le query che richiedono dati eccessivi o profondamente annidati possono rappresentare un rischio di denial-of-service", "GraphQL non ha alcun concetto di autenticazione", "GraphQL supporta solo richieste GET"], correct: 1, explain: "Poiché un client GraphQL può richiedere dati profondamente annidati o eccessivi in un'unica query, il testing deve verificare che lo schema si protegga da query che potrebbero sovraccaricare il server." },
+      { q: "Qual è la differenza abituale tra PUT e PATCH?", options: ["PUT elimina, PATCH crea","PUT di solito sostituisce l'intera risorsa; PATCH di solito aggiorna solo alcuni campi","Sono identici in ogni API","PATCH restituisce solo header"], correct: 1, explain: "PUT di solito sostituisce una risorsa, PATCH di solito applica un aggiornamento parziale, ma il contratto dell'API resta la fonte di verità." },
+      { q: "In GET /api/users/123?include=orders&page=2, cos'è 123?", options: ["Un parametro di query","Un header","Un parametro di percorso","Il corpo della richiesta"], correct: 2, explain: "123 fa parte del percorso dell'URL: è un parametro di percorso. include e page sono parametri di query." },
+      { q: "Quale stato restituisce più tipicamente un POST che crea con successo un contatto?", options: ["200 OK","201 Created","204 No Content","302 Found"], correct: 1, explain: "201 Created è la risposta abituale a una creazione riuscita. Non dare per scontato che ogni successo sia 200: il codice atteso dipende dall'operazione e dal contratto." },
+      { q: "Quale codice di stato segnala che il client ha inviato troppe richieste (rate limiting)?", options: ["409","415","429","503"], correct: 2, explain: "429 Too Many Requests indica il rate limiting. 409 è Conflict, 415 Unsupported Media Type, 503 Service Unavailable." },
+      { q: "Un nome utente deve avere 3–30 caratteri. Quali valori limite dovresti testare?", options: ["Solo 3 e 30","1, 15, 50","2, 3, 4, 29, 30, 31","0 e 100"], correct: 2, explain: "L'analisi dei valori limite testa appena sotto, sul e appena sopra ogni limite: 2, 3, 4 e 29, 30, 31." },
+      { q: "La documentazione dice che il campo 'id' è un intero, ma l'API lo restituisce come stringa. Come si chiama?", options: ["Idempotenza","Contract drift","Rate limiting","Isolamento dei tenant"], correct: 1, explain: "Quando l'implementazione smette di corrispondere al contratto documentato (OpenAPI/JSON Schema) si parla di contract drift, e può rompere i consumatori dell'API." },
+      { q: "Qual è la differenza tra autenticazione e autorizzazione?", options: ["Significano la stessa cosa","L'autenticazione chiede chi sei; l'autorizzazione chiede se puoi eseguire l'operazione","L'autorizzazione avviene prima dell'autenticazione","L'autenticazione vale solo per gli admin"], correct: 1, explain: "L'autenticazione verifica l'identità; l'autorizzazione verifica il permesso per un'azione o risorsa specifica." },
+      { q: "L'utente A richiede GET /orders/555, un ordine dell'utente B, e riceve i dati. Quale rischio OWASP API è?", options: ["Broken Object Level Authorization (BOLA)","Server-Side Request Forgery","Improper Inventory Management","Unsafe Consumption of APIs"], correct: 0, explain: "Accedere all'oggetto di un altro utente cambiandone l'ID è Broken Object Level Authorization, il n. 1 dell'OWASP API Security Top 10 (2023)." },
+      { q: "Un utente normale invia {\"isAdmin\": true} in un aggiornamento del profilo e l'API lo accetta. Quale rischio OWASP API dimostra?", options: ["Broken Authentication","Broken Object Property Level Authorization","Unrestricted Resource Consumption","Security Misconfiguration"], correct: 1, explain: "Poter modificare proprietà privilegiate come role, isAdmin, ownerId o tenantId è Broken Object Property Level Authorization." },
+      { q: "Perché il workflow CRUD include un READ dopo ogni passo (CREATE → READ → UPDATE → READ → DELETE → READ)?", options: ["Per rallentare il test","Per confermare che ogni operazione abbia avuto davvero effetto, incluso che la risorsa eliminata non esista più","Perché READ è obbligatorio prima di ogni scrittura","Per testare il rate limiting"], correct: 1, explain: "Ogni READ verifica che la scrittura precedente abbia davvero cambiato lo stato: ad esempio il READ finale deve restituire 404 dopo il DELETE." },
+      { q: "Inviare due volte lo stesso DELETE o PUT deve lasciare la risorsa nello stesso stato previsto. Quale proprietà si sta testando?", options: ["Idempotenza","Paginazione","Pseudo-localizzazione","Concorrenza"], correct: 0, explain: "Un'operazione idempotente produce lo stesso stato finale indipendentemente da quante volte venga ripetuta. Anche i POST ripetuti vanno verificati per i duplicati." },
+      { q: "Due utenti aggiornano lo stesso record contemporaneamente e una modifica sparisce silenziosamente. Che tipo di difetto è?", options: ["Un contract drift","Un aggiornamento perso: un difetto di concorrenza","Un difetto sui valori limite","Un difetto degli header di cache"], correct: 1, explain: "I test di concorrenza cercano aggiornamenti persi e race condition; il locking ottimistico dovrebbe rilevare il conflitto (es. 409) invece di sovrascrivere." },
+      { q: "In Postman, perché usare variabili come {{baseUrl}} e {{token}}?", options: ["Rendono le richieste più veloci","Evitano valori fissi legati all'ambiente, così le collection funzionano in ambienti diversi","Postman richiede che ogni valore sia una variabile","Cifrano la richiesta"], correct: 1, explain: "Le variabili d'ambiente permettono di eseguire la stessa collection su dev, staging o CI senza modificare ogni richiesta." },
+      { q: "Perché non tutti i test API dovrebbero interrogare direttamente il database?", options: ["I database non si possono testare","Accoppia troppo la suite, rendendola più lenta e fragile","Le API non cambiano mai lo stato del DB","REST lo vieta"], correct: 1, explain: "La validazione del DB è utile dove opportuno, ma far dipendere ogni test da essa rallenta la suite e la rende fragile." },
+      { q: "Quale domanda riflette la mentalità 'avanzata' del QA delle API?", options: ["Restituisce 200?","L'endpoint esiste?","Cosa succede se due utenti la chiamano insieme, il token scade o la risorsa appartiene a un altro tenant?","L'URL è scritto correttamente?"], correct: 2, explain: "Il testing avanzato basato sul rischio si chiede cosa succede con concorrenza, autenticazione scaduta, input malformati, accesso tra tenant, dipendenze in errore e richieste ripetute." } // __REST_V2__
     ],
     "istqb-ctfl": [
       { q: "Quale dei sette principi del testing afferma che eseguire ripetutamente gli stessi test alla fine smette di trovare nuovi bug?", options: ["Defect Clustering", "I Test Si Consumano", "Il Paradosso del Pesticida è un mito", "Il Test Esaustivo è Impossibile"], correct: 1, explain: "\"I test si consumano\" — riutilizzare ripetutamente gli stessi test li rende progressivamente meno efficaci nel trovare nuovi difetti." },

@@ -284,7 +284,24 @@ window.QAHUB_MODULES = [
   takeaway: "Exploratory testing is simultaneous test design and execution — a “thinking” activity emphasizing investigation and learning, widely used in Agile. It is ad hoc testing with a purpose: structured and rigorous, not random.",
   lessons: [
     { h: "What is Exploratory Testing?", body: `
-      <p>Testers design and run tests on the fly, noting ideas before execution. It emphasizes the personal freedom and responsibility of the individual tester to direct their own investigation.</p>` },
+      <p>Testers design and run tests on the fly, noting ideas before execution. It emphasizes the personal freedom and responsibility of the individual tester to direct their own investigation.</p>
+      <p>ISTQB defines it as an <strong>experience-based</strong> technique in which tests are designed, executed and evaluated <em>at the same time</em> while the tester learns about the test object, using what each test reveals to design new and better tests.</p>
+      <p>Scripted testing runs analysis → design → implementation → execution → evaluation as separate steps. Exploratory testing compresses them into one continuous feedback loop:</p>
+      <pre><code>Learn about the product → choose something interesting/risky
+→ design a test → execute it → observe → interpret
+→ learn something new → design the next test ↺</code></pre>
+      <p>The key property is <strong>adaptation</strong>: when a result is unexpected, the discovery immediately changes the next test instead of the tester ploughing on through a fixed script.</p>` },
+    { h: "Exploratory vs. Ad Hoc, Error Guessing & Checklists", body: `
+      <p><strong>Exploratory ≠ random clicking.</strong> Ad hoc testing ("I'll click around and see") has no structure or objective, so it's hard to measure, repeat, explain or hand over. Exploratory testing keeps the freedom but adds a mission, a defined scope, a timebox, a risk focus, notes, captured questions and planned follow-up.</p>
+      <p><strong>Exploratory testing = freedom + purpose + investigation + discipline.</strong></p>
+      <p><strong>Error guessing</strong> <em>predicts</em> likely problems from experience ("this app broke on long names before, so I'll try long names"). <strong>Exploratory testing</strong> <em>investigates and adapts</em>: enter a long name → notice truncation → check whether the database holds the full value → refresh → read the record through the API → try another field → compare UI and API. Error guessing is often one tool used inside an exploratory session.</p>
+      <p><strong>Checklist-based testing</strong> starts from a predefined list. Exploration can start from the same checklist but expand it as it goes:</p>
+      <pre><code>[ ] Invalid login
+     ↓ found different error messages
+     ↓ explore error-message consistency
+     ↓ found possible account enumeration
+     ↓ explore behavior across username states</code></pre>
+      <p>ISTQB CTFL lists all three (checklist-based testing, error guessing, exploratory testing) as <strong>experience-based</strong> techniques.</p>` },
     { h: "Scripted vs. Exploratory Testing", body: `
       <div class="table-wrap"><table>
         <thead><tr><th>Scripted Testing</th><th>Exploratory Testing</th></tr></thead>
@@ -297,8 +314,13 @@ window.QAHUB_MODULES = [
           <tr><td>About controlling tests</td><td>About improving test design</td></tr>
           <tr><td>Like reading a speech from a draft</td><td>Like having a spontaneous conversation</td></tr>
           <tr><td>The script is in control</td><td>The tester's mind is in control</td></tr>
+          <tr><td>Main strength: repeatability</td><td>Main strength: discovery</td></tr>
+          <tr><td>Best for known requirements and regression</td><td>Best for unknown risks and unexpected behavior</td></tr>
+          <tr><td>Documented as detailed test cases</td><td>Documented as charters, notes and session reports</td></tr>
+          <tr><td>Highly suitable for automation</td><td>Human judgment is central; discoveries get automated afterwards</td></tr>
         </tbody>
-      </table></div>` },
+      </table></div>
+      <p>Neither replaces the other. A mature QA strategy combines <strong>scripted tests</strong> for repeatable known behavior, <strong>automated regression</strong> for stable checks, and <strong>exploratory testing</strong> for investigation and discovery.</p>` },
     { h: "The SBTM Process (Session-Based Test Management)", body: `
       <ol>
         <li><strong>Create a Bug Taxonomy</strong> — a classification for the kinds of bugs you expect to find.</li>
@@ -306,7 +328,52 @@ window.QAHUB_MODULES = [
         <li><strong>Time Box the session</strong> — set a fixed duration and stick to it.</li>
         <li><strong>Review Results</strong> — go over what was found.</li>
         <li><strong>Debrief</strong> — discuss the session with the team.</li>
-      </ol>` },
+      </ol>
+      <p>The ISTQB Advanced Agile Tester syllabus describes sessions as time-boxed (commonly <strong>60–120 minutes</strong>), driven by a charter, and documented with notes, screenshots, recordings, coverage, observations and anomalies.</p>` },
+    { h: "Writing a Test Charter", body: `
+      <p>A <strong>test charter</strong> is a statement of test objectives, and possibly test ideas, that guides a session. It gives direction without prescribing every click. A good charter answers: what are we testing, why, which area or risk, what do we want to learn, and what constraints apply?</p>
+      <ul>
+        <li><strong>Bad:</strong> "Test login."</li>
+        <li><strong>Better:</strong> "Explore the login flow for authentication failures, unusual input, session handling, and error-message behavior."</li>
+        <li><strong>More focused:</strong> "Explore login with invalid, boundary, and unusual credentials, paying particular attention to lockout, error handling, and session behavior."</li>
+      </ul>
+      <p>A charter provides <strong>focus</strong>, not a script. Too vague and you're clicking at random; too restrictive and you can't follow the interesting discoveries.</p>
+      <pre><code>Charter:      Explore [feature/area] to discover [risk/behavior].
+Mission:      Understand whether [objective].
+Focus:        [area 1] · [area 2] · [area 3]
+Risks:        [risk 1] · [risk 2]
+Test ideas:   [idea] · [idea] · [idea]
+Out of scope: [area]
+Environment:  Browser · OS · Build · Device
+Timebox:      [XX minutes]
+Tester / Date</code></pre>
+      <p><strong>Example charter library:</strong></p>
+      <ul>
+        <li><strong>Registration:</strong> explore validation, duplicate accounts, boundary data, and error handling.</li>
+        <li><strong>REST API:</strong> explore validation, authentication, authorization, malformed requests, boundary data, duplicate requests, and error handling.</li>
+        <li><strong>Multi-tenancy:</strong> explore whether users can access, search, modify, export, or infer another tenant's data.</li>
+        <li><strong>File upload:</strong> explore file type, size, naming, duplicates, interruption, cancellation, and malformed files.</li>
+        <li><strong>Search:</strong> explore empty queries, special characters, large result sets, pagination, filters, sorting, and concurrent data changes.</li>
+        <li><strong>Payment:</strong> explore failed payment, retry, cancellation, duplicate submission, timeout, and interrupted network.</li>
+      </ul>` },
+    { h: "Running a Session: Prepare, Explore, Record, Debrief", body: `
+      <p><strong>1. Prepare:</strong> understand the feature, read the requirements, identify risks, review earlier defects, check the build, prepare test data and environment, then define the charter and timebox.</p>
+      <p><strong>2. Explore:</strong> observe, ask questions, form hypotheses, vary inputs, follow interesting paths, compare behavior with expectations, apply heuristics, record evidence. When something odd happens: <strong>stop → reproduce → isolate → expand → compare</strong>.</p>
+      <p><strong>3. Debrief:</strong> What did we test and learn? What defects did we find? What questions and risks remain? What was <em>not</em> tested? Which areas need another session? Which discoveries should become scripted or automated tests?</p>
+      <p><strong>Timeboxing</strong> keeps exploration from growing without limit and makes the effort easy to communicate: about 30 min for a quick investigation, 60 for focused feature exploration, 90 for a normal deep dive, 120 for a larger investigation.</p>
+      <p><strong>Record, don't rely on memory:</strong> actions, test data, observations, hypotheses, questions, environment and build, screenshots, recordings, logs, API requests/responses, console errors, network failures, defects, and areas covered <em>and not covered</em>.</p>
+      <pre><code>10:03 Registered a normal user successfully.
+10:06 Repeated registration with the same email.
+10:07 UI displayed a generic error.
+10:10 API returned 500 instead of the expected 4xx.
+10:12 Hypothesis: duplicate registration isn't handled.
+10:15 Reproduced in a second browser.
+10:18 Reproduced directly through the API. Confirmed.
+10:25 Bug report created.
+10:35 UI accepts a 256-char password but the API rejects it.
+10:40 Second defect created.</code></pre>
+      <p>That's the learning loop in action: <strong>observation → hypothesis → new test → new evidence → new hypothesis</strong>.</p>
+      <p><strong>A 60-minute session, for example:</strong> 0–5 read requirements and identify risks · 5–10 prepare account, data and charter · 10–20 normal workflow · 20–30 invalid and boundary data · 30–40 interruptions and state transitions · 40–50 permissions, concurrency or integrations · 50–55 reproduce findings · 55–60 document defects, risks, questions and follow-ups.</p>` },
     { h: "Pros & Cons", body: `
       <p><strong>Pros:</strong> finds more bugs, encourages creativity, requires less prep documentation, adapts quickly to changing requirements.</p>
       <p><strong>Cons:</strong> depends heavily on tester skill, hard to measure coverage, difficult to repeat or reproduce exactly, less suited to strict compliance/audit needs.</p>` },
@@ -316,7 +383,18 @@ window.QAHUB_MODULES = [
         <li>Early iterations of a feature.</li>
         <li>Critical applications needing deep investigation.</li>
         <li>Experienced testers are available.</li>
-      </ul>` },
+        <li>The feature is new, acceptance criteria are minimal, or the product is changing fast.</li>
+        <li>There's no time to build a full scripted suite.</li>
+        <li>You're investigating a suspected defect. Ask "what else could be related to this?", because one defect often exposes a whole class of problems.</li>
+        <li>Integration behavior is uncertain, workflows are complex, or edge cases are likely.</li>
+      </ul>
+      <p><strong>Complex workflow example:</strong> for a checkout (<em>Product → Cart → Discount → Address → Payment → Confirmation</em>), explore interruptions and combinations: remove a product mid-checkout, change quantity after a discount, let the session expire, refresh the payment page, press Back, open two tabs, change the address after shipping is calculated, retry payment, drop the network.</p>` },
+    { h: "Exploratory Testing in Agile & CI/CD", body: `
+      <p>Agile produces frequent change and often incomplete information, which suits exploration well. ISTQB's Agile material places it during iteration execution, reviews and demos, after major changes, and whenever acceptance criteria are vague. Explore new stories, changed functionality, integration points, sprint increments and high-risk areas.</p>
+      <pre><code>Commit → Build → Unit tests → API tests → UI smoke tests
+→ Deploy test environment → Exploratory testing
+→ Defect investigation → Automated regression → Release</code></pre>
+      <p>CI/CD automation gives <strong>fast, repeatable feedback</strong>; exploratory testing gives <strong>adaptive human investigation</strong>. Exploration bridges development, requirements, automated checks and user-focused validation.</p>` },
     { h: "Exploratory Testing Heuristics: SFDPOT & HICCUPPS", body: `
       <p>Heuristics give exploratory testing structure without turning it into a script — they're prompts for where to look next, not steps to follow in order.</p>
       <p><strong>SFDPOT</strong> ("San Francisco Depot") is a coverage-mapping mnemonic for deciding what parts of a product to explore:</p>
@@ -339,7 +417,67 @@ window.QAHUB_MODULES = [
         <li><strong>P</strong>urpose — does it serve the feature's actual purpose?</li>
         <li><strong>S</strong>tatutes — does it comply with laws, regulations, or standards?</li>
       </ul>
-      <p>Together they turn "explore the app" from a vague instruction into a repeatable set of lenses any tester can pick up.</p>` }
+      <p>Together they turn "explore the app" from a vague instruction into a repeatable set of lenses any tester can pick up.</p>` },
+    { h: "Practical Heuristics: What If, Data, State & Interruptions", body: `
+      <p>A heuristic is a practical rule of thumb for guiding investigation. Keep these in your back pocket:</p>
+      <ul>
+        <li><strong>What if…</strong> the value is empty, huge or tiny? The user presses Back, refreshes or double-clicks? The request repeats, the network drops, two users act at once, the session expires, or data changes in another tab?</li>
+        <li><strong>Change the context:</strong> browsers, devices, screen sizes, user roles and permissions, locales, languages, time zones, network conditions, account states.</li>
+        <li><strong>Change the data:</strong> empty, null, zero, negative, min, max, max + 1, very long, very short, Unicode, whitespace, special characters, duplicates, malformed values, unexpected types.</li>
+        <li><strong>CRUD + permissions:</strong> for each of Create/Read/Update/Delete, can this user do it, and what happens without permission? Then try combinations and invalid transitions.</li>
+        <li><strong>Boundaries:</strong> min − 1, min, min + 1, max − 1, max, max + 1.</li>
+        <li><strong>State:</strong> which states can this object reach? For <code>Draft → Submitted → Approved → Completed</code>, try invalid moves like <code>Completed → Draft</code>, <code>Approved → Submitted</code>, or updating a deleted item.</li>
+        <li><strong>Concurrency:</strong> two users on one record, two browsers, two tabs, duplicate requests, simultaneous update/delete, simultaneous login, concurrent API calls.</li>
+        <li><strong>Interruption:</strong> refresh, Back, Forward, close and reopen the tab, disconnect and reconnect the network, timeouts, session expiry.</li>
+        <li><strong>Consistency:</strong> UI vs API, browser A vs browser B, user A vs user B, current version vs previous version.</li>
+      </ul>
+      <p>Throughout, keep the investigator's questions going: <em>What happened? What did I expect? Is the difference meaningful? Why might it happen? What could explain it? What test would tell the explanations apart? What else could be affected?</em></p>` },
+    { h: "Risk Focus & Worked Examples", body: `
+      <p>Prioritize with <strong>Risk = Likelihood × Impact</strong>. Rather than clicking through low-risk UI, spend the session where failure matters most: authentication, authorization, payment, personal data, tenant isolation, permissions, data deletion, concurrency, integrations and critical business workflows.</p>
+      <p><strong>Login.</strong> <em>Charter: explore authentication with invalid, boundary, unexpected and repeated input, focusing on security, error handling and session behavior.</em> Ideas: valid/invalid/empty credentials; min/max/max + 1 lengths; spaces, Unicode, special characters; login then logout, refresh, Back, close browser, or a second tab; repeated failures and lockout; consistent error messages; session invalidated after logout; protected pages after logout; the same account in two browsers.</p>
+      <p><strong>REST API.</strong> Exploration isn't UI-only. Try missing, extra or wrong-type fields, null, empty strings, malformed JSON, invalid or expired auth, the wrong method or content type, duplicate and repeated requests, large or empty payloads, invalid, nonexistent or deleted IDs, concurrent requests, pagination edges and sort/filter combinations. Observe the status, body, headers, schema, error structure, timing, persistence, authorization and side effects (see Module 6).</p>
+      <p><strong>Multi-tenancy.</strong> <em>Charter: explore tenant isolation as users from different tenants access, create, update, search and delete project data concurrently.</em> Put User A in Tenant A and User B in Tenant B, create similar projects in both, then try searching for the other tenant's data, direct URLs, swapped IDs, cached pages, logout/login switching, exports, notifications, search indexes, attachments and background jobs. Expected property: nobody can see or change another tenant's data unless the product explicitly allows it.</p>` },
+    { h: "Beyond Functional: Security, Usability, Compatibility & Performance", body: `
+      <p><strong>Security:</strong> exploration can uncover security problems but <em>doesn't replace</em> dedicated, authorized security testing. Useful questions: Can authorization be bypassed? Can I swap in another user's ID? Can hidden functions be reached directly? What happens after logout or session expiry? Do error messages leak sensitive info? Can requests be replayed? Can I tamper with client-side values? Can an ordinary user reach admin functions?</p>
+      <p><strong>Usability:</strong> look for confusing navigation, inconsistent controls, unclear messages or terminology, poor error recovery, inaccessible features and easy-to-trigger destructive actions. Play personas: first-time user, expert, impatient user, error-prone user, someone with little domain knowledge.</p>
+      <p><strong>Compatibility:</strong> Chrome, Edge, Firefox, Safari, mobile browsers, OS versions, screen sizes, zoom levels, high-DPI. Watch for layout breaks, unsupported controls, browser-specific behavior, JavaScript errors, rendering and timing differences, file-upload and keyboard issues.</p>
+      <p><strong>Performance signals:</strong> exploration is no substitute for performance testing, but it can spot trouble: a page that suddenly slows, latency that grows with repetition, UI degradation on large datasets, rising memory, resource problems across tabs. Follow these up with a controlled test in JMeter or k6.</p>` },
+    { h: "From Discovery to Automation", body: `
+      <p>Exploration depends on human observation and reasoning, but it constantly feeds automation:</p>
+      <pre><code>Explore → discover important behavior → understand the stable
+expected behavior → create a regression test → automate if valuable</code></pre>
+      <p><em>Example:</em> exploring reveals that double-clicking <strong>Save</strong> creates two contacts. Confirm it manually → file the defect → the developer fixes it → add a Playwright regression check such as <code>expect(contactCount).toBe(1)</code>. The automation now guards the behavior that exploration discovered.</p>
+      <p><strong>A Playwright-flavored routine:</strong> deploy the build → run smoke tests → pick a charter → explore manually with DevTools and network logs → reproduce anything interesting → decide whether it's a defect → file the bug → automate it if it's important and stable.</p>
+      <p><strong>Supporting tools:</strong> test management (Jira, Azure DevOps, TestRail, Zephyr, Xray) · notes (Markdown, Notion, OneNote, Google Docs) · evidence (screenshots, recordings, DevTools, network/console logs) · API exploration (Postman, Insomnia, curl) · automation afterwards (Playwright, Cypress, Selenium, REST Assured, Newman) · performance follow-up (JMeter, k6). Tools don't make a session exploratory; the approach does.</p>` },
+    { h: "Reporting, Coverage, Metrics & Definition of Done", body: `
+      <p><strong>An exploratory bug must still be reproducible.</strong> Example title: <em>API returns HTTP 500 when registering an existing email.</em> Include preconditions (a user with <code>test@example.com</code> exists), steps (POST <code>/users</code> with that email), expected (a client-error response per the API contract), actual (HTTP 500), evidence (request, response, timestamp, environment, logs) and where it came from (<em>found during session "Registration: duplicate and boundary data"</em>).</p>
+      <p><strong>Coverage has several dimensions:</strong> feature, risk, data, workflow, state, role, platform and integration. "I tested the screen" isn't a coverage statement. You should be able to say <strong>what was explored and what remains unknown</strong>.</p>
+      <p><strong>Metrics, used carefully:</strong> session duration, charter, areas covered, risks investigated, defects and questions raised, follow-up sessions, regression tests and automation candidates created, unresolved risks. Avoid vanity numbers ("500 clicks, so testing was good"). Ask instead: <em>what important information did the session produce?</em></p>
+      <p><strong>Definition of Done for a session:</strong> the charter was addressed; key risks were investigated; observations, evidence and questions were recorded; defects were reported; untested areas and follow-up work were identified. Done doesn't mean "everything is tested". It means <em>we investigated the mission and can explain what we learned and what remains unknown.</em></p>` },
+    { h: "Common Mistakes & Quick Reference", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mistake</th><th>Better</th></tr></thead>
+        <tbody>
+          <tr><td>Random clicking with no objective</td><td>Write a charter</td></tr>
+          <tr><td>No notes, so discoveries can't be reproduced</td><td>Record actions, observations and evidence</td></tr>
+          <tr><td>Testing everything equally</td><td>Prioritize by risk</td></tr>
+          <tr><td>Treating exploration as regression</td><td>Use it to investigate unknowns and change</td></tr>
+          <tr><td>Never turning discoveries into regression tests</td><td>Automate or document stable, high-value checks</td></tr>
+          <tr><td>No timebox</td><td>Run focused sessions</td></tr>
+          <tr><td>Vague defect reports</td><td>Capture evidence while exploring</td></tr>
+          <tr><td>Overly restrictive charter</td><td>Define the mission, not every click</td></tr>
+        </tbody>
+      </table></div>
+      <p>Weaknesses such as inconsistent coverage, poor reproducibility and dependence on skill shrink with charters, timeboxes, notes, risk analysis, debriefs, evidence capture, peer review, follow-up scripted tests and automation.</p>
+      <p><strong>Exam memory trick:</strong></p>
+      <pre><code>SCRIPTED     Design → Execute → Evaluate
+EXPLORATORY  Learn ↔ Design ↔ Execute ↔ Evaluate
+
+Exploratory ≠ Random
+Exploratory = Mission + Timebox + Investigation
+            + Adaptation + Notes + Learning</code></pre>
+      <p><strong>One-sentence definition:</strong> exploratory testing is a disciplined, experience-based approach in which the tester simultaneously learns about the product, designs tests, executes them, evaluates the results, and adapts the next test based on what was discovered.</p>
+      <p><strong>Further reading:</strong> <a href="https://istqb-glossary.page/" target="_blank" rel="noopener">ISTQB Glossary</a> · <a href="https://istqb.org/" target="_blank" rel="noopener">ISTQB syllabi</a> · <a href="https://martinfowler.com/bliki/ExploratoryTesting.html" target="_blank" rel="noopener">Martin Fowler: Exploratory Testing</a></p>` }
   ]
 },
 {
@@ -357,7 +495,65 @@ window.QAHUB_MODULES = [
         <li><strong>POST</strong> — create a new entity or send data to the server (e.g. form submissions, file uploads).</li>
         <li><strong>PUT</strong> — create a new entity or update an existing one.</li>
         <li><strong>DELETE</strong> — remove the resource(s) identified by a URI.</li>
-      </ul>` },
+      </ul>
+      <p>Beyond the core four you'll regularly meet:</p>
+      <ul>
+        <li><strong>PATCH</strong> — commonly a <em>partial</em> update (change only the fields sent), whereas PUT commonly replaces the whole resource.</li>
+        <li><strong>HEAD</strong> — returns the headers only, without the normal response body.</li>
+        <li><strong>OPTIONS</strong> — asks which operations/capabilities the endpoint supports (also used by browsers for CORS preflight).</li>
+      </ul>
+      <p>A typical resource set looks like <code>GET /api/contacts</code>, <code>GET /api/contacts/123</code>, <code>POST /api/contacts</code>, <code>PUT</code>/<code>PATCH</code>/<code>DELETE /api/contacts/123</code>. Always treat the <strong>API contract as the source of truth</strong>: real implementations don't always follow textbook REST semantics exactly.</p>` },
+    { h: "Request & Response Anatomy", body: `
+      <p>A request travels <strong>QA client → HTTP request → REST API → business logic → database/services → HTTP response</strong>. Testing at this layer is faster and more focused than UI testing and exposes defects hidden below the UI.</p>
+      <p>A request can contain: method, URL, <strong>path parameters</strong>, <strong>query parameters</strong>, headers, authentication, and a body.</p>
+      <pre><code>GET /api/users/123?include=orders&amp;page=2
+Authorization: Bearer abc123
+Accept: application/json</code></pre>
+      <p>Here <code>123</code> is a path parameter; <code>include=orders</code> and <code>page=2</code> are query parameters. A create request and its response:</p>
+      <pre><code>POST /api/contacts
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{ "firstName": "John", "lastName": "Smith" }
+
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{ "id": "12345", "firstName": "John", "lastName": "Smith" }</code></pre>
+      <p><strong>Headers worth testing:</strong> <code>Content-Type</code>, <code>Accept</code>, <code>Authorization</code>, <code>Cache-Control</code>, <code>Location</code>, <code>ETag</code>, <code>Set-Cookie</code>, and request/correlation IDs. Try missing headers, a wrong <code>Content-Type</code>, unsupported <code>Accept</code> values, and missing or invalid <code>Authorization</code>.</p>` },
+    { h: "HTTP Status Codes", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th>Class</th><th>Common codes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>2xx</strong> Success</td><td>200 OK · 201 Created · 202 Accepted · 204 No Content</td></tr>
+          <tr><td><strong>3xx</strong> Redirection</td><td>301 Moved Permanently · 302 Found · 304 Not Modified</td></tr>
+          <tr><td><strong>4xx</strong> Client error</td><td>400 Bad Request · 401 Unauthorized (authentication required) · 403 Forbidden · 404 Not Found · 405 Method Not Allowed · 409 Conflict · 415 Unsupported Media Type · 422 Unprocessable Content · 429 Too Many Requests</td></tr>
+          <tr><td><strong>5xx</strong> Server error</td><td>500 Internal Server Error · 501 Not Implemented · 502 Bad Gateway · 503 Service Unavailable · 504 Gateway Timeout</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Don't expect 200 from every successful request.</strong> A create usually returns 201, a delete often 204, an async job 202 — the expected status depends on the operation and the contract. And any 5xx caused by client input is a defect: bad input should get a 4xx.</p>` },
+    { h: "Designing Input Tests: Parameters, Bodies & Boundaries", body: `
+      <p><strong>Path parameters</strong> (<code>GET /users/{id}</code>): valid IDs, nonexistent IDs, zero, negative, very large, strings instead of numbers, null-like values, missing, malformed, special characters.</p>
+      <p><strong>Query parameters</strong> (<code>GET /users?page=2&amp;limit=20</code>): normal values, zero, negative, very large, min/max limits, missing, empty, duplicated, invalid types, special characters, URL encoding.</p>
+      <p><strong>JSON bodies:</strong> valid data, missing required fields, empty strings, nulls, wrong types, invalid formats, unexpected fields, duplicates, oversized values, malformed JSON.</p>
+      <pre><code>{"firstName":"John","lastName":"Smith","age":30}   valid
+{"firstName":"John","age":30}                       missing field
+{"firstName":"","lastName":"Smith"}                 empty value
+{"firstName":123,"lastName":true}                   wrong types</code></pre>
+      <p><strong>Positive testing</strong> confirms valid requests succeed as expected. <strong>Negative testing</strong> covers invalid/expired auth, invalid IDs, duplicates, unsupported methods, invalid <code>Content-Type</code>, malformed JSON, oversized requests, and unexpected parameters — the API should reject each one safely with a clear 4xx.</p>
+      <p><strong>Boundary Value Analysis</strong> (Module 2) applies to strings, integers, arrays, pagination, file sizes, quantities, dates and money. Username length 3–30 → test <strong>2, 3, 4, 29, 30, 31</strong>. Age 18–120 → test <strong>17, 18, 19, 119, 120, 121</strong>.</p>
+      <p><strong>Data-driven testing:</strong> run the same test logic over a dataset (valid, boundary, invalid, duplicate, Unicode, case variations, special characters) rather than one hard-coded example.</p>` },
+    { h: "Response Validation, Schemas & Contract Testing", body: `
+      <p>Validate far more than the status code:</p>
+      <ul>
+        <li>status code, response headers and <code>Content-Type</code></li>
+        <li>JSON structure/schema, data types, required fields and actual values</li>
+        <li>business rules</li>
+        <li>database state, where appropriate</li>
+        <li>response time, where performance matters</li>
+      </ul>
+      <p><strong>OpenAPI/Swagger</strong> and <strong>JSON Schema</strong> define the API contract: methods, parameters, request/response schemas, auth requirements and error responses. <strong>Contract testing</strong> checks that the implementation still matches it. Example defect: the docs say <code>id</code> is an integer, but the API returns a string. That's <strong>contract drift</strong>, and it can break every consumer of the API.</p>
+      <p><strong>Database validation:</strong> where it adds value, confirm an operation produced the expected persistent state (records, relationships, timestamps, defaults, status). Don't make <em>every</em> API test depend on direct DB access, though: that coupling makes suites slower and more brittle.</p>` },
     { h: "How to Test a REST API", body: `
       <p>You need two things: (1) a testing tool or framework, and (2) either configured requests or custom test code. Common tools: <strong>Advanced REST Client</strong>, <strong>Postman</strong>, <strong>cURL</strong>.</p>` },
     { h: "Step-by-Step Testing Workflow", body: `
@@ -389,7 +585,81 @@ window.QAHUB_MODULES = [
       <ul>
         <li><strong>GraphQL</strong> — a single endpoint where the client specifies exactly what data it wants in the query. Testing focus shifts toward validating the schema, checking that queries can't request excessive/nested data (a denial-of-service risk unique to GraphQL), and testing mutations (GraphQL's equivalent of POST/PUT) for the same authorization rigor as REST writes.</li>
         <li><strong>gRPC</strong> — a binary, contract-first protocol (using Protocol Buffers) built for fast service-to-service communication. Testing typically works from the <code>.proto</code> contract definition directly, and tools like <code>grpcurl</code> or BloomRPC stand in for what Postman/cURL do for REST.</li>
-      </ul>` }
+      </ul>` },
+    { h: "Multi-User & Tenant Isolation", body: `
+      <p><strong>Authentication</strong> asks <em>who are you?</em>; <strong>authorization</strong> asks <em>are you allowed to do this?</em> For authentication, cover Basic Auth, Bearer tokens, API keys, OAuth 2.0 and JWT with valid, invalid, missing, expired, malformed, wrong and revoked credentials.</p>
+      <p>For authorization, create <strong>User A, User B and an Admin</strong>, then try each one against the others' resources and against privileged operations. The key question: can one user read or modify another user's objects?</p>
+      <p>In <strong>multi-tenant</strong> systems, verify a user from Tenant A cannot read, update, delete, search, or even <em>infer</em> resources of Tenant B. Probe IDs, filters, pagination, exports, bulk endpoints and indirect references, where leaks commonly hide.</p>` },
+    { h: "Workflows, State & Tricky Data", body: `
+      <p><strong>CRUD cycle:</strong> <code>CREATE → READ → UPDATE → READ → DELETE → READ</code>. Each READ proves the previous step really took effect. Then chain real workflows: <em>Register → Login → Get token → Create contact → Get → Update → Delete → Verify deletion</em>.</p>
+      <p><strong>Idempotency &amp; duplicates:</strong> repeating an operation the contract says is idempotent (PUT, DELETE, often PATCH) should leave the resource in the same intended state. Repeat POSTs, too: do they create duplicate orders, contacts or payments?</p>
+      <p><strong>Pagination, sorting, filtering:</strong> first/middle/last page, beyond the last page, zero/negative page, min/max/huge limit, duplicates or missing records across pages; ascending/descending, invalid sort fields, multiple fields, case sensitivity; valid/invalid/empty filters, multiple filters, filters combined with pagination.</p>
+      <p><strong>Dates &amp; times:</strong> UTC vs local, timezone conversions, daylight-saving transitions, leap years/leap days, midnight/end-of-day, past/future and invalid dates, supported formats. Pin down exact semantics for values like <code>2026-09-23T10:00:00Z</code>.</p>
+      <p><strong>Concurrency:</strong> two users modifying the same resource at once. Check optimistic locking (e.g. <code>ETag</code>/<code>If-Match</code> → 409/412), race conditions, lost updates, duplicate operations, and the final state.</p>` },
+    { h: "OWASP API Security Top 10 (2023)", body: `
+      <p>Use the OWASP list as a risk-based security checklist, not an afterthought to status-code checks:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Risk</th><th>How a QA probes it</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Broken Object Level Authorization (BOLA)</td><td>Request another user's object ID</td></tr>
+          <tr><td>2</td><td>Broken Authentication</td><td>Missing, invalid, expired, malformed, revoked tokens</td></tr>
+          <tr><td>3</td><td>Broken Object Property Level Authorization</td><td>Try to set privileged fields: <code>role</code>, <code>ownerId</code>, <code>tenantId</code>, <code>isAdmin</code></td></tr>
+          <tr><td>4</td><td>Unrestricted Resource Consumption</td><td>Huge payloads/arrays, extreme pagination, high request rates</td></tr>
+          <tr><td>5</td><td>Broken Function Level Authorization</td><td>Call admin/privileged endpoints with each role</td></tr>
+          <tr><td>6</td><td>Unrestricted Access to Sensitive Business Flows</td><td>Repeat password resets, votes, coupons, sign-ups, orders</td></tr>
+          <tr><td>7</td><td>Server-Side Request Forgery (SSRF)</td><td>If the API fetches URLs, verify server-side restrictions (authorized test env only)</td></tr>
+          <tr><td>8</td><td>Security Misconfiguration</td><td>Debug info, stack traces, unneeded methods, default creds, CORS/TLS</td></tr>
+          <tr><td>9</td><td>Improper Inventory Management</td><td>Find obsolete, undocumented, debug or deprecated API versions</td></tr>
+          <tr><td>10</td><td>Unsafe Consumption of APIs</td><td>Feed malformed, partial, slow, oversized third-party responses</td></tr>
+        </tbody>
+      </table></div>
+      <p>Module 10 goes deeper into application security testing.</p>` },
+    { h: "Tools, Automation & CI/CD", body: `
+      <p><strong>Postman</strong> handles requests, collections, environments, variables, scripts, assertions, auth, request chaining and CI runs. Use variables such as <code>{{baseUrl}}</code>, <code>{{token}}</code>, <code>{{userId}}</code> instead of hard-coded environment values.</p>
+      <pre><code>pm.test("Status code is 200", function () {
+  pm.response.to.have.status(200);
+});</code></pre>
+      <p><strong>Playwright</strong> (TypeScript) has a built-in API request layer:</p>
+      <pre><code>const response = await request.post('/api/users', {
+  data: { name: 'John', email: 'john@example.com' }
+});
+expect(response.status()).toBe(201);</code></pre>
+      <p>Keep API clients, auth, test data, schemas and assertions reusable rather than repeating them in each spec:</p>
+      <pre><code>tests/
+├── api/        auth/ · contacts/ · negative/
+├── fixtures/   apiClient.ts · testData.ts
+├── helpers/    auth.ts · assertions.ts
+└── schemas/</code></pre>
+      <p><strong>API + UI together:</strong> create a user via API and verify login in the UI, or create a contact in the UI and verify it via API. This isolates whether a defect is in the UI, the API, the integration or persistence.</p>
+      <p><strong>Performance:</strong> measure response time, latency, throughput, requests/second, error rate, CPU, memory and DB behavior across baseline, load, stress, spike and soak scenarios, using tools like <strong>k6</strong> and <strong>JMeter</strong>.</p>
+      <p><strong>CI/CD:</strong> push → GitHub Actions → install deps → start app → run API tests (<code>npx playwright test tests/api</code>) → run UI tests → reports → <strong>quality gate</strong>. Run on pull requests and key branches, and keep reports and failure artifacts.</p>` },
+    { h: "Test Case Template, Endpoint Matrix & Negative Checklist", body: `
+      <p><strong>API test case fields:</strong> ID, title, preconditions, endpoint, method, headers, auth, path/query params, body, test data, steps, expected status, expected headers, expected response/schema, expected DB state, priority, severity.</p>
+      <p><em>Example: TC-API-001: Create contact with valid data. <code>POST /contacts</code> → expect <code>201 Created</code>; verify the generated ID, then <code>GET /contacts/{id}</code> to confirm the resource exists.</em></p>
+      <p><strong>For every endpoint, ask:</strong> Is the method and URL correct? Who can access it? Which headers, parameters and body fields are required or valid? Are data types, status codes, schema and returned data correct? Are errors safe and useful? Are authorization boundaries enforced? Are side effects correct? What happens under concurrency and load?</p>
+      <p><strong>Essential negative checklist:</strong> missing required field · empty string · null · wrong type · invalid format · too short / too long · boundary −1 / boundary / +1 · negative · zero · very large number · unknown ID · missing ID · duplicate request · invalid JSON · empty JSON · missing/wrong <code>Content-Type</code> · missing/invalid auth · expired token · insufficient permissions · wrong user · unsupported method · rate limit · large payload · unexpected parameters · special characters · Unicode · injection-like input · HTML/script-like input.</p>` },
+    { h: "The QA Mindset, Roadmap & Portfolio", body: `
+      <ul>
+        <li><strong>Beginner:</strong> Does the API return 200?</li>
+        <li><strong>Stronger:</strong> Does it return the correct status, schema, data, headers, permissions and side effects?</li>
+        <li><strong>Advanced:</strong> What if two users call it at once, the token expires, the payload is malformed, the resource belongs to another tenant, the DB is down, a third party returns junk, or the request is repeated many times?</li>
+      </ul>
+      <p>The goal is <strong>risk-based API testing</strong>, not just sending requests.</p>
+      <p><strong>Junior QA learning roadmap:</strong></p>
+      <ol>
+        <li>HTTP/HTTPS, URLs, methods, headers, status codes, JSON</li>
+        <li>Postman: collections, environments, variables, scripts, assertions</li>
+        <li>Positive/negative, boundaries, equivalence partitioning, decision tables, state transitions, data-driven</li>
+        <li>Basic Auth, Bearer, JWT, OAuth, API keys</li>
+        <li>CRUD, pagination, filtering, sorting, file upload, idempotency, concurrency, webhooks, async APIs</li>
+        <li>OpenAPI/Swagger, JSON Schema, contract testing, schema drift</li>
+        <li>OWASP API Top 10, authorization, rate limiting, data exposure</li>
+        <li>Playwright API, TypeScript, Postman scripts and CLI</li>
+        <li>k6/JMeter: load, stress, spike, soak</li>
+        <li>Git, GitHub Actions, Jenkins, reporting, artifacts, quality gates</li>
+      </ol>
+      <p><strong>Portfolio project blueprint:</strong> test strategy, test plan, endpoint inventory, positive/negative/boundary tests, auth and authorization tests, CRUD tests, schema/contract tests, security checklist, Postman collection, Playwright API automation, test-data management, CI/CD, HTML/Allure reporting, defect examples, and a README explaining the approach.</p>
+      <p><strong>Resources:</strong> <a href="https://learning.postman.com/docs/tests-and-scripts/tests-and-scripts/" target="_blank" rel="noopener">Postman tests &amp; scripts</a> · <a href="https://api-security.owasp.org/editions/2023/en/0x11-t10/" target="_blank" rel="noopener">OWASP API Security Top 10</a> · <a href="https://spec.openapis.org/oas/latest.html" target="_blank" rel="noopener">OpenAPI Specification</a> · <a href="https://learning.postman.com/docs/tests-and-scripts/running-collections/running-collections-overview/" target="_blank" rel="noopener">Running Postman collections in CI</a></p>` }
   ]
 },
 {
