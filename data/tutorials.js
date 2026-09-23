@@ -1370,6 +1370,125 @@ expect(response.status()).toBe(201);</code></pre>
         <li>Run the fastest suites on every commit and slower ones on merge or nightly.</li>
       </ul>` }
   ]
+},
+{
+  id: "ai-testing",
+  num: 12,
+  title: "AI Testing: Using AI & Testing AI",
+  summary: "Two disciplines in one: AI-assisted and agentic testing tools, and how to test machine-learning and generative-AI systems.",
+  takeaway: "\"AI testing\" means two different things: using AI to help test software, and testing software that is itself built on AI. For AI tools, judge them by how much maintenance they save, not how fast they write tests. For AI systems, replace exact expected results with statistical oracles: metrics, tolerances and continuous monitoring.",
+  lessons: [
+    { h: "12.1 Two Meanings of \"AI Testing\"", body: `
+      <p>The term covers two distinct disciplines, and it helps to keep them apart:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Using AI for testing</th><th>Testing AI-based systems</th></tr></thead>
+        <tbody>
+          <tr><td>What</td><td>AI-assisted or agentic tools that generate, maintain and run tests</td><td>Verifying systems built on machine learning (ML) or generative AI</td></tr>
+          <tr><td>The AI is…</td><td>Your tool</td><td>The product under test</td></tr>
+          <tr><td>Main question</td><td>Does this tool make our testing cheaper and better?</td><td>Does this model behave well enough, fairly and safely?</td></tr>
+          <tr><td>Covered in</td><td>12.2, 12.3 and Module 8.5</td><td>12.4 to 12.7</td></tr>
+        </tbody>
+      </table></div>
+      <p>ISTQB draws the same line. Its Certified Tester AI Testing (<strong>CT-AI</strong>) certification focuses on testing AI-based systems; according to ISTQB's announcement of <strong>CT-AI v2.0</strong>, the "using AI for testing" material was dropped from the syllabus so it could concentrate on that. (See 12.8 for the certification path.)</p>` },
+    { h: "12.2 Using AI for Testing: What the Tools Do", body: `
+      <p>Four capabilities define AI-augmented testing today:</p>
+      <ul>
+        <li><strong>Generative test creation</strong>: large language models (LLMs) draft test plans, test cases and automation scripts from requirements, tickets or plain-English goals.</li>
+        <li><strong>Self-healing automation</strong>: when the UI or API changes, the tool proposes a repair instead of leaving a broken suite. This targets the real cost driver of automation, which is maintenance.</li>
+        <li><strong>Intelligent failure triage</strong>: clustering failed tests, suggesting root causes, and spotting flaky tests.</li>
+        <li><strong>Agentic testing</strong>: autonomous agents explore an application, design tests and judge the results. The move from <em>assisted</em> (the AI helps a person) to <em>agentic</em> (the AI acts on its own within limits) is the main trend in current tools.</li>
+      </ul>
+      <p><strong>Keep a human in the loop.</strong> AI output is a first draft. A generated test still needs someone to confirm it asserts the behavior that matters, not merely that it runs and passes. An AI-generated test that is green but never exercised the real bug path is worse than no test, because it creates false confidence. Module 8.5 covers the day-to-day tooling and the data-handling risks of sending code or customer data to third-party AI services.</p>` },
+    { h: "12.3 Choosing AI Testing Tools", body: `
+      <p>The market roughly splits into three groups:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Category</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>AI-powered platforms</td><td>ACCELQ, mabl, Testsigma, KaneAI</td></tr>
+          <tr><td>Open-source frameworks, increasingly with AI add-ons</td><td>Selenium, Playwright, Cypress, Appium, k6</td></tr>
+          <tr><td>Enterprise suites</td><td>Tricentis Tosca and qTest, Parasoft SOAtest, Katalon, Worksoft, BrowserStack</td></tr>
+        </tbody>
+      </table></div>
+      <p>Analyst firms now treat AI-augmented software testing as its own market category, and Gartner has published a Magic Quadrant for it. Vendor lists change fast, so treat the examples above as a snapshot, not a recommendation.</p>
+      <p><strong>How to evaluate a tool:</strong></p>
+      <ol>
+        <li><strong>Judge by recurring maintenance cost, not authoring speed.</strong> Writing a test is a one-off cost; keeping it alive through every redesign is the bill that decides return on investment.</li>
+        <li><strong>Check CI/CD integration</strong> (Jenkins, GitHub Actions, GitLab CI, Azure DevOps), with tests triggered automatically on commits and pull requests.</li>
+        <li><strong>Test the "agentic" claim.</strong> Many vendors market agentic testing while offering little more than script generation. Run a trial on your own application.</li>
+        <li><strong>Check data handling</strong>: where your code, screenshots and test data go, and whether they are used for training.</li>
+        <li><strong>Make sure people can still read the tests.</strong> AI-authored automation becomes unmaintainable just like human-authored automation if nobody understands it.</li>
+      </ol>` },
+    { h: "12.4 Why AI-Based Systems Are Hard to Test", body: `
+      <p>Traditional testing assumes a <em>test oracle</em>: a way to know the one correct result. AI systems break that assumption:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Characteristic</th><th>What it means for testing</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Probabilistic, non-deterministic output</strong></td><td>There is no single expected result. Oracles become statistical: accuracy, precision and recall, acceptable tolerances.</td></tr>
+          <tr><td><strong>Self-learning, evolving behavior</strong></td><td>A system that passes today can fail tomorrow with no code change, so regression testing becomes continuous.</td></tr>
+          <tr><td><strong>Reliance on data</strong></td><td>Quality is decided by the training and test data, so data preparation and data quality become test activities.</td></tr>
+          <tr><td><strong>Complexity and opacity</strong></td><td>Deep neural networks are hard to interpret, so transparency and explainability need testing too.</td></tr>
+          <tr><td><strong>Bias and ethics</strong></td><td>Fairness across groups (e.g. age, gender, region) has to be tested explicitly; it won't show up by accident.</td></tr>
+          <tr><td><strong>Dynamic specifications</strong></td><td>Behavior isn't fixed logic written in code; it emerges from data, so the specification itself is statistical.</td></tr>
+        </tbody>
+      </table></div>
+      <p>The practical shift: from "does output X equal expected Y?" to "across a representative dataset, is the model good enough, fair enough and safe enough, and does it stay that way?"</p>` },
+    { h: "12.5 Measuring ML Models: The Confusion Matrix", body: `
+      <p>For a classifier, testers need to calculate and interpret the standard metrics. They all come from the <strong>confusion matrix</strong>. Example: a fraud model checks 1,000 transactions, 60 of which are really fraud.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Predicted fraud</th><th>Predicted legitimate</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Actually fraud</strong> (60)</td><td>True positive (TP) = 40</td><td>False negative (FN) = 20</td></tr>
+          <tr><td><strong>Actually legitimate</strong> (940)</td><td>False positive (FP) = 10</td><td>True negative (TN) = 930</td></tr>
+        </tbody>
+      </table></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Metric</th><th>Formula</th><th>Example</th><th>Question it answers</th></tr></thead>
+        <tbody>
+          <tr><td>Accuracy</td><td>(TP + TN) / all</td><td>970 / 1,000 = <strong>97%</strong></td><td>How often is the model right overall?</td></tr>
+          <tr><td>Precision</td><td>TP / (TP + FP)</td><td>40 / 50 = <strong>80%</strong></td><td>When it flags fraud, how often is it really fraud?</td></tr>
+          <tr><td>Recall (sensitivity)</td><td>TP / (TP + FN)</td><td>40 / 60 = <strong>67%</strong></td><td>Of all real fraud, how much did it catch?</td></tr>
+          <tr><td>F1 score</td><td>2 × P × R / (P + R)</td><td>≈ <strong>0.73</strong></td><td>One number balancing precision and recall</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>The accuracy trap:</strong> 97% sounds excellent, yet the model misses a third of all fraud. On imbalanced data, a model that simply answered "legitimate" every time would still score 94%. Always look past accuracy.</p>
+      <p><strong>Precision or recall?</strong> It depends on which mistake costs more. Missing a disease or fraud case (a false negative) usually makes <em>recall</em> the priority. Wrongly blocking good customers or flooding a team with false alarms (false positives) makes <em>precision</em> the priority. Agree the target metrics and thresholds with the business <em>before</em> testing, just as you would agree SLAs for performance (Module 11).</p>` },
+    { h: "12.6 Data, Test Levels & Production Monitoring", body: `
+      <p><strong>Two ML-specific test levels:</strong></p>
+      <ul>
+        <li><strong>Model testing (offline)</strong>: evaluate the model on held-out data it never saw during training, before deployment.</li>
+        <li><strong>Post-deployment testing (online)</strong>: monitor the live model, because real-world data drifts. <em>Data drift</em> means the inputs change (new customer groups, new products); <em>concept drift</em> means the relationship between inputs and the right answer changes (fraud patterns evolve). Both degrade a model silently.</li>
+      </ul>
+      <p><strong>Where testers add the most value in the ML workflow:</strong></p>
+      <ol>
+        <li><strong>Training data</strong>: selection, quality, labeling errors, representativeness and bias.</li>
+        <li><strong>Test data design</strong>: edge cases, rare classes and adversarial inputs (inputs crafted to fool the model).</li>
+        <li><strong>Metric definition</strong>: which metrics and thresholds count as "good enough".</li>
+        <li><strong>Model evaluation</strong>: running and interpreting the metrics, including fairness across groups.</li>
+        <li><strong>Production monitoring</strong>: drift detection and alerts.</li>
+      </ol>
+      <p><strong>Test infrastructure</strong> changes too: reproducible data pipelines, versioned models and datasets, and statistical analysis of results replace deterministic pass/fail gates. <strong>ISO/IEC 25059</strong> extends the ISO/IEC 25010 (SQuaRE) quality model with AI-specific characteristics such as adaptability and functional suitability for ML, and is a useful checklist for which qualities to test.</p>` },
+    { h: "12.7 Testing Generative AI & LLM Features", body: `
+      <p>When the product includes an LLM feature (a chatbot, a search assistant, a summarizer), exact-match assertions stop working, because the same prompt can produce different valid answers. Test with these techniques instead:</p>
+      <ul>
+        <li><strong>Rubric-based evaluation</strong>: score answers against criteria (correct, complete, on-topic, right tone) rather than an exact string. Build a <em>golden set</em> of representative prompts with reviewed reference answers and rerun it after every model or prompt change.</li>
+        <li><strong>Hallucination checks</strong>: look for confidently stated but false information, such as invented facts, citations or product features.</li>
+        <li><strong>Groundedness</strong>: when the system answers from supplied documents (retrieval-augmented generation, RAG), check that every claim is supported by those documents.</li>
+        <li><strong>Prompt injection and jailbreaks</strong>: try instructions hidden in user input or retrieved content ("ignore previous instructions…") and attempts to bypass safety rules.</li>
+        <li><strong>Safety and bias</strong>: harmful, toxic or discriminatory output; leaks of personal data or system prompts.</li>
+        <li><strong>Graceful degradation</strong>: on ambiguous or adversarial input, the system should ask, refuse or hedge, not produce something harmful or nonsensical.</li>
+      </ul>
+      <p><strong>Report pass rates, not single runs.</strong> Run each prompt several times and state results as rates ("92% of answers met the rubric"), with a threshold agreed in advance. Automated "LLM-as-judge" scoring can scale evaluation, but spot-check it with human reviewers, because the judge can be wrong too.</p>` },
+    { h: "12.8 Certification Path & Key Takeaways", body: `
+      <p><strong>ISTQB Certified Tester AI Testing (CT-AI)</strong> is a specialist certification that requires the Foundation Level (CTFL, Module 7) first. According to ISTQB's v2.0 announcement, it covers ML workflows, data preparation, performance evaluation with the metrics from 12.5, generative-AI testing, and ISO/IEC 25059. Exams are offered through ISTQB member boards and exam providers such as BCS and AT*SQA. Check istqb.org for the current syllabus version and exam rules before booking.</p>
+      <p><strong>Key takeaways:</strong></p>
+      <ol>
+        <li>"AI testing" means two things: using AI to test, and testing AI. Both now have established practices and certification paths.</li>
+        <li>AI testing tools pay off by reducing <strong>maintenance</strong>, not just by writing tests faster. Keep a human reviewing what they produce.</li>
+        <li>Testing AI systems replaces exact expected results with <strong>statistical oracles</strong>: metrics, tolerances and continuous monitoring.</li>
+        <li>Accuracy alone can mislead; choose precision, recall or F1 based on which mistakes cost the most.</li>
+        <li>The ISTQB CT-AI syllabus is the standard reference curriculum for testing AI-based systems.</li>
+      </ol>` }
+  ]
 }
 ];
 // __KB_V1__
