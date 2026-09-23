@@ -6,8 +6,8 @@ An interactive, self-contained software testing course — built as a single-pag
 
 ## What's inside
 
-- **11 tutorial modules, 100 lessons** — from manual testing fundamentals through to security testing and hands-on automation
-- **145 quiz questions** across per-module quiz banks, plus a 20-question mixed Final Exam drawn from all modules
+- **11 tutorial modules, 118 lessons** — from manual testing fundamentals through to security testing and hands-on automation
+- **176 quiz questions** across per-module quiz banks, plus a 20-question mixed Final Exam drawn from all modules
 - **175-term glossary**, searchable and filterable by category, with alphabet-aware A-Z navigation
 - **6 languages** — English, Ukrainian, Polish, Spanish, Italian, German — with a language switcher; every lesson, quiz question, and glossary entry is translated, not just the UI chrome
 - **Per-viewer progress tracking** (module completion, quiz best-scores) saved locally in the browser — nothing is sent to a server
@@ -16,17 +16,17 @@ An interactive, self-contained software testing course — built as a single-pag
 
 | # | Module | Lessons | Quiz Qs |
 |---|--------|---------|---------|
-| 1 | Manual Testing Fundamentals | 14 | 9 |
-| 2 | Software Testing Techniques & Test Case Design | 9 | 10 |
+| 1 | Manual Testing Fundamentals | 17 | 14 |
+| 2 | Software Testing Techniques & Test Case Design | 12 | 15 |
 | 3 | Types of Software Testing — Reference Catalogue | 4 | 8 |
-| 4 | Ad Hoc Testing | 7 | 8 |
+| 4 | Ad Hoc Testing | 9 | 11 |
 | 5 | Exploratory Testing | 16 | 23 |
 | 6 | REST API Testing | 16 | 24 |
-| 7 | ISTQB® CTFL v4.0 Certification Track | 8 | 12 |
-| 8 | QA Toolbox & Career Growth | 9 | 15 |
-| 9 | QA & Test Architecture | 6 | 13 |
-| 10 | Security Testing & AppSec | 7 | 12 |
-| 11 | Performance, UI/UX & Automation Testing in Practice | 4 | 11 |
+| 7 | ISTQB® CTFL v4.0 Certification Track | 10 | 16 |
+| 8 | QA Toolbox & Career Growth | 11 | 18 |
+| 9 | QA & Test Architecture | 8 | 16 |
+| 10 | Security Testing & AppSec | 8 | 15 |
+| 11 | Performance, UI/UX & Automation Testing in Practice | 7 | 16 |
 
 Module 5 goes from the basics to practice: test charters and a charter library, running and debriefing time-boxed sessions, practical heuristics, risk-based worked examples (login, REST API, multi-tenancy), and turning discoveries into automated regression checks. Module 6 covers request/response anatomy, status codes, input and boundary design, schema and contract testing, tenant isolation, idempotency and concurrency, the OWASP API Security Top 10 (2023), Postman/Playwright automation with CI/CD, and a junior QA roadmap.
 
@@ -69,6 +69,6 @@ python -m http.server 8000
 
 ## Content sources
 
-Modules 1–6 were built from short reference articles on manual testing, test design techniques, testing types, ad hoc testing, exploratory testing, and REST API testing. Modules 5 and 6 were later expanded from two longer guides, *Exploratory Testing — Complete QA Guide* and *REST API Testing for QA — Complete Guide*. Module 7 references *ISTQB® Certified Tester Foundation Level: A Self-Study Guide, Syllabus v4.0* (Stapp, Roman & Pilaeten — Springer, 2024) for its chapter structure only; all explanations and quiz content in that module are written independently. Modules 8–11 are original content covering tools, career resources, architecture, security, and hands-on practice.
+Modules 1–6 were built from short reference articles on manual testing, test design techniques, testing types, ad hoc testing, exploratory testing, and REST API testing. Modules 5 and 6 were later expanded from two longer guides, *Exploratory Testing — Complete QA Guide* and *REST API Testing for QA — Complete Guide*. Modules 1, 2, 4 and 7–11 were further extended from *QA & Software Testing — Complete Knowledge Guide* (test levels and process, white-box coverage, the CTFL exam blueprint and ISTQB ladder, performance metrics and the test pyramid, practical security checks, risk-based test architecture, and the QA competency ladder). Module 7 references *ISTQB® Certified Tester Foundation Level: A Self-Study Guide, Syllabus v4.0* (Stapp, Roman & Pilaeten — Springer, 2024) for its chapter structure only; all explanations and quiz content in that module are written independently. Modules 8–11 are original content covering tools, career resources, architecture, security, and hands-on practice.
 
 The original source documents (Word and Markdown guides, the ISTQB PDF) aren't included (the `sources/` folder is git-ignored) in this repository — the PDF in particular is a commercially published, copyrighted book and isn't redistributed here.

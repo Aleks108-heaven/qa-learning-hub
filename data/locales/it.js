@@ -191,7 +191,68 @@ window.QAHUB_LOCALES.it = {
         <li><strong>Gravità &amp; priorità</strong> — la tua valutazione, anche se il prodotto la modifica in seguito.</li>
         <li><strong>Prove</strong> — screenshot, registrazione dello schermo o estratto di log; un'immagine chiude la maggior parte delle discussioni del tipo "non riesco a riprodurlo" prima ancora che inizino.</li>
       </ul>
-      <p>Un report privo dei passi di riproduzione è il motivo singolo più comune per cui un bug viene rimandato indietro al segnalatore invece di essere corretto.</p>` }
+      <p>Un report privo dei passi di riproduzione è il motivo singolo più comune per cui un bug viene rimandato indietro al segnalatore invece di essere corretto.</p>` },
+    { h: "Perché esiste il testing: errore → difetto → malfunzionamento", body: `
+      <p>Il testing serve a:</p>
+      <ul>
+        <li><strong>Ridurre il rischio</strong>, dando agli stakeholder informazioni utili sulla qualità prima del rilascio.</li>
+        <li><strong>Verificare i requisiti</strong>: il prodotto si comporta come specificato e atteso.</li>
+        <li><strong>Prevenire i difetti</strong>: revisioni e test precoci intercettano i problemi prima che vengano programmati.</li>
+        <li><strong>Creare fiducia</strong>, con una riserva (Dijkstra): il testing mostra la <strong>presenza</strong> di difetti, mai la loro <strong>assenza</strong>.</li>
+      </ul>
+      <p>Più tardi si trova un difetto, più costa. Uno individuato nei requisiti può essere circa <strong>100 volte più economico</strong> da correggere di uno trovato in produzione: è tutto il senso dello «shift-left».</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Termine</th><th>Significato</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Errore</strong> (sbaglio)</td><td>Uno sbaglio umano nel codice, in una specifica o in una decisione</td></tr>
+          <tr><td><strong>Difetto</strong> (bug, guasto)</td><td>Il problema nel codice o nella documentazione causato dall'errore</td></tr>
+          <tr><td><strong>Malfunzionamento</strong> (failure)</td><td>Il comportamento errato effettivamente osservato quando il difetto viene eseguito</td></tr>
+        </tbody>
+      </table></div>
+      <p><em>Esempio:</em> uno sviluppatore interpreta «spedizione gratuita oltre 50 €» come «da 50 € in su» (errore), scrive <code>&gt;=</code> invece di <code>&gt;</code> (difetto), e un ordine di esattamente 50,00 € viene spedito gratis (malfunzionamento). Un difetto non causa sempre un malfunzionamento, perché quel percorso di codice potrebbe non essere mai eseguito, e un malfunzionamento può avere diversi difetti alle spalle.</p>
+      <p><strong>Testing vs debugging vs checking:</strong></p>
+      <ul>
+        <li><strong>Testing</strong>: interrogare il prodotto per ottenere informazioni. È un'attività umana e riflessiva.</li>
+        <li><strong>Debugging</strong>: individuare la causa radice di un malfunzionamento e correggerla. È un'attività dello sviluppatore.</li>
+        <li><strong>Checking</strong>: verifica algoritmica di fatti specifici. Gran parte dell'«automazione» è checking.</li>
+      </ul>` },
+    { h: "Livelli di test e tipi di test", body: `
+      <p>I <strong>livelli di test</strong> descrivono <em>dove</em> si testa:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Livello</th><th>Ambito</th><th>Responsabile tipico</th></tr></thead>
+        <tbody>
+          <tr><td>Unità / componente</td><td>Una singola unità di codice isolata</td><td>Sviluppatori</td></tr>
+          <tr><td>Integrazione</td><td>Interazione tra componenti e interfacce</td><td>Sviluppatori + QA</td></tr>
+          <tr><td>Sistema</td><td>L'intero sistema rispetto ai requisiti, end-to-end</td><td>QA</td></tr>
+          <tr><td>Accettazione (UAT, alfa, beta)</td><td>Validazione da parte degli utenti o del cliente</td><td>Utenti, product owner, con supporto QA</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Strategie di integrazione:</strong> <em>incrementale</em> (top-down o bottom-up, aggiungendo i pezzi uno alla volta) contro <em>big-bang</em> (tutto insieme). Il big-bang è rischioso perché, quando qualcosa si rompe, è difficile capire quale pezzo l'ha causato.</p>
+      <p>I <strong>tipi di test</strong> descrivono <em>cosa</em> si verifica:</p>
+      <ul>
+        <li><strong>Funzionale</strong>: cosa fa il sistema.</li>
+        <li><strong>Non funzionale</strong>: quanto bene lo fa (prestazioni, sicurezza, usabilità, affidabilità, portabilità).</li>
+        <li><strong>Strutturale (white-box)</strong>: la struttura interna e il codice.</li>
+        <li><strong>Legato alle modifiche</strong>: <strong>test di conferma</strong> (ritestare che un difetto corretto sia davvero corretto) e <strong>test di regressione</strong> (verificare che la modifica non abbia rotto nient'altro).</li>
+      </ul>
+      <p>Livelli e tipi sono indipendenti: si possono fare test di prestazioni a livello di integrazione o test funzionali a livello di unità.</p>` },
+    { h: "Il processo di test, la tracciabilità e il test statico", body: `
+      <p>Il processo di test fondamentale (allineato a ISTQB e ISO/IEC/IEEE 29119):</p>
+      <ol>
+        <li><strong>Pianificazione</strong>: strategia, calendario, risorse, criteri di ingresso e uscita.</li>
+        <li><strong>Analisi</strong>: studiare la base di test (requisiti, specifiche, rischi) e individuare le <em>condizioni di test</em>, cioè cosa testare.</li>
+        <li><strong>Progettazione</strong>: ricavare e prioritizzare i test case da quelle condizioni, cioè come testare.</li>
+        <li><strong>Implementazione</strong>: preparare dati di test, ambienti, script e suite.</li>
+        <li><strong>Esecuzione</strong>: eseguire i test, confrontare risultati effettivi e attesi, registrare i difetti.</li>
+        <li><strong>Completamento</strong>: report finale, archiviazione del testware, lezioni apprese.</li>
+      </ol>
+      <p>La <strong>tracciabilità</strong> collega requisiti → condizioni di test → test case → difetti. Dimostra la copertura («ogni requisito ha un test») e consente l'analisi d'impatto («questo requisito è cambiato, quindi vanno rieseguiti questi test»).</p>
+      <p>Il <strong>test statico</strong> trova difetti <em>senza eseguire</em> nulla:</p>
+      <ul>
+        <li><strong>Revisioni</strong>, dalla meno alla più formale: revisione informale → walkthrough → revisione tecnica → <strong>ispezione</strong> (ruoli definiti, criteri di ingresso, registro dei difetti).</li>
+        <li><strong>Analisi statica</strong>: linter, scanner di sicurezza e strumenti di complessità applicati a codice o documenti.</li>
+      </ul>
+      <p><strong>La giornata tipo di un tester manuale:</strong> analizzare i requisiti e segnalare presto le ambiguità; progettare ed eseguire test case, esplorando oltre lo script; segnalare i difetti con chiarezza; verificare le correzioni e fare regressione sulle aree modificate; approvare le funzionalità rispetto ai criteri di accettazione e di uscita.</p>` }
   ]
 },
 {
@@ -251,7 +312,48 @@ window.QAHUB_LOCALES.it = {
     { h: "Pairwise Testing & Use Case Testing", body: `
       <p>Il <strong>Pairwise (combinatorial) testing</strong> affronta un problema che l'Equivalence Partitioning e la BVA non risolvono da soli: quando una funzionalità ha molti parametri di input indipendenti, testare ogni combinazione esplode rapidamente (5 parametri con 4 valori ciascuno = 1.024 combinazioni). Il pairwise testing si basa sull'osservazione che la maggior parte dei difetti del mondo reale sono innescati da un'interazione tra appena <strong>due</strong> parametri, non cinque contemporaneamente — così un sottoinsieme ben scelto di casi di test che copre ogni possibile <em>coppia</em> di valori di parametro intercetta la grande maggioranza dei bug di interazione a una frazione del costo.</p>
       <p><em>Esempio svolto:</em> un modulo con Browser (Chrome/Firefox/Safari), Sistema Operativo (Windows/Mac/Linux) e Lingua (EN/ES) ha 18 possibili combinazioni complete — il pairwise le riduce a circa 9 casi di test esercitando comunque ogni coppia Browser×SO, Browser×Lingua e SO×Lingua almeno una volta. L'<strong>Orthogonal Array Testing</strong> è il metodo statistico sottostante spesso usato per generare questi insiemi ridotti.</p>
-      <p>L'<strong>Use Case Testing</strong> deriva i casi di test direttamente dai casi d'uso documentati — le interazioni passo dopo passo tra un attore (utente o sistema esterno) e il sistema sotto test, incluso lo scenario di successo principale e i suoi flussi alternativi/eccezionali. È particolarmente efficace per validare che un flusso di lavoro si comporti correttamente end-to-end dal punto di vista dell'utente, complementando tecniche più focalizzate sull'input come ECP e BVA.</p>` }
+      <p>L'<strong>Use Case Testing</strong> deriva i casi di test direttamente dai casi d'uso documentati — le interazioni passo dopo passo tra un attore (utente o sistema esterno) e il sistema sotto test, incluso lo scenario di successo principale e i suoi flussi alternativi/eccezionali. È particolarmente efficace per validare che un flusso di lavoro si comporti correttamente end-to-end dal punto di vista dell'utente, complementando tecniche più focalizzate sull'input come ECP e BVA.</p>` },
+    { h: "Tecniche white-box e copertura del codice", body: `
+      <p>Le tecniche white-box (basate sulla struttura) ricavano i test dal codice stesso. Dalla più debole alla più forte:</p>
+      <ul>
+        <li><strong>Copertura delle istruzioni</strong>: ogni istruzione eseguibile viene eseguita almeno una volta.</li>
+        <li><strong>Copertura dei rami (decisioni)</strong>: ogni esito di ramo, vero e falso, viene percorso. Il 100% di copertura dei rami implica il 100% delle istruzioni, ma non il contrario.</li>
+        <li><strong>MC/DC</strong> (copertura modificata condizione/decisione): si dimostra che ogni sottocondizione booleana influisce sull'esito in modo indipendente. È richiesta nei domini critici per la sicurezza come l'avionica.</li>
+        <li><strong>Copertura dei percorsi</strong>: ogni percorso eseguibile. È la più forte, ma spesso impraticabile perché i percorsi si moltiplicano a ogni ciclo e ramo.</li>
+      </ul>
+      <p>La <strong>complessità ciclomatica</strong> (McCabe) = <code>E − N + 2P</code> (archi, nodi e componenti connesse del grafo di flusso di controllo). Per una singola funzione è pari al numero di decisioni + 1 e indica quanti percorsi indipendenti vanno testati. Valori alti segnalano codice difficile da testare e mantenere.</p>
+      <p>La <strong>copertura del flusso dei dati</strong> segue ogni variabile da dove viene definita a dove viene usata (coppie def-use), individuando anomalie come una variabile usata prima di essere assegnata.</p>
+      <p><em>Esempio:</em> <code>if (a &gt; 0) { x = 1 }</code> senza else. Il solo test <code>a = 5</code> dà il 100% di copertura delle istruzioni ma solo il 50% dei rami, perché il ramo falso non viene mai eseguito. Aggiungi <code>a = 0</code> per arrivare al 100% dei rami.</p>` },
+    { h: "Combinare le tecniche: alberi di classificazione, attacchi e PE + BVA", body: `
+      <p><strong>Partizioni di equivalenza + analisi dei valori limite</strong> insieme danno il massimo rendimento sui campi di input. Per un campo età che accetta <strong>18–60</strong>:</p>
+      <ul>
+        <li>Partizioni: <code>&lt; 18</code> (non valida), <code>18–60</code> (valida), <code>&gt; 60</code> (non valida).</li>
+        <li>Valori limite: <strong>17, 18, 19, 59, 60, 61</strong>.</li>
+      </ul>
+      <p>Gli <strong>alberi di classificazione</strong> scompongono l'oggetto di test in aspetti (es. <em>metodo di pagamento</em>, <em>valuta</em>, <em>tipo di cliente</em>), suddividono ogni aspetto in classi e poi scelgono combinazioni dall'albero. Sono un modo visivo per ragionare su combinazioni complesse.</p>
+      <p>Gli <strong>attacchi e l'iniezione di guasti</strong> provocano deliberatamente classi di malfunzionamento note. Cosa succede se la rete cade a metà upload? Se il disco è pieno? Se una dipendenza va in timeout?</p>
+      <p>Il <strong>testing basato su checklist</strong> usa elenchi euristici (come SFDIPOT) per un'ampiezza ripetibile; è basato sull'esperienza, come l'error guessing e il testing esplorativo.</p>` },
+    { h: "Anatomia di un test case e compromessi sulla copertura", body: `
+      <p><strong>Un buon test case contiene:</strong></p>
+      <ol>
+        <li><strong>ID univoco e titolo</strong>: ricercabile, descrive il comportamento testato.</li>
+        <li><strong>Precondizioni</strong>: stato, dati e ambiente necessari.</li>
+        <li><strong>Passi</strong>: numerati, minimi, esatti.</li>
+        <li><strong>Dati di test</strong>: valori concreti, idealmente ricavati da PE/BVA.</li>
+        <li><strong>Risultato atteso</strong>: l'oracolo, cioè cosa significa «corretto».</li>
+        <li><strong>Postcondizioni</strong> (facoltative): lo stato finale atteso.</li>
+        <li><strong>Tracciabilità</strong>: un collegamento al requisito, al rischio o alla user story.</li>
+      </ol>
+      <p><strong>Scegliere la copertura nella pratica:</strong></p>
+      <ul>
+        <li><strong>PE + BVA</strong> per i moduli con molti input: economico e ad alto rendimento.</li>
+        <li><strong>Tabelle decisionali</strong> ogni volta che le condizioni interagiscono. Ricorda che <code>2<sup>n</sup></code> combinazioni crescono in fretta.</li>
+        <li><strong>Transizioni di stato</strong> per tutto ciò che ha modalità, sessioni o flussi.</li>
+        <li><strong>Pairwise</strong> quando lo spazio dei parametri esplode (browser × SO × lingua × piano).</li>
+        <li><strong>Copertura dei percorsi o MC/DC</strong> solo per algoritmi critici come pagamenti o logica di sicurezza.</li>
+        <li>Non inseguire il 100% di copertura ovunque; punta a una copertura <strong>proporzionata al rischio</strong>.</li>
+        <li><strong>Nessuna specifica?</strong> Usa altri oracoli: prodotti comparabili, euristiche come HICCUPPS (Modulo 5) o il comportamento reale degli utenti.</li>
+      </ul>` }
   ]
 },
 {
@@ -350,7 +452,38 @@ window.QAHUB_LOCALES.it = {
         <li><strong>Come "bug bash"</strong> — una sessione a tempo limitato (30-60 minuti) in cui l'intero team, non solo la QA, testa ad hoc una build insieme; questo diffonde anche la conoscenza del prodotto e trova bug che le abitudini di un singolo tester non avrebbero colpito.</li>
         <li><strong>A tempo limitato, non a tempo indeterminato</strong> — anche il test informale trae beneficio da un limite di tempo dichiarato (es. 20 minuti sul nuovo flusso di checkout) così da rimanere concentrato invece di vagare.</li>
       </ul>
-      <p>L'adattamento principale per i team Agile: registra i risultati immediatamente nel tracker dello sprint, anche brevemente, invece di affidarti alla memoria — le sessioni ad hoc si muovono velocemente e i dettagli sfumano rapidamente una volta terminata la sessione.</p>` }
+      <p>L'adattamento principale per i team Agile: registra i risultati immediatamente nel tracker dello sprint, anche brevemente, invece di affidarti alla memoria — le sessioni ad hoc si muovono velocemente e i dettagli sfumano rapidamente una volta terminata la sessione.</p>` },
+    { h: "Ad hoc vs. esplorativo, error guessing e monkey testing", body: `
+      <p>Il testing ad hoc è <strong>testing informale, non pianificato e senza documentazione</strong>. Il tester si affida a intuito, esperienza e conoscenza del prodotto, senza test case predefiniti, metriche di copertura o procedure formali. Parte subito con una preparazione minima, e i risultati sono difficili da riprodurre se non si prendono appunti.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Approccio</th><th>Pianificazione</th><th>Documentazione</th><th>Struttura</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Testing ad hoc</strong></td><td>Nessuna</td><td>Nessuna</td><td>Libero, guidato da abilità e intuito</td></tr>
+          <tr><td><strong>Testing esplorativo</strong></td><td>Charter con timebox</td><td>Note di sessione</td><td>Guidato dal charter; apprendimento, progettazione ed esecuzione insieme</td></tr>
+          <tr><td><strong>Error guessing</strong></td><td>Nessuna</td><td>Nessuna</td><td>Guidato dallo storico dei difetti e dall'esperienza</td></tr>
+          <tr><td><strong>Monkey testing</strong></td><td>Nessuna</td><td>Nessuna</td><td>Input casuali senza intento</td></tr>
+        </tbody>
+      </table></div>
+      <p>Il testing esplorativo (Modulo 5) è l'<strong>evoluzione disciplinata</strong> di quello ad hoc: mantiene la libertà ma aggiunge charter, timebox e note tramite la gestione del test basata su sessioni (SBTM).</p>
+      <p><strong>Quando il testing ad hoc è particolarmente utile:</strong></p>
+      <ul>
+        <li><strong>Pressione sui tempi</strong>: un rapido controllo prima di una demo o di un rilascio.</li>
+        <li><strong>Build iniziali e instabili</strong>, dove i casi scriptati si rompono di continuo.</li>
+        <li><strong>Occhi nuovi</strong>: le prove senza pregiudizi di un tester nuovo trovano ciò che i tester con script trascurano.</li>
+        <li><strong>Verifiche puntuali dopo una correzione</strong>, attorno a un hotfix.</li>
+        <li><strong>Prima impressione</strong>: «cosa proverebbe per primo un utente?»</li>
+      </ul>` },
+    { h: "Rendere efficace il testing ad hoc", body: `
+      <p><strong>I rischi da gestire:</strong> nessuna garanzia di copertura, quindi le lacune restano invisibili; scarsa riproducibilità («ho trovato un bug, non riesco a riprodurlo» fa perdere tempo di triage); non è ripetibile, quindi non può fare da regressione; e i risultati dipendono molto dall'abilità del singolo.</p>
+      <p><strong>Sei abitudini che risolvono quasi tutto:</strong></p>
+      <ol>
+        <li><strong>Prendi appunti e screenshot sommari</strong> strada facendo. Un registro informale è meglio di niente.</li>
+        <li><strong>Limita la sessione nel tempo</strong> (60–90 minuti) e scegli un'area obiettivo.</li>
+        <li><strong>Tieni presente il paradosso del pesticida</strong>: non percorrere sempre gli stessi percorsi.</li>
+        <li><strong>Trasforma ogni difetto trovato in un test case formale e scriptato</strong>, così sarà coperto la prossima volta.</li>
+        <li><strong>Usa un'euristica per guidare la copertura</strong>, come <strong>SFDIPOT</strong>: Structure, Function, Data, <strong>Interfaces</strong>, Platform, Operations, Time. È il mnemonico SFDPOT del Modulo 5 con l'aggiunta di Interfaces.</li>
+        <li><strong>Lavora in coppia</strong> con uno sviluppatore o un altro tester per scoprire più in fretta.</li>
+      </ol>` }
   ]
 },
 {
@@ -801,7 +934,47 @@ expect(response.status()).toBe(201);</code></pre>
         <li><strong>Esercitati con gli esempi svolti del Modulo 2</strong> (BVA, ECP, Tabelle Decisionali, Transizione di Stato) finché non riesci a produrre i casi di test da zero, non solo a riconoscere un esempio corretto — il 7.4 attinge direttamente da questo.</li>
         <li><strong>Gestione del tempo:</strong> con 40 domande in una finestra fissa, non lasciare che una domanda difficile consumi tempo sproporzionato — segnala, vai avanti, e torna indietro se il tempo lo permette.</li>
         <li><strong>La notte prima:</strong> scorri il glossario (i termini del Modulo 7 sono tutti nel Glossario di questa app), non stipare materiale nuovo, e dormi — gli esami basati sul riconoscimento premiano una memoria riposata più di una maratona di lettura dell'ultimo minuto.</li>
-      </ul>` }
+      </ul>` },
+    { h: "7.8 Struttura dell'esame: formato e peso dei capitoli", body: `
+      <p>CTFL v4.0 è stato pubblicato nel 2023 e si applica a Waterfall, Agile, DevOps e continuous delivery. L'esame in sintesi:</p>
+      <ul>
+        <li><strong>40 domande a scelta multipla</strong>, 1 punto ciascuna, in <strong>60 minuti</strong> (75 minuti per chi non è madrelingua).</li>
+        <li><strong>Soglia di superamento: 65%</strong>, cioè <strong>26 su 40</strong>. Non ci sono penalità, quindi rispondi a tutte le domande.</li>
+        <li>A libro chiuso. Nessun prerequisito. Il certificato non scade.</li>
+      </ul>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Cap.</th><th>Argomento</th><th>Domande</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Fondamenti del testing</td><td>8</td></tr>
+          <tr><td>2</td><td>Il testing nel ciclo di vita dello sviluppo software</td><td>6</td></tr>
+          <tr><td>3</td><td>Test statico</td><td>4</td></tr>
+          <tr><td>4</td><td>Analisi e progettazione dei test</td><td><strong>11</strong> (peso maggiore)</td></tr>
+          <tr><td>5</td><td>Gestione delle attività di test</td><td>9</td></tr>
+          <tr><td>6</td><td>Strumenti di test</td><td>2</td></tr>
+        </tbody>
+      </table></div>
+      <p>I capitoli 4 e 5 insieme valgono circa metà dell'esame, ed è lì che si concentrano le domande <strong>K3 (applicare)</strong>: ricavare partizioni e limiti, compilare tabelle decisionali, percorrere transizioni di stato, calcolare la copertura, prioritizzare in base al rischio.</p>
+      <p><strong>Percorso di studio:</strong> leggi il syllabus ufficiale e il glossario ISTQB su istqb.org; esercitati sulle tecniche K3 finché non diventano automatiche; fai almeno una simulazione completa e cronometrata da 40 domande e rivedila capitolo per capitolo; scegli un corso accreditato o lo studio autonomo, entrambe le strade sono valide. Fai attenzione alle novità della v4.0: contesto DevOps/CI-CD, approcci collaborativi (ATDD, BDD) e maggiore enfasi sul testing basato sul rischio.</p>
+      <p><em>Verifica sempre i dettagli dell'esame sul syllabus ufficiale in vigore. Le cifre qui si riferiscono alla v4.0.</em></p>` },
+    { h: "7.9 Oltre il Foundation: la scala ISTQB", body: `
+      <p><strong>Estensione Agile Tester (CTFL-AT)</strong>: mentalità di test agile, il ruolo del tester in Scrum e Kanban, i «three amigos» (business, sviluppo e test che discutono insieme una storia), la Definition of Done e i <strong>quadranti del testing agile</strong> (Crispin/Gregory, da Marick):</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Quadrante</th><th>Focus</th><th>Esempi</th></tr></thead>
+        <tbody>
+          <tr><td>Q1</td><td>Orientato alla tecnologia, supporta il team</td><td>Test di unità e di componente</td></tr>
+          <tr><td>Q2</td><td>Orientato al business, supporta il team</td><td>Test funzionali e di storia, esempi</td></tr>
+          <tr><td>Q3</td><td>Orientato al business, critica il prodotto</td><td>Esplorativo, usabilità, UAT</td></tr>
+          <tr><td>Q4</td><td>Orientato alla tecnologia, critica il prodotto</td><td>Prestazioni, sicurezza, altri non funzionali</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Livello Avanzato (CTAL)</strong>, tre moduli:</p>
+      <ul>
+        <li><strong>Test Analyst</strong>: tecniche black-box avanzate, usabilità, revisioni, analisi dei difetti.</li>
+        <li><strong>Technical Test Analyst</strong>: copertura white-box più approfondita inclusa MC/DC, progettazione di test di sicurezza e prestazioni, architettura dell'automazione.</li>
+        <li><strong>Test Manager</strong>: strategia, rischio, stima, metriche, persone e miglioramento dei processi.</li>
+      </ul>
+      <p>Il <strong>Livello Expert (CTEL)</strong> tratta temi come la gestione del test e il miglioramento del processo di test. I percorsi <strong>specialistici</strong> includono Test Automation Engineer, Agile Technical Tester e testing mobile, automotive, di sicurezza e dell'IA.</p>
+      <p>Una sequenza comune: CTFL → Agile Tester o Test Automation Engineer → il modulo CTAL adatto al proprio ruolo.</p>` }
   ]
 },
 {
@@ -921,7 +1094,36 @@ expect(response.status()).toBe(201);</code></pre>
           <tr><td><strong>Screen reader</strong> (NVDA, JAWS, VoiceOver)</td><td>Strumento di test manuale — navigare nell'app usando solo uno screen reader fa emergere problemi che gli scanner automatizzati non colgono affatto, come un ordine di lettura illogico o elementi interattivi senza etichetta.</td></tr>
         </tbody>
       </table></div>
-      <p><strong>Gli scanner automatizzati intercettano circa il 30-40% dei problemi di accessibilità</strong> — sono eccellenti nei controlli oggettivi (rapporti di contrasto, attributi mancanti) ma non possono giudicare se un testo alternativo è effettivamente significativo o se un utente che usa solo la tastiera può completare un intero flusso di lavoro senza mouse. Un vero passaggio di test di accessibilità include sempre la navigazione manuale solo da tastiera e almeno un controllo a campione con uno screen reader.</p>` }
+      <p><strong>Gli scanner automatizzati intercettano circa il 30-40% dei problemi di accessibilità</strong> — sono eccellenti nei controlli oggettivi (rapporti di contrasto, attributi mancanti) ma non possono giudicare se un testo alternativo è effettivamente significativo o se un utente che usa solo la tastiera può completare un intero flusso di lavoro senza mouse. Un vero passaggio di test di accessibilità include sempre la navigazione manuale solo da tastiera e almeno un controllo a campione con uno screen reader.</p>` },
+    { h: "8.10 Scala delle competenze: Junior → Mid → Senior → Lead", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th>Livello</th><th>Come si presenta</th><th>Obiettivo di certificazione tipico</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Junior</strong> (0–2 anni)</td><td>Esegue test case ben definiti; scrive bug report chiari e riproducibili; impara PE/BVA; segue il piano di test; esegue l'automazione esistente.</td><td>ISTQB CTFL entro il primo anno</td></tr>
+          <tr><td><strong>Mid</strong> (2–5 anni)</td><td>Progetta test case in autonomia e sceglie le tecniche in base al rischio; individua lacune nei requisiti; segue le funzionalità dall'inizio alla fine; costruisce e mantiene l'automazione, fa debug dei test instabili, integra la CI; contribuisce ai piani di test; fa da mentore informale ai junior.</td><td>CTFL + Agile Tester o Test Automation Engineer</td></tr>
+          <tr><td><strong>Senior</strong> (5+ anni)</td><td>Definisce la strategia di test; è responsabile dell'analisi del rischio e dei criteri di uscita e influenza le decisioni di rilascio; progetta framework di automazione e pipeline di test CI/CD; fa da mentore formale; approfondisce almeno una specialità (prestazioni, sicurezza, mobile).</td><td>Il modulo CTAL adatto al ruolo</td></tr>
+          <tr><td><strong>Lead / Head of QA</strong></td><td>Stabilisce strategia, standard e cultura della qualità dell'intera organizzazione; fa crescere altri senior; comunica lo stato della qualità alla dirigenza.</td><td>CTAL completo, livello Expert in una specialità</td></tr>
+        </tbody>
+      </table></div>
+      <p>Gli anni sono solo un'indicazione di massima. La promozione segue il comportamento dimostrato, non il tempo trascorso.</p>` },
+    { h: "8.11 Piano di sviluppo, percorsi di carriera e metriche da evitare", body: `
+      <p><strong>Un piano di sviluppo personale:</strong></p>
+      <ol>
+        <li><strong>Livello attuale</strong> per ogni competenza (progettazione dei test, automazione, processo e strategia, comunicazione dei difetti, leadership), con evidenze.</li>
+        <li><strong>Livello obiettivo</strong> e tempistiche.</li>
+        <li><strong>Lacune</strong>: i comportamenti specifici da sviluppare.</li>
+        <li><strong>Azioni</strong>: progetti sfidanti, certificazione, mentoring, letture (es. <em>Lessons Learned in Software Testing</em>, <em>Explore It!</em>, <em>Continuous Delivery</em>).</li>
+        <li><strong>Punti di controllo</strong>: un'autovalutazione trimestrale rispetto alla scala.</li>
+      </ol>
+      <p><strong>Percorsi di carriera:</strong></p>
+      <ul>
+        <li><strong>Contributore individuale:</strong> QA manuale → ingegnere dell'automazione (SDET) → SDET senior → principal QA / QA architect.</li>
+        <li><strong>Management:</strong> QA → team lead → QA manager → head of quality.</li>
+        <li><strong>Specializzazione:</strong> ingegneria delle prestazioni, sicurezza/AppSec, mobile, accessibilità, testing di IA/ML.</li>
+      </ul>
+      <p><strong>Abitudini ad alto impatto:</strong> impara a leggere codice e log; padroneggia SQL e HTTP; esercitati a spiegare il rischio di qualità a chi non è tester; contribuisci a strumenti di test open source; scrivi di testing per farti conoscere.</p>
+      <p><strong>Metriche da aggiungere all'8.6:</strong> <em>defect leakage</em> (difetti trovati dopo il rilascio rispetto a prima), <em>tasso di rifiuto</em> (bug report respinti come non validi), <em>MTTR</em> (tempo medio di riparazione) e <em>ROI dell'automazione</em> (esecuzioni × tempo risparmiato − costo di manutenzione).</p>
+      <p><strong>Anti-metriche da evitare:</strong> righe di codice di test, numero grezzo di test, tasso di superamento da solo, percentuale di copertura come unico criterio di uscita e qualunque cosa penalizzi i tester per aver trovato bug.</p>` }
   ]
 },
 {
@@ -998,7 +1200,34 @@ expect(response.status()).toBe(201);</code></pre>
         <li><strong>Triage rapido dei fallimenti</strong> — collegare un fallimento direttamente a log, screenshot o una registrazione video di quella specifica esecuzione, così uno sviluppatore non deve riprodurlo localmente solo per vedere cosa è successo.</li>
         <li><strong>Proprietà e instradamento</strong> — i fallimenti notificano automaticamente il team proprietario dell'area interessata, invece di finire in un canale che nessuno monitora.</li>
       </ul>
-      <p>Questo chiude il cerchio con 9.3 e 9.4: una pipeline può essere organizzata perfettamente e un sistema perfettamente osservabile in produzione, ma se i risultati dei test stessi non vengono riportati in un modo su cui le persone agiscono davvero, nulla di quell'architettura ripaga.</p>` }
+      <p>Questo chiude il cerchio con 9.3 e 9.4: una pipeline può essere organizzata perfettamente e un sistema perfettamente osservabile in produzione, ma se i risultati dei test stessi non vengono riportati in un modo su cui le persone agiscono davvero, nulla di quell'architettura ripaga.</p>` },
+    { h: "9.7 Strategia di test vs. piano di test e architettura basata sul rischio", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Strategia di test</th><th>Piano di test</th></tr></thead>
+        <tbody>
+          <tr><td>Livello</td><td>Organizzazione o prodotto, stabile nel tempo</td><td>Progetto o rilascio</td></tr>
+          <tr><td>Contenuto</td><td>Approccio, strumenti, ambienti, policy di automazione, flusso dei difetti</td><td>Ambito, calendario, risorse, rischi, criteri di ingresso/uscita, deliverable</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Architettura di test basata sul rischio:</strong></p>
+      <ol>
+        <li>Individua gli elementi di rischio: funzionalità, integrazioni, flussi di dati.</li>
+        <li>Assegna a ciascuno un punteggio <strong>impatto × probabilità</strong>.</li>
+        <li>Distribuisci lo sforzo in proporzione al punteggio e scegli le tecniche in base al livello di rischio. Il rischio alto riceve tabelle decisionali, analisi dei limiti e copertura più profonda; il rischio basso, smoke e sanity test.</li>
+        <li>Rivaluta a ogni build, perché i rischi cambiano.</li>
+      </ol>
+      <p>I <strong>rischi di prodotto</strong> sono ciò che può andare storto nel prodotto (calcoli errati, perdita di dati, falle di sicurezza). I <strong>rischi di progetto</strong> sono ciò che può far deragliare il testing stesso (build in ritardo, ambienti instabili, perdita di persone).</p>
+      <p>La <strong>gestione della configurazione</strong> vale per tutto il testware: test case, script, set di dati e configurazioni degli ambienti sotto controllo di versione.</p>` },
+    { h: "9.8 Architettura dei processi e cultura della qualità", body: `
+      <p><strong>Inserisci il testing nella consegna:</strong> chiarisci i criteri di accettazione durante il refinement del backlog, tieni conversazioni «three amigos» e includi gate di test nella Definition of Done.</p>
+      <ul>
+        <li><strong>Criteri di ingresso</strong>: build distribuita, ambiente stabile, dati di test pronti, blocchi rimossi.</li>
+        <li><strong>Criteri di uscita</strong>: obiettivi di copertura raggiunti, gate sui difetti superati (es. nessun P1 aperto), approvazione.</li>
+      </ul>
+      <p><strong>Collocazione e progettazione dell'automazione:</strong> test di unità prima del commit, test API e di integrazione al merge, E2E di notte o prima del rilascio, prestazioni su pianificazione. Usa ID stabili o attributi <code>data-*</code> come locator invece di XPath fragili. Tagga i test (smoke, regressione), eseguili in parallelo, prevedi una corsia di quarantena per quelli instabili e consenti retry solo per vera instabilità infrastrutturale. Progetta per la <strong>testabilità</strong>: chiedi agli sviluppatori hook di test, modalità deterministiche, orologi simulati e accesso a livello di API.</p>
+      <p><strong>Cicli di feedback:</strong> analisi delle cause radice dei difetti (<strong>5 perché</strong>, diagrammi a <strong>lisca di pesce/Ishikawa</strong>) e modelli di miglioramento dei processi come <strong>TMMi</strong> e <strong>TPI</strong>.</p>
+      <p><strong>Reporting:</strong> avanzamento dei test (pianificati vs. eseguiti vs. superati), burn-down dell'andamento dei difetti e una valutazione della qualità che indichi il <em>rischio residuo</em>.</p>
+      <p><strong>Cultura della qualità:</strong> la qualità è responsabilità di tutto il team. I tester la promuovono; tutti la costruiscono. Shift-left <em>e</em> shift-right: monitoraggio in produzione, tracciamento degli errori e feedback post-rilascio alimentano nuovi test. Poiché il testing mostra la presenza dei difetti e non la loro assenza, comunica <strong>livelli di fiducia, non assoluti</strong>.</p>` }
   ]
 },
 {
@@ -1092,7 +1321,25 @@ expect(response.status()).toBe(201);</code></pre>
         <li><strong>SOC 2</strong> — richiede comunemente prove di controlli di accesso, gestione delle modifiche e monitoraggio; ai team QA viene spesso chiesto di dimostrare che i processi di test/deploy abbiano approvazioni e tracciamenti di audit appropriati.</li>
         <li><strong>Preoccupazioni adiacenti al GDPR</strong> — testare che la cancellazione dei dati funzioni davvero end-to-end (una richiesta di "elimina il mio account" dovrebbe davvero eliminare i dati, inclusi backup/repliche secondo il loro schedule di retention), e che i PII siano mascherati/anonimizzati negli ambienti di test non di produzione (ricollegandosi alla Gestione dei Dati di Test, Modulo 9).</li>
       </ul>
-      <p>Nulla di tutto ciò rende un team QA responsabile della piena conformità normativa — ma sapere che queste preoccupazioni esistono è ciò che permette a un tester di riconoscere quando un risultato ("i dati di test contengono email reali di clienti") è in realtà un problema di conformità, non solo una piccola imperfezione di igiene dei dati.</p>` }
+      <p>Nulla di tutto ciò rende un team QA responsabile della piena conformità normativa — ma sapere che queste preoccupazioni esistono è ciò che permette a un tester di riconoscere quando un risultato ("i dati di test contengono email reali di clienti") è in realtà un problema di conformità, non solo una piccola imperfezione di igiene dei dati.</p>` },
+    { h: "10.8 Idee pratiche di test di sicurezza e triage shift-left", body: `
+      <p>Controlli di sicurezza che un QA engineer può fare durante i normali test delle funzionalità (in un ambiente autorizzato):</p>
+      <ul>
+        <li><strong>Fare fuzzing degli input</strong>: malformati, sovradimensionati, Unicode, byte nulli. È il classico ibrido tra testing ad hoc ed error guessing.</li>
+        <li><strong>Tentare di aggirare l'autenticazione</strong>: cambiare gli ID utente in URL e chiamate API; inviare token scaduti, mancanti o manomessi.</li>
+        <li><strong>Controllare gli header di sicurezza</strong>: <code>Content-Security-Policy</code>, <code>Strict-Transport-Security</code> (HSTS), <code>X-Frame-Options</code> e i flag dei cookie <code>HttpOnly</code>, <code>Secure</code>, <code>SameSite</code>.</li>
+        <li><strong>Verificare rate limiting e blocco dell'account</strong> contro tentativi di login a forza bruta.</li>
+        <li><strong>Cercare esposizione di dati</strong>: dati sensibili in log, risposte API o URL; TLS in transito; cifratura a riposo.</li>
+        <li><strong>Cercare configurazioni errate</strong>: credenziali predefinite, pagine di errore prolisse, endpoint di amministrazione esposti, CORS troppo permissivo.</li>
+      </ul>
+      <p><strong>Strumenti:</strong> OWASP ZAP, Burp Suite, nmap, sqlmap, semgrep, Trivy.</p>
+      <p><strong>Integrazione shift-left:</strong></p>
+      <ul>
+        <li>Esegui SAST, DAST e SCA (scansione delle dipendenze) nella <strong>CI</strong>, non solo prima di un rilascio. Le librerie vulnerabili, come i problemi di tipo Log4Shell, vengono intercettate dallo SCA automatizzato.</li>
+        <li>Blocca i merge in presenza di rilevamenti critici e fai il triage per gravità con i punteggi <strong>CVSS</strong>.</li>
+        <li>Inserisci i difetti di sicurezza nello <strong>stesso flusso dei difetti</strong> degli altri bug. La gravità continua a non coincidere con la priorità.</li>
+        <li>Aggiungi una checklist di sicurezza alla revisione di ogni storia e supporta gli sviluppatori con formazione sul codice sicuro e security champion.</li>
+      </ul>` }
   ]
 },
 {
@@ -1152,7 +1399,53 @@ expect(response.status()).toBe(201);</code></pre>
           <tr><td><strong>Test specifico per mobile</strong></td><td>Appium (Modulo 8), Firebase Test Lab, simulatori Xcode/Android Studio</td><td>I farm di dispositivi reali nel cloud (via BrowserStack/Sauce Labs) intercettano problemi di rendering e performance specifici del dispositivo che i simulatori possono perdere.</td></tr>
         </tbody>
       </table></div>
-      <p>Il <strong>Continuous Testing</strong> — la pratica di eseguire test automatizzati continuamente lungo tutta la pipeline (non solo prima del rilascio) così che il feedback su ogni modifica arrivi entro pochi minuti — ricollega questo modulo direttamente all'architettura della pipeline del Modulo 9.3: nessuno di questi strumenti offre valore se sta fuori da una pipeline che li esegue davvero a ogni modifica.</p>` }
+      <p>Il <strong>Continuous Testing</strong> — la pratica di eseguire test automatizzati continuamente lungo tutta la pipeline (non solo prima del rilascio) così che il feedback su ogni modifica arrivi entro pochi minuti — ricollega questo modulo direttamente all'architettura della pipeline del Modulo 9.3: nessuno di questi strumenti offre valore se sta fuori da una pipeline che li esegue davvero a ogni modifica.</p>` },
+    { h: "11.5 Metriche di prestazione e regole pratiche", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tipo</th><th>Domanda a cui risponde</th></tr></thead>
+        <tbody>
+          <tr><td>Carico</td><td>Il sistema rispetta i suoi SLA al picco di carico previsto?</td></tr>
+          <tr><td>Stress</td><td>Dov'è il punto di rottura, e il sistema si riprende?</td></tr>
+          <tr><td>Picco (spike)</td><td>Cosa succede con raffiche improvvise ed estreme?</td></tr>
+          <tr><td>Durata (soak)</td><td>Compaiono perdite o degrado sotto carico prolungato?</td></tr>
+          <tr><td>Scalabilità</td><td>Le prestazioni tengono il passo quando si scalano risorse e carico?</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Metriche chiave:</strong> tempo di risposta, espresso in <strong>percentili</strong> (P95/P99 contano più della media, perché la media nasconde la coda lenta che gli utenti reali avvertono); throughput (richieste al secondo); tasso di errore; utilizzo delle risorse (CPU, memoria, I/O, database, rete).</p>
+      <p><strong>Regole pratiche:</strong></p>
+      <ul>
+        <li><strong>Definisci SLA/SLO prima di testare</strong>, es. «P95 sotto gli 800 ms con 500 utenti simultanei», e testa rispetto a quei numeri invece che a «sembra veloce».</li>
+        <li>Trova la <strong>risorsa collo di bottiglia</strong>, non solo l'endpoint lento.</li>
+        <li>Modella percorsi utente realistici con <strong>tempi di riflessione</strong> e isola l'ambiente di test.</li>
+        <li>Strumenti comuni: JMeter, k6, Gatling, Locust, LoadRunner.</li>
+      </ul>` },
+    { h: "11.6 Accessibilità, regressione visiva e localizzazione", body: `
+      <ul>
+        <li><strong>Test di usabilità</strong>: osservare utenti reali mentre completano compiti e misurare successo, tempo per compito e numero di errori.</li>
+        <li><strong>Valutazione euristica</strong>: una revisione esperta in base alle 10 euristiche di usabilità di Nielsen.</li>
+        <li><strong>Test funzionali della UI</strong>: moduli, navigazione, stati di validazione, comportamento su browser e dispositivi diversi.</li>
+        <li><strong>Test di regressione visiva</strong>: strumenti di confronto su pixel o DOM (Percy, Applitools, BackstopJS) intercettano modifiche visive involontarie che le asserzioni funzionali non vedono.</li>
+        <li><strong>Accessibilità (a11y)</strong> secondo WCAG 2.1/2.2, livelli A, AA e AAA. Gli strumenti automatici come axe e Lighthouse individuano solo circa il <strong>30–40%</strong> dei problemi, quindi i controlli manuali sono obbligatori: navigazione solo da tastiera, screen reader (NVDA, VoiceOver), contrasto e ordine del focus. Strumenti nel Modulo 8.9.</li>
+        <li><strong>Localizzazione / i18n</strong>: formati di data, numero e valuta, traduzioni, espansione del testo, layout da destra a sinistra (RTL).</li>
+      </ul>` },
+    { h: "11.7 Cosa automatizzare e la piramide dei test", body: `
+      <p><strong>Buoni candidati all'automazione:</strong> controlli stabili e ripetuti (smoke, regressione, verifica della build); lavoro manuale costoso (test di carico, controlli con molti dati, matrici cross-browser); percorsi critici che valgono la manutenzione (login, checkout, API principale).</p>
+      <p><strong>Non automatizzare:</strong> esplorazioni una tantum, una UI che cambia a ogni sprint, giudizi di usabilità, né nulla il cui costo di manutenzione superi il tempo risparmiato.</p>
+      <pre><code>       E2E         ← pochi: lenti, fragili, di alto valore
+      /   \\
+   Integration     ← un numero moderato
+  /     |     \\
+ Unit (many)       ← veloci, isolati, le fondamenta</code></pre>
+      <p>Per i microservizi, il <strong>testing honeycomb</strong> (alveare) e il <strong>testing trophy</strong> (trofeo) spostano il peso verso i test di integrazione e lontano da quelli end-to-end.</p>
+      <p><strong>Regole pratiche:</strong></p>
+      <ul>
+        <li>Tratta il codice di test come codice di produzione: controllo di versione, review, niente duplicazioni, refactoring.</li>
+        <li><strong>Preferisci controlli a livello di API rispetto alla UI</strong> a parità di copertura; sono più economici e stabili.</li>
+        <li>Isola i test: reimposta i dati tra le esecuzioni e non dipendere mai dall'ordine di esecuzione.</li>
+        <li>Fallisci presto e chiaramente: un'asserzione deve nominare il comportamento che si è rotto.</li>
+        <li><strong>Metti subito in quarantena i test instabili (flaky).</strong> Una suite rossa che tutti hanno imparato a ignorare è peggio di nessuna suite.</li>
+        <li>Esegui le suite più veloci a ogni commit e quelle più lente al merge o di notte.</li>
+      </ul>` }
   ]
 }
   ],
@@ -1166,7 +1459,12 @@ expect(response.status()).toBe(201);</code></pre>
       { q: "Nel caso di studio del Sistema di Gestione Ospedaliera, cosa sta validando principalmente il tester manuale?", options: ["I tempi di risposta del server sotto carico", "Che l'app si compili senza errori", "Sequenze di flusso di lavoro reali attraverso registrazione, pianificazione e fatturazione", "Convenzioni di stile del codice sorgente"], correct: 2, explain: "Il caso di studio riguarda la validazione che i dati inseriti in un flusso di lavoro (es. registrazione) raggiungano correttamente le schermate a valle (fatturazione, viste del medico) — una sequenza di utilizzo reale." },
       { q: "Quale approccio di test, secondo il confronto Manuale vs. Automazione, richiede competenza di programmazione oltre alla conoscenza del testing?", options: ["Test Manuale", "Test di Automazione", "Nessuno dei due", "Entrambi allo stesso modo, senza distinzione"], correct: 1, explain: "Il Test di Automazione richiede programmazione più conoscenza del testing, mentre il test manuale necessita di conoscenza del dominio e del testing ma non di programmazione." },
       { q: "Qual è la differenza chiave tra Gravità e Priorità di un difetto?", options: ["Significano esattamente la stessa cosa", "La Gravità è l'impatto tecnico; la Priorità è quanto urgentemente deve essere corretto da un punto di vista di business", "La Gravità è stabilita dal prodotto, la Priorità dal tester", "La Priorità si applica solo ai test automatizzati"], correct: 1, explain: "Gravità e Priorità sono assi indipendenti — un bug ad alta gravità in un'area usata raramente può avere bassa priorità, mentre un bug a bassa gravità ma molto visibile può avere alta priorità." },
-      { q: "Qual è il motivo più comune per cui un bug report viene rimandato indietro al segnalatore invece di essere corretto?", options: ["Il report è troppo breve", "Mancano i passi per riprodurlo", "La gravità era impostata troppo alta", "È stato trovato da un tester junior"], correct: 1, explain: "Senza passi di riproduzione chiari ed esatti, uno sviluppatore spesso non può confermare o diagnosticare il problema, quindi il report viene rimandato indietro per maggiori dettagli prima di poter essere corretto." }
+      { q: "Qual è il motivo più comune per cui un bug report viene rimandato indietro al segnalatore invece di essere corretto?", options: ["Il report è troppo breve", "Mancano i passi per riprodurlo", "La gravità era impostata troppo alta", "È stato trovato da un tester junior"], correct: 1, explain: "Senza passi di riproduzione chiari ed esatti, uno sviluppatore spesso non può confermare o diagnosticare il problema, quindi il report viene rimandato indietro per maggiori dettagli prima di poter essere corretto." },
+      { q: "Uno sviluppatore scrive >= invece di >, e un ordine di esattamente 50,00 € ottiene per errore la spedizione gratuita. Quale termine descrive il comportamento errato visto dal cliente?", options: ["Errore","Difetto","Malfunzionamento","Causa radice"], correct: 2, explain: "Lo sbaglio umano è l'errore, l'operatore sbagliato nel codice è il difetto, e il comportamento errato osservato durante l'esecuzione è il malfunzionamento." },
+      { q: "Qual è la differenza tra test di conferma e test di regressione?", options: ["Sono la stessa cosa","Il test di conferma ritesta che un difetto corretto sia corretto; il test di regressione verifica che la modifica non abbia rotto nient'altro","La regressione si fa solo prima del rilascio, la conferma solo dopo","La conferma è automatizzata, la regressione manuale"], correct: 1, explain: "Entrambi sono test legati alle modifiche: la conferma riguarda la correzione specifica, la regressione tutto ciò che la circonda." },
+      { q: "Perché l'integrazione big-bang è considerata rischiosa?", options: ["Richiede troppi tester","Combinando tutti i componenti insieme è difficile capire quale abbia causato un malfunzionamento","Solo gli sviluppatori possono farla","Salta il test di sistema"], correct: 1, explain: "L'integrazione incrementale (top-down o bottom-up) aggiunge pezzi gradualmente, così un nuovo malfunzionamento indica l'ultimo pezzo aggiunto." },
+      { q: "Qual è il tipo di revisione più formale?", options: ["Revisione informale","Walkthrough","Revisione tecnica","Ispezione"], correct: 3, explain: "L'ispezione è il tipo di revisione più formale, con ruoli definiti, criteri di ingresso e registro dei difetti." },
+      { q: "Cosa collega la tracciabilità?", options: ["Tester e sviluppatori","Requisiti, condizioni di test, test case e difetti","Build e server","Solo i bug e i relativi commit di correzione"], correct: 1, explain: "La tracciabilità dimostra la copertura e supporta l'analisi d'impatto quando un requisito cambia." }
     ],
     "test-techniques": [
       { q: "Per un intervallo di input valido di 1–10, quali valori testerebbe l'Analisi dei Valori Limite?", options: ["1, 5, 10", "0, 1, 2, 9, 10, 11", "-10, 0, 10, 20", "Ogni intero da 1 a 10"], correct: 1, explain: "La BVA testa appena dentro, al limite e appena fuori ciascun confine: 0, 1, 2 (limite inferiore) e 9, 10, 11 (limite superiore)." },
@@ -1178,7 +1476,12 @@ expect(response.status()).toBe(201);</code></pre>
       { q: "Quale tecnica si basa puramente sull'intuito del tester e sui dati storici sui difetti, senza passi formali?", options: ["Error Guessing", "Partizionamento in Classi di Equivalenza", "Test con Tabelle Decisionali", "Analisi dei Valori Limite"], correct: 0, explain: "L'Error Guessing non ha passi formali — dipende interamente dall'esperienza del tester e dalla conoscenza di dove i bug tendono a verificarsi." },
       { q: "Qual è la raccomandazione di best practice per scegliere una tecnica di progettazione dei test?", options: ["Usa sempre solo l'Analisi dei Valori Limite", "Affidati a una singola tecnica per coerenza", "Combina più tecniche invece di affidarti a una sola", "Salta la selezione della tecnica e testa tutto in modo esaustivo"], correct: 2, explain: "Nessuna tecnica singola garantisce il rilevamento completo dei difetti, quindi si raccomanda di combinare più tecniche." },
       { q: "Perché il pairwise testing è utile per una funzionalità con molti parametri di input indipendenti?", options: ["Testa ogni possibile combinazione, garantendo copertura completa", "Copre ogni coppia di valori di parametro con molti meno casi di test, poiché la maggior parte dei difetti deriva da interazioni tra due parametri", "Funziona solo per i valori limite", "Sostituisce del tutto la necessità del partizionamento in classi di equivalenza"], correct: 1, explain: "Il pairwise testing si basa sull'osservazione che la maggior parte dei difetti di interazione coinvolge solo due parametri, quindi coprire ogni coppia (non ogni combinazione completa) intercetta la maggior parte dei problemi a un costo molto più basso." },
-      { q: "Da cosa deriva i casi di test l'Use Case Testing?", options: ["Dalla generazione casuale di dati", "Da interazioni documentate passo dopo passo tra un attore e il sistema, inclusi i flussi alternativi/eccezionali", "Dalla copertura dei rami del codice sorgente", "Dai valori limite di un singolo campo di input"], correct: 1, explain: "L'Use Case Testing costruisce i casi di test direttamente dallo scenario di successo principale e dai flussi alternativi/eccezionali di un caso d'uso documentato, validando un flusso di lavoro end-to-end dal punto di vista dell'utente." }
+      { q: "Da cosa deriva i casi di test l'Use Case Testing?", options: ["Dalla generazione casuale di dati", "Da interazioni documentate passo dopo passo tra un attore e il sistema, inclusi i flussi alternativi/eccezionali", "Dalla copertura dei rami del codice sorgente", "Dai valori limite di un singolo campo di input"], correct: 1, explain: "L'Use Case Testing costruisce i casi di test direttamente dallo scenario di successo principale e dai flussi alternativi/eccezionali di un caso d'uso documentato, validando un flusso di lavoro end-to-end dal punto di vista dell'utente." },
+      { q: "Un campo età accetta 18–60. Quale insieme elenca i valori limite da testare?", options: ["18 e 60","17, 18, 19, 59, 60, 61","0, 18, 60, 100","18, 39, 60"], correct: 1, explain: "La BVA testa appena sotto, sul e appena sopra ogni limite: 17, 18, 19 e 59, 60, 61." },
+      { q: "Codice: if (a > 0) { x = 1 } senza else. Esegui solo a = 5. Che copertura ottieni?", options: ["100% istruzioni, 100% rami","100% istruzioni, 50% rami","50% istruzioni, 50% rami","0% rami"], correct: 1, explain: "Tutte le istruzioni vengono eseguite, ma il ramo falso dell'if non viene mai percorso, quindi la copertura dei rami è del 50%." },
+      { q: "Quale criterio di copertura è tipicamente richiesto nei domini critici come l'avionica?", options: ["Copertura delle istruzioni","MC/DC (copertura modificata condizione/decisione)","Copertura pairwise","Copertura delle partizioni di equivalenza"], correct: 1, explain: "MC/DC dimostra che ogni sottocondizione booleana influisce in modo indipendente sull'esito della decisione." },
+      { q: "Una funzione ha 3 decisioni. Qual è la sua complessità ciclomatica?", options: ["2","3","4","6"], correct: 2, explain: "Per una singola funzione, complessità ciclomatica = numero di decisioni + 1 = 4, il numero di percorsi indipendenti." },
+      { q: "Qual è l'obiettivo di copertura più pratico per la maggior parte dei progetti?", options: ["100% di copertura dei percorsi ovunque","Copertura proporzionata al rischio, riservando i criteri più forti al codice critico","Solo copertura delle istruzioni","Nessun obiettivo di copertura"], correct: 1, explain: "Lo sforzo di copertura deve corrispondere al rischio: PE/BVA economici in generale, percorsi o MC/DC solo per gli algoritmi critici." }
     ],
     "testing-types": [
       { q: "Cosa definisce un 'tipo' di software testing, secondo questo modulo?", options: ["Solo lo strumento usato per eseguirlo", "Una classificazione con un proprio obiettivo, strategia e deliverable", "Il linguaggio di programmazione del sistema sotto test", "Quanto tempo impiega il test a essere eseguito"], correct: 1, explain: "Un tipo di test è una classificazione — come il Test di Accessibilità — con un obiettivo, una strategia e dei deliverable specifici." },
@@ -1198,7 +1501,10 @@ expect(response.status()).toBe(201);</code></pre>
       { q: "Quale best practice è raccomandata per il Test Ad Hoc?", options: ["Evitare di registrare i difetti per risparmiare tempo", "Testare moduli casuali senza valutazione del rischio", "Puntare ai moduli chiave/ad alto rischio e registrare ogni difetto trovato", "Non fare mai squadra con un altro tester"], correct: 2, explain: "Le best practice includono avere una buona conoscenza del business, puntare ai moduli ad alto rischio, registrare ogni difetto e fare squadra per una prospettiva fresca." },
       { q: "Nel Monkey Testing, cosa caratterizza l'input fornito all'applicazione?", options: ["Valori limite accuratamente scriptati", "Input casuali e non strutturati", "Solo input di classi di equivalenza valide", "Input generati da una tabella decisionale"], correct: 1, explain: "Il Monkey Testing lancia input casuali e non strutturati contro l'applicazione per vedere se si rompe." },
       { q: "Cos'è un 'bug bash', usato per integrare il test ad hoc negli sprint Agile?", options: ["Una suite di regressione formale e scriptata", "Una sessione a tempo limitato in cui l'intero team testa ad hoc una build insieme", "Una riunione per dare priorità al backlog", "Uno strumento per generare automaticamente bug report"], correct: 1, explain: "Un bug bash è una sessione a tempo limitato (spesso 30-60 minuti) in cui l'intero team, non solo la QA, testa una build insieme — diffondendo la conoscenza del prodotto e trovando bug che le abitudini di un singolo tester potrebbero non colpire." },
-      { q: "Perché anche le sessioni di test ad hoc informali dovrebbero essere a tempo limitato?", options: ["Il time-boxing non è realmente utile per il test ad hoc", "Mantiene la sessione concentrata invece di vagare, anche senza uno script formale", "Garantisce una copertura di test completa", "Sostituisce la necessità di registrare i difetti"], correct: 1, explain: "Un limite di tempo dichiarato (es. 20 minuti sul nuovo flusso di checkout) mantiene concentrata una sessione non scriptata anche se non c'è un caso di test formale da seguire." }
+      { q: "Perché anche le sessioni di test ad hoc informali dovrebbero essere a tempo limitato?", options: ["Il time-boxing non è realmente utile per il test ad hoc", "Mantiene la sessione concentrata invece di vagare, anche senza uno script formale", "Garantisce una copertura di test completa", "Sostituisce la necessità di registrare i difetti"], correct: 1, explain: "Un limite di tempo dichiarato (es. 20 minuti sul nuovo flusso di checkout) mantiene concentrata una sessione non scriptata anche se non c'è un caso di test formale da seguire." },
+      { q: "Quale approccio ha charter con timebox e note di sessione, a differenza del testing ad hoc?", options: ["Monkey testing","Error guessing","Testing esplorativo","Buddy testing"], correct: 2, explain: "Il testing esplorativo è l'evoluzione disciplinata di quello ad hoc e aggiunge charter, timebox e note (SBTM)." },
+      { q: "Trovi un bug durante una sessione ad hoc. Quale buona pratica dovrebbe seguire?", options: ["Tenerlo a mente per risparmiare tempo","Trasformarlo in un test case formale e scriptato perché sia coperto in futuro","Chiudere la sessione e ricominciare","Citarlo solo al prossimo standup"], correct: 1, explain: "Trasformare le scoperte ad hoc in test scriptati compensa la mancanza di ripetibilità del testing ad hoc." },
+      { q: "Cosa aggiunge la «I» nell'euristica SFDIPOT?", options: ["Integrazione","Interfaces (interfacce)","Input","Infrastruttura"], correct: 1, explain: "SFDIPOT sta per Structure, Function, Data, Interfaces, Platform, Operations, Time: SFDPOT più Interfaces." }
     ],
     "exploratory-testing": [
       { q: "Nel SBTM, cosa viene immediatamente dopo la definizione del Test Charter?", options: ["Debrief", "Rivedi i Risultati", "Metti la sessione in Time Box", "Crea una Tassonomia dei Bug"], correct: 2, explain: "L'ordine SBTM è: Tassonomia dei Bug → Test Charter → Time Box della sessione → Rivedi i Risultati → Debrief." },
@@ -1263,7 +1569,11 @@ expect(response.status()).toBe(201);</code></pre>
       { q: "Cosa distingue un livello di test da un tipo di test, secondo il syllabus?", options: ["Sono due nomi per la stessa cosa", "Il livello di test descrive dove avviene il testing (es. unità, sistema); il tipo di test descrive cosa viene testato (es. funzionale, non funzionale)", "Il tipo di test si applica solo ai progetti Agile", "Il livello di test si applica solo al test manuale"], correct: 1, explain: "I livelli di test (componente, integrazione, sistema, accettazione) e i tipi di test (funzionale, non funzionale, strutturale, legato al cambiamento) sono dimensioni indipendenti — un tipo di test può essere applicato a qualsiasi livello di test." },
       { q: "Qual è lo scopo dei criteri di uscita nella pianificazione dei test?", options: ["Decidere chi partecipa alla riunione di avvio", "Definire le condizioni che devono essere soddisfatte perché un'attività di test sia considerata completa", "Assegnare la gravità ai difetti", "Selezionare quale metodo HTTP testare"], correct: 1, explain: "I criteri di uscita definiscono quando un'attività di test è terminata; i criteri di ingresso definiscono le condizioni necessarie prima che possa iniziare." },
       { q: "Secondo la lezione sui consigli di studio, qual è l'uso più efficace del tempo limitato di preparazione all'esame?", options: ["Dedica tempo uguale a ogni livello K", "Concentrati sul materiale K2/K3, poiché è lì che vive la maggior parte delle domande d'esame", "Studia solo i termini K1 (richiamo)", "Memorizza le tabelle esatte di logistica dell'esame del libro"], correct: 1, explain: "I termini K1 richiedono solo riconoscimento, ma il materiale K2/K3 richiede comprensione e applicazione — ed è lì che si concentra la maggior parte delle domande d'esame." },
-      { q: "Che tipo di trabocchetto pone tipicamente una domanda con distrattore 'migliore risposta'?", options: ["Dà una risposta ovviamente sbagliata e tre identiche corrette", "Dà quattro affermazioni tecnicamente vere ma solo una è la più adatta allo scenario specifico descritto", "Non ha mai una risposta corretta", "Appare solo nel quiz del Modulo 7, mai nell'esame reale"], correct: 1, explain: "Un trabocchetto comune in stile ISTQB presenta diverse affermazioni tecnicamente vere, ma solo una è la risposta migliore per lo scenario esatto dato — leggere attentamente lo scenario conta più che conoscere solo i fatti." }
+      { q: "Che tipo di trabocchetto pone tipicamente una domanda con distrattore 'migliore risposta'?", options: ["Dà una risposta ovviamente sbagliata e tre identiche corrette", "Dà quattro affermazioni tecnicamente vere ma solo una è la più adatta allo scenario specifico descritto", "Non ha mai una risposta corretta", "Appare solo nel quiz del Modulo 7, mai nell'esame reale"], correct: 1, explain: "Un trabocchetto comune in stile ISTQB presenta diverse affermazioni tecnicamente vere, ma solo una è la risposta migliore per lo scenario esatto dato — leggere attentamente lo scenario conta più che conoscere solo i fatti." },
+      { q: "Qual è la soglia di superamento di CTFL v4.0?", options: ["50% (20 su 40)","65% (26 su 40)","75% (30 su 40)","80% (32 su 40)"], correct: 1, explain: "La soglia è del 65%, cioè 26 risposte corrette su 40. Non ci sono penalità." },
+      { q: "Quale capitolo di CTFL v4.0 ha più domande d'esame?", options: ["Capitolo 1: Fondamenti del testing","Capitolo 3: Test statico","Capitolo 4: Analisi e progettazione dei test","Capitolo 6: Strumenti di test"], correct: 2, explain: "Il capitolo 4 vale 11 domande su 40, molte delle quali di livello K3 sulle tecniche di test." },
+      { q: "Nei quadranti del testing agile, dove si collocano il testing esplorativo e i test di usabilità?", options: ["Q1: orientato alla tecnologia, supporta il team","Q2: orientato al business, supporta il team","Q3: orientato al business, critica il prodotto","Q4: orientato alla tecnologia, critica il prodotto"], correct: 2, explain: "Q3 critica il prodotto dal punto di vista del business e dell'utente: esplorativo, usabilità e UAT." },
+      { q: "Quale modulo CTAL si concentra su strategia, stima, metriche e persone?", options: ["Test Analyst","Technical Test Analyst","Test Manager","Agile Tester"], correct: 2, explain: "Test Manager copre strategia, rischio, stima, metriche, persone e miglioramento dei processi." }
     ],
     "qa-toolbox": [
       { q: "Quale strumento è descritto come eseguito all'interno del browser, con una forte esperienza di debug orientata agli sviluppatori per il test web JS/TS?", options: ["Selenium WebDriver", "Cypress", "Appium", "REST Assured"], correct: 1, explain: "Cypress viene eseguito all'interno del browser stesso, il che gli dà un'esperienza di debug distintiva e altamente interattiva rispetto agli strumenti basati su WebDriver." },
@@ -1280,7 +1590,10 @@ expect(response.status()).toBe(201);</code></pre>
       { q: "Perché le asserzioni di corrispondenza esatta tipicamente smettono di funzionare quando si testa una funzionalità basata su LLM?", options: ["Gli LLM non producono mai output testuale", "L'output dell'LLM è non deterministico, quindi lo stesso input può produrre output validi diversi", "Le asserzioni di corrispondenza esatta sono sempre troppo lente", "Gli LLM non possono essere testati affatto"], correct: 1, explain: "Poiché l'output dell'LLM varia tra le esecuzioni anche per lo stesso input, il testing passa dalle asserzioni di corrispondenza esatta a una valutazione basata su rubrica di quanto l'output sia sufficientemente buono, non identico a una stringa fissa." },
       { q: "Cosa dovrebbe fare un tester prima di considerare finito un test generato dall'IA?", options: ["Nulla — se viene eseguito e passa, è finito", "Confermare che un umano abbia verificato che stia effettivamente asserendo la cosa giusta, non solo che venga eseguito", "Cancellarlo e scriverlo sempre manualmente", "Controllare solo che usi il modello IA più recente"], correct: 1, explain: "I test generati dall'IA sono una prima bozza utile, ma solo un umano può giudicare se il test sta effettivamente controllando il comportamento che conta per il business." },
       { q: "Quale quota di problemi di accessibilità intercettano tipicamente da soli gli scanner automatizzati (come axe o Lighthouse)?", options: ["100% — la scansione automatizzata è sufficiente da sola", "Circa il 30-40% — il test manuale (navigazione solo da tastiera, screen reader) è ancora necessario", "0% — gli strumenti automatizzati non possono controllare affatto l'accessibilità", "Esattamente il 50%, secondo lo standard WCAG"], correct: 1, explain: "Gli scanner automatizzati sono eccellenti nei controlli oggettivi come i rapporti di contrasto, ma intercettano solo circa il 30-40% dei problemi — il test manuale con tastiera e screen reader è ancora necessario per una copertura completa." },
-      { q: "Nel WCAG, cosa rappresentano le lettere POUR?", options: ["Priority, Objective, Usability, Reliability", "Perceivable, Operable, Understandable, Robust (Percepibile, Utilizzabile, Comprensibile, Robusto)", "Performance, Operations, Usage, Reporting", "Public, Open, Universal, Reviewed"], correct: 1, explain: "Il WCAG organizza i requisiti di accessibilità attorno a quattro principi: il contenuto deve essere Percepibile, Utilizzabile, Comprensibile e Robusto." }
+      { q: "Nel WCAG, cosa rappresentano le lettere POUR?", options: ["Priority, Objective, Usability, Reliability", "Perceivable, Operable, Understandable, Robust (Percepibile, Utilizzabile, Comprensibile, Robusto)", "Performance, Operations, Usage, Reporting", "Public, Open, Universal, Reviewed"], correct: 1, explain: "Il WCAG organizza i requisiti di accessibilità attorno a quattro principi: il contenuto deve essere Percepibile, Utilizzabile, Comprensibile e Robusto." },
+      { q: "Quale comportamento distingue meglio un QA engineer di livello mid da un junior?", options: ["Esegue test case predefiniti","Progetta test case in autonomia, sceglie le tecniche in base al rischio e segue le funzionalità dall'inizio alla fine","Stabilisce la strategia di qualità dell'intera organizzazione","Esegue solo l'automazione esistente"], correct: 1, explain: "I junior eseguono casi ben definiti; i mid progettano in autonomia e seguono le funzionalità; i senior definiscono la strategia." },
+      { q: "Cosa misura il «defect leakage»?", options: ["I bug trovati dagli sviluppatori","I difetti che sfuggono in produzione rispetto a quelli intercettati prima del rilascio","Il numero di bug report duplicati","Il tempo speso a scrivere codice di test"], correct: 1, explain: "Un leakage alto significa che il testing lascia passare difetti che poi trovano gli utenti." },
+      { q: "Quale di queste è un'anti-metrica che incoraggia il comportamento sbagliato?", options: ["Defect leakage","Copertura dei requisiti","Numero grezzo di test case scritti","Tempo medio di riparazione (MTTR)"], correct: 2, explain: "Il numero grezzo di test premia la quantità anziché il valore, proprio come le righe di codice di test o il tasso di superamento da solo." }
     ],
     "test-architecture": [
       { q: "Qual è la differenza chiave tra il Page Object Model e lo Screenplay Pattern?", options: ["Sono esattamente la stessa cosa con nomi diversi", "Il POM incapsula i locatori/azioni di ogni pagina in una classe; lo Screenplay modella i test come un Actor con Abilities, Tasks e Questions usando la composizione", "Lo Screenplay funziona solo per il test delle API, non per il test UI", "Il POM è più recente ed è sempre preferito allo Screenplay"], correct: 1, explain: "Il POM organizza l'automazione attorno a classi pagina; lo Screenplay usa un modello centrato sull'attore, basato sulla composizione (Abilities, Tasks, Questions) che tende a scalare meglio per suite grandi e complesse." },
@@ -1295,7 +1608,10 @@ expect(response.status()).toBe(201);</code></pre>
       { q: "Cosa fa il chaos engineering?", options: ["Elimina a caso i dati di produzione per testare i backup", "Inietta deliberatamente guasti controllati (istanze terminate, latenza di rete, esaurimento delle risorse) per verificare che un sistema si degradi in modo controllato invece di provocare un'interruzione a cascata", "Genera dati di test casuali per gli unit test", "Introduce bug nel codice apposta per formare i nuovi sviluppatori"], correct: 1, explain: "Il chaos engineering (reso popolare da strumenti come Chaos Monkey e Gremlin) inietta deliberatamente guasti in condizioni controllate per verificare la resilienza, invece di aspettare un'interruzione reale e incontrollata per trovare le stesse lacune." },
       { q: "Cosa descrive l'anti-pattern del 'cono gelato' (ice-cream cone)?", options: ["Una suite di test perfettamente bilanciata", "Una suite appesantita in alto da test UI/E2E lenti e fragili e con troppo pochi unit test veloci — l'inverso di una sana Piramide dei Test", "Uno strumento per visualizzare la copertura dei test", "Un pattern per organizzare i termini del glossario"], correct: 1, explain: "Il cono gelato è l'inverso della Piramide dei Test (Modulo 7): pesante di test UI lenti e instabili di alto livello e leggero di unit test veloci ed economici, il che rende l'intera suite lenta e difficile da mantenere." },
       { q: "Qual è lo scopo di uno strumento di test reporting come Allure o ReportPortal?", options: ["Scrivere automaticamente i casi di test", "Trasformare l'output grezzo del test runner in dashboard leggibili e storiche che mostrano le tendenze nel tempo", "Sostituire la necessità di una pipeline CI/CD", "Generare le definizioni del glossario"], correct: 1, explain: "Strumenti come Allure e ReportPortal trasformano l'output grezzo di pass/fail in dashboard storiche e visibili nel tempo — mostrando se il tasso di successo sta migliorando o peggiorando su molte build, non solo l'ultima esecuzione." },
-      { q: "Perché il rilevamento dei test instabili (flaky) è importante per l'infrastruttura di test reporting?", options: ["Non ha alcun valore reale", "I test che falliscono in modo intermittente senza modifiche al codice erodono la fiducia nella suite se non vengono segnalati e affrontati", "Fa eseguire i test più velocemente in automatico", "Riguarda solo il test manuale, non l'automazione"], correct: 1, explain: "Un test che fallisce in modo intermittente e non viene segnalato come flaky erode silenziosamente la fiducia nell'intera suite, poiché le persone smettono di credere che i fallimenti significhino qualcosa di reale." }
+      { q: "Perché il rilevamento dei test instabili (flaky) è importante per l'infrastruttura di test reporting?", options: ["Non ha alcun valore reale", "I test che falliscono in modo intermittente senza modifiche al codice erodono la fiducia nella suite se non vengono segnalati e affrontati", "Fa eseguire i test più velocemente in automatico", "Riguarda solo il test manuale, non l'automazione"], correct: 1, explain: "Un test che fallisce in modo intermittente e non viene segnalato come flaky erode silenziosamente la fiducia nell'intera suite, poiché le persone smettono di credere che i fallimenti significhino qualcosa di reale." },
+      { q: "Cosa distingue una strategia di test da un piano di test?", options: ["Sono lo stesso documento","La strategia è stabile e a livello di organizzazione; il piano è di progetto o rilascio, con ambito, calendario e criteri di ingresso/uscita","Il piano si scrive dopo il rilascio","La strategia elenca i singoli test case"], correct: 1, explain: "La strategia fissa l'approccio generale e le policy; ogni piano la applica a un progetto o rilascio specifico." },
+      { q: "Build in ritardo e un ambiente di test instabile sono esempi di quale tipo di rischio?", options: ["Rischio di prodotto","Rischio di progetto","Rischio di sicurezza","Rischio residuo"], correct: 1, explain: "I rischi di progetto minacciano lo sforzo di test stesso; quelli di prodotto riguardano ciò che può andare storto nel prodotto." },
+      { q: "Quale tecnica si usa comunemente per l'analisi delle cause radice dei difetti?", options: ["Testing pairwise","5 perché e diagrammi a lisca di pesce (Ishikawa)","Analisi dei valori limite","Smoke test"], correct: 1, explain: "I 5 perché e i diagrammi a lisca di pesce portano dal sintomo alla causa di fondo e alimentano il miglioramento dei processi." }
     ],
     "security-testing": [
       { q: "In che modo la domanda centrale del test di sicurezza differisce dal tipico test funzionale?", options: ["Pongono esattamente la stessa domanda", "Il test funzionale chiede se il percorso felice funziona; il test di sicurezza chiede cosa succede quando qualcuno tenta deliberatamente di infrangere le regole", "Il test di sicurezza si applica solo alle app mobile", "Il test funzionale è sempre più importante del test di sicurezza"], correct: 1, explain: "Il test funzionale verifica il comportamento previsto; il test di sicurezza chiede deliberatamente cosa succede quando un utente o un attaccante cerca di far fare al sistema qualcosa per cui non era mai stato pensato." },
@@ -1309,7 +1625,10 @@ expect(response.status()).toBe(201);</code></pre>
       { q: "Nel penetration testing, cosa deve sempre essere in atto prima che il test inizi?", options: ["Nulla — chiunque può fare pen testing su qualsiasi sistema in qualsiasi momento", "Un accordo firmato che definisce l'ambito e un'autorizzazione scritta esplicita", "Uno strumento di scansione completamente automatizzato", "Un annuncio pubblico del test"], correct: 1, explain: "Senza un accordo firmato e un'autorizzazione esplicita che definisce cosa è nell'ambito, le stesse identiche azioni usate in un pen test sono semplicemente hacking illegale e non autorizzato." },
       { q: "Nel framework di threat modeling STRIDE, cosa rappresenta la 'R'?", options: ["Reliability (Affidabilità)", "Repudiation (Ripudio) — negare di aver eseguito un'azione, senza modo di dimostrare il contrario", "Redundancy (Ridondanza)", "Recovery (Ripristino)"], correct: 1, explain: "Repudiation in STRIDE si riferisce a una minaccia in cui un attore può negare di aver eseguito un'azione e il sistema non ha modo di dimostrare il contrario (es. log di audit mancanti)." },
       { q: "Cosa significa 'zero trust' come principio architetturale/di testing?", options: ["Nessun sistema dovrebbe mai essere testato", "Non presumere mai che una richiesta sia sicura solo perché proviene dall'interno del perimetro di rete — ogni richiesta viene autenticata e autorizzata in base ai propri meriti", "Fidarsi per impostazione predefinita di ogni servizio interno", "Solo le API esposte esternamente necessitano di autenticazione"], correct: 1, explain: "Zero trust significa che ogni richiesta — anche dall'interno della rete — deve dimostrare chi è e cosa è autorizzata a fare, invece di essere considerata attendibile automaticamente a causa della sua origine." },
-      { q: "Perché verificare che una richiesta di 'elimina il mio account' elimini effettivamente i dati (inclusi backup/repliche) è una preoccupazione di test rilevante per la conformità?", options: ["È puramente una preoccupazione di test di performance", "Riguarda i diritti di cancellazione dei dati previsti da normative come il GDPR", "Conta solo per gli ambienti di test interni", "Non ha alcuna relazione con la conformità"], correct: 1, explain: "Le normative adiacenti al GDPR spesso richiedono che una richiesta di cancellazione dei dati di un utente rimuova effettivamente i suoi dati in tutto il sistema, inclusi i backup secondo il loro schedule di retention — testare questo end-to-end è una vera preoccupazione di conformità, non solo una piccola imperfezione di igiene dei dati." }
+      { q: "Perché verificare che una richiesta di 'elimina il mio account' elimini effettivamente i dati (inclusi backup/repliche) è una preoccupazione di test rilevante per la conformità?", options: ["È puramente una preoccupazione di test di performance", "Riguarda i diritti di cancellazione dei dati previsti da normative come il GDPR", "Conta solo per gli ambienti di test interni", "Non ha alcuna relazione con la conformità"], correct: 1, explain: "Le normative adiacenti al GDPR spesso richiedono che una richiesta di cancellazione dei dati di un utente rimuova effettivamente i suoi dati in tutto il sistema, inclusi i backup secondo il loro schedule di retention — testare questo end-to-end è una vera preoccupazione di conformità, non solo una piccola imperfezione di igiene dei dati." },
+      { q: "Quale flag del cookie impedisce a JavaScript di leggere un cookie di sessione?", options: ["Secure","HttpOnly","SameSite","Max-Age"], correct: 1, explain: "HttpOnly blocca l'accesso dagli script (mitigando il furto di cookie via XSS); Secure lo limita a HTTPS; SameSite ne limita l'invio tra siti." },
+      { q: "A cosa serve CVSS nel triage di sicurezza?", options: ["A scansionare il codice sorgente","A valutare la gravità delle vulnerabilità per prioritizzare le correzioni","A cifrare i dati a riposo","A fare test di carico del login"], correct: 1, explain: "CVSS fornisce un punteggio di gravità standardizzato, utile per decidere quali rilevamenti devono bloccare un merge." },
+      { q: "In un approccio shift-left, dove dovrebbero girare le scansioni SAST, DAST e delle dipendenze (SCA)?", options: ["Solo una volta prima di un grande rilascio","Nella pipeline di CI, in modo continuativo","Solo dopo un incidente di sicurezza","Solo sui portatili degli sviluppatori"], correct: 1, explain: "Eseguire le scansioni in modo continuo in CI intercetta le vulnerabilità, comprese quelle delle librerie, quando correggerle costa poco." }
     ],
     "performance-ux-automation": [
       { q: "Qual è la differenza chiave tra Load Testing e Stress Testing?", options: ["Sono tecniche identiche con nomi diversi", "Il Load Testing verifica il comportamento sotto traffico atteso; lo Stress Testing continua ad aumentare il carico oltre i livelli attesi per trovare dove il sistema si rompe", "Lo Stress Testing si applica solo alle app mobile", "Il Load Testing viene sempre eseguito in produzione"], correct: 1, explain: "Il Load Testing convalida il comportamento a un traffico atteso e realistico; lo Stress Testing spinge deliberatamente oltre quel livello per trovare il punto di rottura del sistema e come si degrada." },
@@ -1322,7 +1641,12 @@ expect(response.status()).toBe(201);</code></pre>
       { q: "Perché l'indipendenza dei test (non dipendere dall'esecuzione o dall'ordine di un altro test) è importante in una suite automatizzata?", options: ["Non importa finché tutti i test alla fine passano", "I test dipendenti dall'ordine producono un pattern di fallimento comune e difficile da diagnosticare, del tipo 'funziona da solo, fallisce nella suite'", "I test indipendenti vengono sempre eseguiti più lentamente di quelli dipendenti", "È una preoccupazione solo per il test manuale, non per l'automazione"], correct: 1, explain: "Un test che dipende silenziosamente dallo stato residuo di un altro test può passare in isolamento ma fallire quando eseguito come parte della suite completa (o in un ordine diverso) — un bug notoriamente difficile da rintracciare." },
       { q: "Che tipo di strumenti forniscono BrowserStack o Sauce Labs?", options: ["Generazione di casi di test basata su IA", "Test cloud cross-browser/dispositivo — eseguire la stessa suite contro combinazioni reali di browser/sistema operativo/dispositivo senza mantenere un laboratorio fisico di dispositivi", "Analisi statica del codice per vulnerabilità di sicurezza", "Bug tracking e gestione dei difetti"], correct: 1, explain: "BrowserStack, Sauce Labs e LambdaTest forniscono accesso cloud a combinazioni reali di browser/sistema operativo/dispositivo, evitando il costo e la manutenzione di un laboratorio fisico di dispositivi." },
       { q: "Qual è il compromesso tipicamente associato agli strumenti di automazione low-code/record-and-playback come Katalon Studio?", options: ["Non possono essere usati da nessun team, mai", "Abbassano la barriera d'ingresso per i team senza ingegneri di automazione dedicati, ma sono tipicamente meno flessibili dei framework code-first per la logica complessa", "Sono sempre più costosi dei framework code-first", "Funzionano solo per il test delle API, mai per il test UI"], correct: 1, explain: "Gli strumenti low-code rendono l'automazione accessibile ai team senza competenze di programmazione approfondite, ma quell'accessibilità di solito si scambia con la flessibilità che un framework code-first offre per la logica di test complessa." },
-      { q: "Cosa significa 'continuous testing', e come si collega all'architettura della pipeline del Modulo 9?", options: ["Eseguire l'intera suite di test manuale una volta all'anno", "Eseguire test automatizzati continuamente lungo tutta la pipeline, non solo prima del rilascio, così che il feedback arrivi entro pochi minuti da una modifica", "Un sinonimo di exploratory testing", "Un test che non ha mai un criterio di pass/fail definito"], correct: 1, explain: "Il Continuous Testing integra test automatizzati lungo tutta la pipeline CI/CD così che ogni modifica riceva un feedback rapido — gli strumenti di questo modulo offrono valore solo quando sono effettivamente collegati a una pipeline che li esegue continuamente." }
+      { q: "Cosa significa 'continuous testing', e come si collega all'architettura della pipeline del Modulo 9?", options: ["Eseguire l'intera suite di test manuale una volta all'anno", "Eseguire test automatizzati continuamente lungo tutta la pipeline, non solo prima del rilascio, così che il feedback arrivi entro pochi minuti da una modifica", "Un sinonimo di exploratory testing", "Un test che non ha mai un criterio di pass/fail definito"], correct: 1, explain: "Il Continuous Testing integra test automatizzati lungo tutta la pipeline CI/CD così che ogni modifica riceva un feedback rapido — gli strumenti di questo modulo offrono valore solo quando sono effettivamente collegati a una pipeline che li esegue continuamente." },
+      { q: "Perché i tempi di risposta P95/P99 contano più della media?", options: ["Sono più facili da calcolare","La media nasconde la coda lenta di richieste che gli utenti reali sperimentano davvero","Le medie non sono ammesse negli SLA","I percentili misurano il throughput"], correct: 1, explain: "Una buona media può nascondere che il 5% degli utenti aspetta diversi secondi. I percentili fanno emergere quella coda." },
+      { q: "Quale tipo di test di prestazioni cerca perdite di memoria e degrado durante ore di carico prolungato?", options: ["Picco","Stress","Durata (soak)","Smoke"], correct: 2, explain: "I test di durata mantengono un carico realistico a lungo per rivelare perdite e degrado graduale." },
+      { q: "All'incirca, quale quota di problemi di accessibilità individuano strumenti automatici come axe o Lighthouse?", options: ["Quasi il 100%","Circa il 30–40%","Circa l'80%","Nessuna"], correct: 1, explain: "Gli strumenti automatici ne individuano solo una parte; navigazione da tastiera, screen reader e controlli di contrasto e focus vanno fatti a mano." },
+      { q: "Un test di UI fallisce a caso circa 1 volta su 10. Qual è l'azione immediata consigliata?", options: ["Eliminare l'intera suite","Mettere in quarantena il test instabile perché smetta di erodere la fiducia, poi indagare","Aggiungere retry finché passa e dimenticarsene","Ignorare d'ora in poi le build rosse"], correct: 1, explain: "I test instabili insegnano a ignorare i fallimenti. Mettili subito in quarantena, poi correggi la causa radice." },
+      { q: "Quale è un cattivo candidato all'automazione?", options: ["Smoke test a ogni build","Controlli di regressione del login","Un'indagine esplorativa una tantum su una nuova funzionalità","Una matrice cross-browser di controlli stabili"], correct: 2, explain: "L'esplorazione una tantum, la UI volatile e i giudizi di usabilità non ripagano il costo dell'automazione." }
     ]
   },
   glossary: [
@@ -1503,3 +1827,4 @@ expect(response.status()).toBe(201);</code></pre>
 {term:"Continuous Testing",cat:"Specialized",def:"La pratica di eseguire test automatizzati continuamente lungo tutta la pipeline CI/CD, non solo prima del rilascio, così che il feedback su ogni modifica arrivi entro pochi minuti."}
   ]
 };
+// __KB_V1__

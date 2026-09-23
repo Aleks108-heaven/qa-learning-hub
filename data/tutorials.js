@@ -114,7 +114,68 @@ window.QAHUB_MODULES = [
         <li><strong>Severity &amp; priority</strong> — your assessment, even if product later adjusts it.</li>
         <li><strong>Evidence</strong> — screenshot, screen recording, or log excerpt; a picture ends most "can't reproduce" arguments before they start.</li>
       </ul>
-      <p>A report missing repro steps is the single most common reason a bug gets bounced back to the reporter instead of fixed.</p>` }
+      <p>A report missing repro steps is the single most common reason a bug gets bounced back to the reporter instead of fixed.</p>` },
+    { h: "Why Testing Exists: Error → Defect → Failure", body: `
+      <p>Testing exists to:</p>
+      <ul>
+        <li><strong>Reduce risk</strong> by giving stakeholders actionable information about quality before release.</li>
+        <li><strong>Verify requirements</strong>: the product behaves as specified and expected.</li>
+        <li><strong>Prevent defects</strong>: early reviews and tests catch issues before they're coded in.</li>
+        <li><strong>Build confidence</strong>, with one caveat (Dijkstra): testing shows the <strong>presence</strong> of defects, never their <strong>absence</strong>.</li>
+      </ul>
+      <p>The later a defect is found, the more it costs. One caught in requirements can be around <strong>100× cheaper</strong> to fix than one found in production, which is the whole argument for "shift-left".</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Error</strong> (mistake)</td><td>A human mistake in code, a spec or a decision</td></tr>
+          <tr><td><strong>Defect</strong> (bug, fault)</td><td>The flaw in code or documentation that the error caused</td></tr>
+          <tr><td><strong>Failure</strong></td><td>The incorrect behavior actually observed when the defect executes</td></tr>
+        </tbody>
+      </table></div>
+      <p><em>Example:</em> a developer misreads "free shipping over $50" as "$50 or more" (error), writes <code>&gt;=</code> instead of <code>&gt;</code> (defect), and a $50.00 order ships free (failure). A defect doesn't always cause a failure, because that code path may never run, and one failure can have several defects behind it.</p>
+      <p><strong>Testing vs debugging vs checking:</strong></p>
+      <ul>
+        <li><strong>Testing</strong>: questioning the product to find information. It's a human, thinking activity.</li>
+        <li><strong>Debugging</strong>: locating the root cause of a failure and fixing it. That's a developer activity.</li>
+        <li><strong>Checking</strong>: algorithmic verification of specific facts. Most "automation" is checking.</li>
+      </ul>` },
+    { h: "Test Levels & Test Types", body: `
+      <p><strong>Test levels</strong> describe <em>where</em> testing happens:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Level</th><th>Scope</th><th>Typical owner</th></tr></thead>
+        <tbody>
+          <tr><td>Unit / Component</td><td>A single code unit in isolation</td><td>Developers</td></tr>
+          <tr><td>Integration</td><td>Interaction between components and interfaces</td><td>Developers + QA</td></tr>
+          <tr><td>System</td><td>The whole system against its requirements, end to end</td><td>QA</td></tr>
+          <tr><td>Acceptance (UAT, alpha, beta)</td><td>Validation by users or the customer</td><td>Users, product owner, with QA support</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Integration strategies:</strong> <em>incremental</em> (top-down or bottom-up, adding pieces one at a time) versus <em>big-bang</em> (everything at once). Big-bang is risky because when something fails, it's hard to tell which piece caused it.</p>
+      <p><strong>Test types</strong> describe <em>what</em> you're testing for:</p>
+      <ul>
+        <li><strong>Functional</strong>: what the system does.</li>
+        <li><strong>Non-functional</strong>: how well it does it (performance, security, usability, reliability, portability).</li>
+        <li><strong>Structural (white-box)</strong>: the internal structure and code.</li>
+        <li><strong>Change-related</strong>: <strong>confirmation testing</strong> (retest that a fixed defect is really fixed) and <strong>regression testing</strong> (check the change didn't break anything else).</li>
+      </ul>
+      <p>Levels and types are independent: you can run performance tests at the integration level, or functional tests at the unit level.</p>` },
+    { h: "The Test Process, Traceability & Static Testing", body: `
+      <p>The fundamental test process (aligned with ISTQB and ISO/IEC/IEEE 29119):</p>
+      <ol>
+        <li><strong>Test planning</strong>: strategy, schedule, resources, entry and exit criteria.</li>
+        <li><strong>Test analysis</strong>: study the test basis (requirements, specs, risks) and identify <em>test conditions</em>, meaning what to test.</li>
+        <li><strong>Test design</strong>: derive and prioritize test cases from those conditions, meaning how to test.</li>
+        <li><strong>Test implementation</strong>: prepare test data, environments, scripts and suites.</li>
+        <li><strong>Test execution</strong>: run the tests, compare actual with expected results, log defects.</li>
+        <li><strong>Test completion</strong>: summary report, archive the testware, capture lessons learned.</li>
+      </ol>
+      <p><strong>Traceability</strong> links requirements → test conditions → test cases → defects. It proves coverage ("every requirement has a test") and enables impact analysis ("this requirement changed, so these tests need rerunning").</p>
+      <p><strong>Static testing</strong> finds defects <em>without executing</em> anything:</p>
+      <ul>
+        <li><strong>Reviews</strong>, from least to most formal: informal review → walkthrough → technical review → <strong>inspection</strong> (defined roles, entry criteria, defect logs).</li>
+        <li><strong>Static analysis</strong>: linters, security scanners and complexity tools applied to code or documents.</li>
+      </ul>
+      <p><strong>A manual tester's day-to-day:</strong> analyze requirements and flag ambiguities early; design and run test cases, exploring beyond the script; report defects clearly; verify fixes and run regression around changed areas; sign features off against acceptance and exit criteria.</p>` }
   ]
 },
 {
@@ -174,7 +235,48 @@ window.QAHUB_MODULES = [
     { h: "Pairwise Testing & Use Case Testing", body: `
       <p><strong>Pairwise (combinatorial) testing</strong> tackles a problem Equivalence Partitioning and BVA don't solve alone: when a feature has many independent input parameters, testing every combination explodes fast (5 parameters with 4 values each = 1,024 combinations). Pairwise testing is built on the observation that most real-world defects are triggered by an interaction between just <strong>two</strong> parameters, not five at once — so a well-chosen subset of test cases that covers every possible <em>pair</em> of parameter values catches the large majority of interaction bugs at a fraction of the cost.</p>
       <p><em>Worked example:</em> a form with Browser (Chrome/Firefox/Safari), OS (Windows/Mac/Linux), and Language (EN/ES) has 18 possible full combinations — pairwise reduces this to around 9 test cases while still exercising every Browser×OS, Browser×Language, and OS×Language pair at least once. <strong>Orthogonal Array Testing</strong> is the underlying statistical method often used to generate these reduced sets.</p>
-      <p><strong>Use Case Testing</strong> derives test cases directly from documented use cases — the step-by-step interactions between an actor (user or external system) and the system under test, including the main success scenario and its alternate/exception flows. It's especially effective for validating that a workflow behaves correctly end-to-end from the user's perspective, complementing more input-focused techniques like ECP and BVA.</p>` }
+      <p><strong>Use Case Testing</strong> derives test cases directly from documented use cases — the step-by-step interactions between an actor (user or external system) and the system under test, including the main success scenario and its alternate/exception flows. It's especially effective for validating that a workflow behaves correctly end-to-end from the user's perspective, complementing more input-focused techniques like ECP and BVA.</p>` },
+    { h: "White-Box Techniques & Code Coverage", body: `
+      <p>White-box (structure-based) techniques derive tests from the code itself. From weakest to strongest:</p>
+      <ul>
+        <li><strong>Statement coverage</strong>: every executable statement runs at least once.</li>
+        <li><strong>Branch (decision) coverage</strong>: every branch outcome, true and false, is taken. 100% branch coverage implies 100% statement coverage, but not the other way round.</li>
+        <li><strong>MC/DC</strong> (modified condition/decision coverage): each Boolean sub-condition is shown to independently affect the outcome. It's required in safety-critical domains such as avionics.</li>
+        <li><strong>Path coverage</strong>: every executable path. It's the strongest, but often impractical because paths multiply with every loop and branch.</li>
+      </ul>
+      <p><strong>Cyclomatic complexity</strong> (McCabe) = <code>E − N + 2P</code> (edges, nodes and connected components of the control-flow graph). For a single function it equals the number of decisions + 1, and gives the number of independent paths to test. High values flag code that's hard to test and maintain.</p>
+      <p><strong>Data-flow coverage</strong> follows each variable from where it's defined to where it's used (def-use pairs), catching anomalies such as a variable used before it's set.</p>
+      <p><em>Example:</em> <code>if (a &gt; 0) { x = 1 }</code> with no else. The single test <code>a = 5</code> gives 100% statement coverage but only 50% branch coverage, because the false branch never runs. Add <code>a = 0</code> to reach 100% branch coverage.</p>` },
+    { h: "Combining Techniques: Classification Trees, Attacks & EP + BVA", body: `
+      <p><strong>EP + BVA together</strong> give the highest yield for input fields. For an age field accepting <strong>18–60</strong>:</p>
+      <ul>
+        <li>Partitions: <code>&lt; 18</code> (invalid), <code>18–60</code> (valid), <code>&gt; 60</code> (invalid).</li>
+        <li>Boundaries: <strong>17, 18, 19, 59, 60, 61</strong>.</li>
+      </ul>
+      <p><strong>Classification trees</strong> break the test object into aspects (e.g. <em>payment method</em>, <em>currency</em>, <em>customer type</em>), partition each aspect into classes, then pick combinations from the tree. They're a visual way to reason about complex combinations.</p>
+      <p><strong>Attacks and fault injection</strong> deliberately provoke known failure classes. What happens when the network drops mid-upload? When the disk is full? When a dependency times out?</p>
+      <p><strong>Checklist-based testing</strong> uses heuristic lists (such as SFDIPOT) for repeatable breadth; it's experience-based, like error guessing and exploratory testing.</p>` },
+    { h: "Test Case Anatomy & Coverage Trade-offs", body: `
+      <p><strong>A good test case contains:</strong></p>
+      <ol>
+        <li><strong>Unique ID and title</strong>: searchable, describing the behavior tested.</li>
+        <li><strong>Preconditions</strong>: required state, data and environment.</li>
+        <li><strong>Steps</strong>: numbered, minimal, exact.</li>
+        <li><strong>Test data</strong>: concrete values, ideally derived from EP/BVA.</li>
+        <li><strong>Expected result</strong>: the oracle, i.e. what "correct" means.</li>
+        <li><strong>Postconditions</strong> (optional): the expected end state.</li>
+        <li><strong>Traceability</strong>: a link to the requirement, risk or user story.</li>
+      </ol>
+      <p><strong>Choosing coverage in practice:</strong></p>
+      <ul>
+        <li><strong>EP + BVA</strong> for input-heavy forms: cheap and high yield.</li>
+        <li><strong>Decision tables</strong> whenever conditions interact. Remember that <code>2<sup>n</sup></code> combinations grow fast.</li>
+        <li><strong>State transitions</strong> for anything with modes, sessions or workflows.</li>
+        <li><strong>Pairwise</strong> when the parameter space explodes (browser × OS × locale × plan).</li>
+        <li><strong>Path or MC/DC coverage</strong> only for critical algorithms such as payments or safety logic.</li>
+        <li>Never chase 100% coverage everywhere; aim for <strong>risk-proportional</strong> coverage.</li>
+        <li><strong>No spec?</strong> Use other oracles: comparable products, heuristics such as HICCUPPS (Module 5), or real user behavior.</li>
+      </ul>` }
   ]
 },
 {
@@ -273,7 +375,38 @@ window.QAHUB_MODULES = [
         <li><strong>As a "bug bash"</strong> — a time-boxed session (30-60 minutes) where the whole team, not just QA, ad hoc tests a build together; this also spreads product knowledge and finds bugs no single tester's habits would have hit.</li>
         <li><strong>Time-boxed, not open-ended</strong> — even informal testing benefits from a stated time limit (e.g. 20 minutes on the new checkout flow) so it stays focused rather than wandering.</li>
       </ul>
-      <p>The main adjustment for Agile teams: log findings immediately in the sprint's tracker, even briefly, rather than relying on memory — ad hoc sessions move fast and details fade quickly once the session ends.</p>` }
+      <p>The main adjustment for Agile teams: log findings immediately in the sprint's tracker, even briefly, rather than relying on memory — ad hoc sessions move fast and details fade quickly once the session ends.</p>` },
+    { h: "Ad Hoc vs. Exploratory, Error Guessing & Monkey Testing", body: `
+      <p>Ad hoc testing is <strong>informal, unplanned testing without documentation</strong>. The tester relies on intuition, experience and product knowledge, with no predefined test cases, coverage metrics or formal procedure. It starts immediately with minimal preparation, and results are hard to reproduce unless you keep notes.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Approach</th><th>Planning</th><th>Documentation</th><th>Structure</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ad hoc testing</strong></td><td>None</td><td>None</td><td>Free-form, guided by skill and hunches</td></tr>
+          <tr><td><strong>Exploratory testing</strong></td><td>Time-boxed charters</td><td>Session notes</td><td>Charter-driven; learning, design and execution happen together</td></tr>
+          <tr><td><strong>Error guessing</strong></td><td>None</td><td>None</td><td>Guided by defect history and experience</td></tr>
+          <tr><td><strong>Monkey testing</strong></td><td>None</td><td>None</td><td>Random inputs with no intent</td></tr>
+        </tbody>
+      </table></div>
+      <p>Exploratory testing (Module 5) is the <strong>disciplined evolution</strong> of ad hoc testing: it keeps the freedom but adds charters, timeboxes and note-taking through session-based test management (SBTM).</p>
+      <p><strong>When ad hoc testing is especially valuable:</strong></p>
+      <ul>
+        <li><strong>Time pressure</strong>: a quick sanity pass before a demo or release.</li>
+        <li><strong>Early, unstable builds</strong> where scripted cases break constantly.</li>
+        <li><strong>Fresh eyes</strong>: a new tester's unbiased poking finds what scripted testers overlook.</li>
+        <li><strong>Post-fix spot checks</strong> around a hotfix.</li>
+        <li><strong>First impressions</strong>: "what would a user try first?"</li>
+      </ul>` },
+    { h: "Making Ad Hoc Testing Effective", body: `
+      <p><strong>The risks to manage:</strong> no coverage guarantee, so gaps stay invisible; poor reproducibility ("found a bug, can't reproduce it" wastes triage time); it isn't repeatable, so it can't serve as regression; and results depend heavily on individual skill.</p>
+      <p><strong>Six habits that fix most of that:</strong></p>
+      <ol>
+        <li><strong>Keep rough notes and screenshots</strong> as you go. Informal logging beats none.</li>
+        <li><strong>Time-box the session</strong> (60–90 minutes) and pick a target area.</li>
+        <li><strong>Mind the pesticide paradox</strong>: don't keep walking the same paths.</li>
+        <li><strong>Turn every defect you find into a formal, scripted test case</strong>, so it's covered next time.</li>
+        <li><strong>Use a heuristic to guide coverage</strong>, such as <strong>SFDIPOT</strong>: Structure, Function, Data, <strong>Interfaces</strong>, Platform, Operations, Time. That's the SFDPOT mnemonic from Module 5 with Interfaces added.</li>
+        <li><strong>Pair up</strong> with a developer or another tester for faster discovery.</li>
+      </ol>` }
   ]
 },
 {
@@ -724,7 +857,47 @@ expect(response.status()).toBe(201);</code></pre>
         <li><strong>Practice the worked examples from Module 2</strong> (BVA, ECP, Decision Tables, State Transition) until you can produce the test cases from scratch, not just recognize a correct example — 7.4 draws directly on this.</li>
         <li><strong>Time management:</strong> with 40 questions in a fixed window, don't let one hard question eat disproportionate time — mark it, move on, and return if time allows.</li>
         <li><strong>The night before:</strong> skim the glossary (Module 7 terms are all in this app's Glossary), don't cram new material, and get sleep — recognition-heavy exams reward a rested memory more than a last-minute reading marathon.</li>
-      </ul>` }
+      </ul>` },
+    { h: "7.8 Exam Blueprint: Format & Chapter Weighting", body: `
+      <p>CTFL v4.0 was released in 2023 and applies across Waterfall, Agile, DevOps and continuous delivery. The exam at a glance:</p>
+      <ul>
+        <li><strong>40 multiple-choice questions</strong>, 1 point each, in <strong>60 minutes</strong> (75 minutes for non-native speakers).</li>
+        <li><strong>Pass mark: 65%</strong>, i.e. <strong>26 of 40</strong>. There's no negative marking, so answer every question.</li>
+        <li>Closed book. No prerequisites. The certificate doesn't expire.</li>
+      </ul>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Ch.</th><th>Topic</th><th>Questions</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Fundamentals of Testing</td><td>8</td></tr>
+          <tr><td>2</td><td>Testing Throughout the SDLC</td><td>6</td></tr>
+          <tr><td>3</td><td>Static Testing</td><td>4</td></tr>
+          <tr><td>4</td><td>Test Analysis and Design</td><td><strong>11</strong> (highest weight)</td></tr>
+          <tr><td>5</td><td>Managing the Test Activities</td><td>9</td></tr>
+          <tr><td>6</td><td>Test Tools</td><td>2</td></tr>
+        </tbody>
+      </table></div>
+      <p>Chapters 4 and 5 together make up about half the exam, and that's where the <strong>K3 (apply)</strong> questions concentrate: deriving partitions and boundaries, filling decision tables, walking state transitions, calculating coverage, prioritizing by risk.</p>
+      <p><strong>Study path:</strong> read the official syllabus PDF and the ISTQB glossary from istqb.org; drill K3 techniques until they're automatic; take at least one full, timed 40-question mock exam and review it chapter by chapter; choose accredited training or self-study, since both are valid routes. Pay attention to what v4.0 added: DevOps/CI-CD context, collaboration-based approaches (ATDD, BDD), and more emphasis on risk-based testing.</p>
+      <p><em>Always check exam details against the current official syllabus. Figures here reflect v4.0.</em></p>` },
+    { h: "7.9 Beyond Foundation: The ISTQB Ladder", body: `
+      <p><strong>Agile Tester extension (CTFL-AT)</strong>: the agile testing mindset, the tester's role in Scrum and Kanban, the "three amigos" (business, development and testing perspectives discussing a story together), Definition of Done, and the <strong>agile testing quadrants</strong> (Crispin/Gregory, after Marick):</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Quadrant</th><th>Focus</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>Q1</td><td>Technology-facing, supports the team</td><td>Unit and component tests</td></tr>
+          <tr><td>Q2</td><td>Business-facing, supports the team</td><td>Functional and story tests, examples</td></tr>
+          <tr><td>Q3</td><td>Business-facing, critiques the product</td><td>Exploratory, usability, UAT</td></tr>
+          <tr><td>Q4</td><td>Technology-facing, critiques the product</td><td>Performance, security, other non-functional</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Advanced Level (CTAL)</strong>, three modules:</p>
+      <ul>
+        <li><strong>Test Analyst</strong>: advanced black-box techniques, usability, reviews, defect analysis.</li>
+        <li><strong>Technical Test Analyst</strong>: deeper white-box coverage including MC/DC, security and performance test design, automation architecture.</li>
+        <li><strong>Test Manager</strong>: strategy, risk, estimation, metrics, people and process improvement.</li>
+      </ul>
+      <p><strong>Expert Level (CTEL)</strong> covers topics such as test management and improving the test process. <strong>Specialist</strong> streams include Test Automation Engineer, Agile Technical Tester, and mobile, automotive, security and AI testing.</p>
+      <p>A common sequence: CTFL → Agile Tester or Test Automation Engineer → the CTAL module that matches your role.</p>` }
   ]
 },
 {
@@ -844,7 +1017,36 @@ expect(response.status()).toBe(201);</code></pre>
           <tr><td><strong>Screen readers</strong> (NVDA, JAWS, VoiceOver)</td><td>Manual testing tool — navigating the app using only a screen reader surfaces problems automated scanners miss entirely, like illogical reading order or unlabeled interactive elements.</td></tr>
         </tbody>
       </table></div>
-      <p><strong>Automated scanners catch roughly 30-40% of accessibility issues</strong> — they're excellent at objective checks (contrast ratios, missing attributes) but can't judge whether alt text is actually meaningful or whether a keyboard-only user can complete a full workflow without a mouse. A real accessibility test pass always includes manual keyboard-only navigation and at least spot-checking with a screen reader.</p>` }
+      <p><strong>Automated scanners catch roughly 30-40% of accessibility issues</strong> — they're excellent at objective checks (contrast ratios, missing attributes) but can't judge whether alt text is actually meaningful or whether a keyboard-only user can complete a full workflow without a mouse. A real accessibility test pass always includes manual keyboard-only navigation and at least spot-checking with a screen reader.</p>` },
+    { h: "8.10 Competency Ladder: Junior → Mid → Senior → Lead", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th>Level</th><th>What it looks like</th><th>Typical certification goal</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Junior</strong> (0–2 yrs)</td><td>Executes well-defined test cases; writes clear, reproducible bug reports; learns EP/BVA; follows the test plan; runs existing automation.</td><td>ISTQB CTFL within the first year</td></tr>
+          <tr><td><strong>Mid</strong> (2–5 yrs)</td><td>Designs test cases independently and picks techniques by risk; spots requirement gaps; owns features end to end; builds and maintains automation, debugs flaky tests, integrates CI; contributes to test plans; mentors juniors informally.</td><td>CTFL + Agile Tester or Test Automation Engineer</td></tr>
+          <tr><td><strong>Senior</strong> (5+ yrs)</td><td>Defines test strategy; owns risk analysis and exit criteria and influences release decisions; designs automation frameworks and CI/CD test pipelines; mentors formally; goes deep in at least one specialty (performance, security, mobile).</td><td>The CTAL module matching the role</td></tr>
+          <tr><td><strong>Lead / Head of QA</strong></td><td>Sets organization-wide strategy, standards and quality culture; develops other seniors; communicates quality posture to leadership.</td><td>Full CTAL, Expert Level in a specialty</td></tr>
+        </tbody>
+      </table></div>
+      <p>Years are only a rough guide. Promotion follows demonstrated behavior, not time served.</p>` },
+    { h: "8.11 Development Plan, Career Tracks & Metrics to Avoid", body: `
+      <p><strong>A personal development plan:</strong></p>
+      <ol>
+        <li><strong>Current level</strong> for each competency (test design, automation, process and strategy, defect communication, leadership), with evidence.</li>
+        <li><strong>Target level</strong> and timeframe.</li>
+        <li><strong>Gaps</strong>: the specific behaviors to develop.</li>
+        <li><strong>Actions</strong>: stretch projects, certification, mentoring, reading (e.g. <em>Lessons Learned in Software Testing</em>, <em>Explore It!</em>, <em>Continuous Delivery</em>).</li>
+        <li><strong>Checkpoints</strong>: a quarterly self-review against the ladder.</li>
+      </ol>
+      <p><strong>Career tracks:</strong></p>
+      <ul>
+        <li><strong>Individual contributor:</strong> manual QA → automation engineer (SDET) → senior SDET → principal QA / QA architect.</li>
+        <li><strong>Management:</strong> QA → team lead → QA manager → head of quality.</li>
+        <li><strong>Specialization:</strong> performance engineering, security/AppSec, mobile, accessibility, AI/ML testing.</li>
+      </ul>
+      <p><strong>High-leverage habits:</strong> learn to read code and logs; master SQL and HTTP; practice explaining quality risk to non-testers; contribute to open-source test tools; write about testing to build visibility.</p>
+      <p><strong>Metrics worth adding to 8.6:</strong> <em>defect leakage</em> (defects found after release vs before), <em>rejection rate</em> (bug reports rejected as invalid), <em>MTTR</em> (mean time to repair), and <em>automation ROI</em> (runs × time saved − maintenance cost).</p>
+      <p><strong>Anti-metrics to avoid:</strong> lines of test code, raw test count, pass rate on its own, coverage percentage as the only exit gate, and anything that penalizes testers for finding bugs.</p>` }
   ]
 },
 {
@@ -921,7 +1123,34 @@ expect(response.status()).toBe(201);</code></pre>
         <li><strong>Fast failure triage</strong> — linking a failure directly to logs, screenshots, or a video recording from that specific run, so a developer doesn't have to reproduce it locally just to see what happened.</li>
         <li><strong>Ownership and routing</strong> — failures automatically notify the team that owns the affected area, rather than landing in a channel nobody monitors.</li>
       </ul>
-      <p>This closes the loop with 9.3 and 9.4: a pipeline can be perfectly staged and a system perfectly observable in production, but if the test results themselves aren't reported in a way people actually act on, none of that architecture pays off.</p>` }
+      <p>This closes the loop with 9.3 and 9.4: a pipeline can be perfectly staged and a system perfectly observable in production, but if the test results themselves aren't reported in a way people actually act on, none of that architecture pays off.</p>` },
+    { h: "9.7 Test Strategy vs. Test Plan & Risk-Based Test Architecture", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Test strategy</th><th>Test plan</th></tr></thead>
+        <tbody>
+          <tr><td>Level</td><td>Organization or product, and stable over time</td><td>Project or release</td></tr>
+          <tr><td>Covers</td><td>Approach, tools, environments, automation policy, defect workflow</td><td>Scope, schedule, resources, risks, entry/exit criteria, deliverables</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Risk-based test architecture:</strong></p>
+      <ol>
+        <li>Identify risk items: features, integrations, data flows.</li>
+        <li>Score each by <strong>impact × likelihood</strong>.</li>
+        <li>Allocate effort in proportion to the score, and pick techniques by risk level. High risk gets decision tables, boundary analysis and deeper coverage; low risk gets smoke and sanity checks.</li>
+        <li>Re-assess every build, because risks change.</li>
+      </ol>
+      <p><strong>Product risks</strong> are what could go wrong in the product (wrong calculations, data loss, security holes). <strong>Project risks</strong> are what could derail the testing itself (late builds, unstable environments, losing people).</p>
+      <p><strong>Configuration management</strong> applies to all testware: keep test cases, scripts, data sets and environment configs under version control.</p>` },
+    { h: "9.8 Process Architecture & Quality Culture", body: `
+      <p><strong>Map testing onto delivery:</strong> clarify acceptance criteria during backlog refinement, hold "three amigos" conversations, and build test gates into the Definition of Done.</p>
+      <ul>
+        <li><strong>Entry criteria</strong>: build deployed, environment stable, test data ready, blockers cleared.</li>
+        <li><strong>Exit criteria</strong>: coverage targets met, defect gates passed (e.g. no open P1s), sign-off.</li>
+      </ul>
+      <p><strong>Automation placement and design:</strong> unit tests pre-commit, API and integration tests on merge, E2E nightly or pre-release, performance on a schedule. Use stable IDs or <code>data-*</code> attributes for locators rather than brittle XPath. Tag tests (smoke, regression), run them in parallel, keep a quarantine lane for flaky tests, and allow retries only for genuine infrastructure flakiness. Design for <strong>testability</strong>: ask developers for test hooks, deterministic modes, fake clocks and API-level access.</p>
+      <p><strong>Feedback loops:</strong> root-cause analysis of defects (<strong>5 Whys</strong>, <strong>fishbone/Ishikawa</strong> diagrams), and process-improvement models such as <strong>TMMi</strong> and <strong>TPI</strong>.</p>
+      <p><strong>Reporting:</strong> test progress (planned vs run vs passed), defect trend burn-down, and a quality assessment that states the <em>residual risk</em>.</p>
+      <p><strong>Quality culture:</strong> quality is the whole team's responsibility. Testers advocate for it; everyone builds it in. Shift left <em>and</em> right: production monitoring, error tracking and post-release feedback feed new tests. Because testing shows the presence of defects, not their absence, communicate <strong>confidence levels, not absolutes</strong>.</p>` }
   ]
 },
 {
@@ -1015,7 +1244,25 @@ expect(response.status()).toBe(201);</code></pre>
         <li><strong>SOC 2</strong> — commonly requires evidence of access controls, change management, and monitoring; QA teams are often asked to demonstrate test/deploy processes have appropriate approvals and audit trails.</li>
         <li><strong>GDPR-adjacent concerns</strong> — testing data deletion actually works end-to-end (a "delete my account" request should really delete the data, including backups/replicas on their retention schedule), and that PII is masked/anonymized in non-production test environments (tying back to Test Data Management, Module 9).</li>
       </ul>
-      <p>None of this makes a QA team responsible for full regulatory compliance — but knowing these concerns exist is what lets a tester recognize when a finding ("test data contains real customer emails") is actually a compliance issue, not just a data-hygiene nitpick.</p>` }
+      <p>None of this makes a QA team responsible for full regulatory compliance — but knowing these concerns exist is what lets a tester recognize when a finding ("test data contains real customer emails") is actually a compliance issue, not just a data-hygiene nitpick.</p>` },
+    { h: "10.8 Practical Security Test Ideas & Shift-Left Triage", body: `
+      <p>Security checks a QA engineer can run as part of normal feature testing (in an authorized environment):</p>
+      <ul>
+        <li><strong>Fuzz inputs</strong>: malformed, oversized, Unicode, null bytes. It's the classic ad hoc and error-guessing hybrid.</li>
+        <li><strong>Try to bypass auth</strong>: change user IDs in URLs and API calls; send expired, missing or tampered tokens.</li>
+        <li><strong>Check security headers</strong>: <code>Content-Security-Policy</code>, <code>Strict-Transport-Security</code> (HSTS), <code>X-Frame-Options</code>, and cookie flags <code>HttpOnly</code>, <code>Secure</code>, <code>SameSite</code>.</li>
+        <li><strong>Verify rate limiting and account lockout</strong> against brute-force login attempts.</li>
+        <li><strong>Look for data exposure</strong>: sensitive data in logs, API responses or URLs; TLS in transit; encryption at rest.</li>
+        <li><strong>Look for misconfiguration</strong>: default credentials, verbose error pages, exposed admin endpoints, over-permissive CORS.</li>
+      </ul>
+      <p><strong>Tools:</strong> OWASP ZAP, Burp Suite, nmap, sqlmap, semgrep, Trivy.</p>
+      <p><strong>Shift-left integration:</strong></p>
+      <ul>
+        <li>Run SAST, DAST and SCA (dependency scanning) in <strong>CI</strong>, not only before a release. Vulnerable libraries, such as the Log4Shell class of issue, are caught by automated SCA.</li>
+        <li>Gate merges on critical findings, and triage by severity using <strong>CVSS</strong> scores.</li>
+        <li>Put security defects in the <strong>same defect workflow</strong> as other bugs. Severity still isn't the same as priority.</li>
+        <li>Add a security checklist to each story's review, and support developers with secure-coding training and security champions.</li>
+      </ul>` }
   ]
 },
 {
@@ -1075,7 +1322,54 @@ expect(response.status()).toBe(201);</code></pre>
           <tr><td><strong>Mobile-specific testing</strong></td><td>Appium (Module 8), Firebase Test Lab, Xcode/Android Studio simulators</td><td>Real-device cloud farms (via BrowserStack/Sauce Labs) catch device-specific rendering and performance issues simulators can miss.</td></tr>
         </tbody>
       </table></div>
-      <p><strong>Continuous testing</strong> — the practice of running automated tests continuously throughout the pipeline (not just before release) so feedback on every change arrives within minutes — ties this module directly back to Module 9.3's pipeline architecture: none of these tools deliver value sitting outside a pipeline that actually runs them on every change.</p>` }
+      <p><strong>Continuous testing</strong> — the practice of running automated tests continuously throughout the pipeline (not just before release) so feedback on every change arrives within minutes — ties this module directly back to Module 9.3's pipeline architecture: none of these tools deliver value sitting outside a pipeline that actually runs them on every change.</p>` },
+    { h: "11.5 Performance Metrics & Practice Rules", body: `
+      <div class="table-wrap"><table>
+        <thead><tr><th>Type</th><th>Question it answers</th></tr></thead>
+        <tbody>
+          <tr><td>Load</td><td>Does the system meet its SLAs at the expected peak load?</td></tr>
+          <tr><td>Stress</td><td>Where is the breaking point, and does it recover?</td></tr>
+          <tr><td>Spike</td><td>What happens on sudden, extreme bursts?</td></tr>
+          <tr><td>Soak / endurance</td><td>Do leaks or degradation appear under sustained load?</td></tr>
+          <tr><td>Scalability</td><td>Does performance keep pace when resources and load are scaled up?</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Key metrics:</strong> response time, reported as <strong>percentiles</strong> (P95/P99 matter more than averages, because an average hides the slow tail that real users feel); throughput (requests per second); error rate; resource utilization (CPU, memory, I/O, database, network).</p>
+      <p><strong>Practice rules:</strong></p>
+      <ul>
+        <li>Define <strong>SLAs/SLOs before testing</strong>, e.g. "P95 under 800 ms at 500 concurrent users", and test against those numbers rather than "feels fast".</li>
+        <li>Find the <strong>bottleneck resource</strong>, not just the slow endpoint.</li>
+        <li>Model realistic user journeys with <strong>think time</strong>, and isolate the test environment.</li>
+        <li>Common tools: JMeter, k6, Gatling, Locust, LoadRunner.</li>
+      </ul>` },
+    { h: "11.6 Accessibility, Visual Regression & Localization", body: `
+      <ul>
+        <li><strong>Usability testing</strong>: watch real users complete tasks and measure task success, time on task and error count.</li>
+        <li><strong>Heuristic evaluation</strong>: an expert review against Nielsen's 10 usability heuristics.</li>
+        <li><strong>UI functional testing</strong>: forms, navigation, validation states, cross-browser and cross-device behavior.</li>
+        <li><strong>Visual regression testing</strong>: pixel- or DOM-diff tools (Percy, Applitools, BackstopJS) catch unintended visual changes that functional assertions miss.</li>
+        <li><strong>Accessibility (a11y)</strong> against WCAG 2.1/2.2 levels A, AA and AAA. Automated tools such as axe and Lighthouse catch only about <strong>30–40%</strong> of issues, so manual checks are mandatory: keyboard-only navigation, screen readers (NVDA, VoiceOver), contrast and focus order. See Module 8.9 for tools.</li>
+        <li><strong>Localization / i18n</strong>: date, number and currency formats, translations, text expansion, right-to-left (RTL) layouts.</li>
+      </ul>` },
+    { h: "11.7 What to Automate & the Test Pyramid", body: `
+      <p><strong>Good automation candidates:</strong> stable, repeated checks (smoke, regression, build verification); expensive manual work (load tests, data-heavy checks, cross-browser matrices); critical paths worth the maintenance (login, checkout, core API).</p>
+      <p><strong>Don't automate:</strong> one-off exploration, UI that's still changing every sprint, usability judgment, or anything whose maintenance cost exceeds the time it saves.</p>
+      <pre><code>       E2E         ← few: slow, fragile, high value
+      /   \\
+   Integration     ← a moderate number
+  /     |     \\
+ Unit (many)       ← fast, isolated, the foundation</code></pre>
+      <p>For microservices, the <strong>testing honeycomb</strong> and <strong>testing trophy</strong> shift the weight toward integration tests and away from end-to-end tests.</p>
+      <p><strong>Practice rules:</strong></p>
+      <ul>
+        <li>Treat test code like production code: version control, review, no duplication, refactoring.</li>
+        <li>Prefer <strong>API-level over UI-level checks</strong> for the same coverage; they're cheaper and more stable.</li>
+        <li>Isolate tests: reset data between runs and never depend on execution order.</li>
+        <li>Fail fast and clearly: an assertion should name the behavior that broke.</li>
+        <li><strong>Quarantine flaky tests immediately.</strong> A red suite people have learned to ignore is worse than no suite.</li>
+        <li>Run the fastest suites on every commit and slower ones on merge or nightly.</li>
+      </ul>` }
   ]
 }
 ];
+// __KB_V1__
