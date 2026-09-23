@@ -14,7 +14,7 @@
     langLabel: "Language",
     heroEyebrow: "Software Testing Course",
     homeTitle: "QA Learning Hub",
-    homeIntro: "A structured path through manual testing fundamentals, test design techniques, the full testing-types landscape, ad hoc and exploratory testing, REST API testing, ISTQB® CTFL v4.0 exam prep, a practical toolbox and career reference, test/QA architecture, application security testing, and hands-on performance, UI/UX, and automation testing. A quiz follows every module.",
+    homeIntro: "A structured path through manual testing fundamentals, test design techniques, the full testing-types landscape, ad hoc and exploratory testing, REST API testing, ISTQB® CTFL v4.0 exam prep, a practical toolbox and career reference, test/QA architecture, application security testing, and hands-on performance, UI/UX, and automation testing. A quiz follows every module. Module 12 covers AI testing: using AI to test, and testing AI-based systems.",
     statModulesCompleted: "Modules completed",
     statModulesInProgress: "Modules in progress",
     statQuizzesAttempted: "Quizzes attempted",
@@ -96,10 +96,14 @@
   };
 
   var LOCALE_KEY = "qahub_locale_v1";
+  // Own-property check so stored values like "__proto__" or "constructor" can't pass as a locale.
+  function hasLocale(code){
+    return Object.prototype.hasOwnProperty.call(window.QAHUB_LOCALES, code);
+  }
   function loadLocale(){
     try{
       var v = localStorage.getItem(LOCALE_KEY);
-      return v && window.QAHUB_LOCALES[v] ? v : "en";
+      return v && hasLocale(v) ? v : "en";
     }catch(e){ return "en"; }
   }
   function saveLocale(code){
@@ -137,7 +141,7 @@
     if(footer) footer.innerHTML = t("footerText");
   }
   function setLocale(code){
-    if(!window.QAHUB_LOCALES[code]) return;
+    if(!hasLocale(code)) return;
     currentLocale = code;
     saveLocale(code);
     quizState = null;
@@ -152,7 +156,11 @@
   function loadProgress(){
     try{
       var raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : { modules:{}, quizzes:{} };
+      var p = raw ? JSON.parse(raw) : null;
+      // Tampered or corrupt data (null, arrays, strings) falls back to a fresh record instead of crashing the app.
+      var isObj = function(o){ return o && typeof o === "object" && !Array.isArray(o); };
+      if(!isObj(p) || !isObj(p.modules) || !isObj(p.quizzes)) return { modules:{}, quizzes:{} };
+      return p;
     }catch(e){ return { modules:{}, quizzes:{} }; }
   }
   function saveProgress(p){
@@ -190,6 +198,7 @@
       return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
     });
   }
+  function pad2(n){ return (n < 10 ? "0" : "") + n; }
   function shuffle(arr){
     var a = arr.slice();
     for(var i=a.length-1;i>0;i--){
@@ -299,7 +308,7 @@
       var badgeLabel = status === "not-started" ? t("badgeNotStarted") : (status === "in-progress" ? t("badgeInProgress") : t("badgeCompleted"));
       var qScore = bestScore(m.id);
       html += '<a class="card" href="#/module/'+m.id+'" style="text-decoration:none;">';
-      html += '<span class="card-num">'+esc(t("moduleWord"))+' 0'+m.num+'</span>';
+      html += '<span class="card-num">'+esc(t("moduleWord"))+' '+pad2(m.num)+'</span>';
       html += '<h3>'+esc(m.title)+'</h3>';
       html += '<p>'+esc(m.summary)+'</p>';
       html += '<div class="card-foot"><span class="badge '+badgeClass+'">'+esc(badgeLabel)+'</span>'+(qScore!=null?'<span class="score-pill">'+esc(tf("bestScoreLabel",{pct:qScore}))+'</span>':'')+'</div>';
@@ -379,7 +388,7 @@
       var qs = QUIZZES[m.id] || [];
       var sc = bestScore(m.id);
       html += '<a class="card" href="#/quiz/'+m.id+'" style="text-decoration:none;">';
-      html += '<span class="card-num">'+esc(tf("moduleQuizCardNum",{num:'0'+m.num}))+'</span><h3>'+esc(m.title)+'</h3><p>'+esc(tf("quizQuestionsCount",{n:qs.length}))+'</p>';
+      html += '<span class="card-num">'+esc(tf("moduleQuizCardNum",{num:pad2(m.num)}))+'</span><h3>'+esc(m.title)+'</h3><p>'+esc(tf("quizQuestionsCount",{n:qs.length}))+'</p>';
       html += '<div class="card-foot"><span class="badge '+(sc!=null?'completed':'not-started')+'">'+(sc!=null?esc(t("attempted")):esc(t("notAttempted")))+'</span>'+(sc!=null?'<span class="score-pill">'+esc(tf("bestScoreLabel",{pct:sc}))+'</span>':'')+'</div>';
       html += '</a>';
     });
