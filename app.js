@@ -585,6 +585,14 @@
       az += '<a href="#gl-'+encodeURIComponent(letter)+'">'+esc(letter)+'</a>';
     });
     azWrap.innerHTML = '<div class="az-jump">'+az+'</div>';
+    // Scroll in place instead of changing location.hash, which the router would treat as an unknown route.
+    azWrap.querySelectorAll("a").forEach(function(a){
+      a.addEventListener("click", function(e){
+        e.preventDefault();
+        var el = document.getElementById(a.getAttribute("href").slice(1));
+        if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    });
 
     var listWrap = document.getElementById("qh-gloss-list");
     if(filtered.length === 0){
