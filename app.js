@@ -14,7 +14,21 @@
     langLabel: "Language",
     heroEyebrow: "Software Testing Course",
     homeTitle: "QA Learning Hub",
-    homeIntro: "A structured path through manual testing fundamentals, test design techniques, the full testing-types landscape, ad hoc and exploratory testing, REST API testing, ISTQB® CTFL v4.0 exam prep, a practical toolbox and career reference, test/QA architecture, application security testing, and hands-on performance, UI/UX, and automation testing. A quiz follows every module. Module 12 covers AI testing: using AI to test, and testing AI-based systems.",
+    homeIntro: "A structured path through software testing, from your first manual test case to testing AI systems. It starts with the fundamentals and test design techniques, surveys the full range of testing types, and builds practical skill with ad hoc, exploratory and REST API testing. From there it moves to ISTQB® CTFL v4.0 exam prep, a working toolbox and career reference, test/QA architecture, application security, and hands-on performance, UI/UX and automation testing. Module 12 covers AI testing from both sides: using AI to test, and testing AI-based systems. Every module ends with a quiz, and a mixed Final Exam draws on all of them.",
+    pathHeading: "Your learning path",
+    pathIntro: "The modules are grouped into five stages. Take them in order if you're new to QA, or jump to the stage you need. Complete each module's quiz before moving on; the Final Exam is the checkpoint at the end.",
+    stage1Title: "Stage 1 · Foundations",
+    stage1Desc: "The vocabulary, principles and core techniques every other module builds on.",
+    stage2Title: "Stage 2 · Hands-on testing",
+    stage2Desc: "Unscripted and API testing: finding the bugs scripts miss and testing below the UI.",
+    stage3Title: "Stage 3 · Certification & career",
+    stage3Desc: "Formalize what you know for the ISTQB® CTFL v4.0 exam, and build your toolbox and career plan.",
+    stage4Title: "Stage 4 · Engineering quality at scale",
+    stage4Desc: "Architecture, security and hands-on performance, UI/UX and automation work.",
+    stage5Title: "Stage 5 · AI testing",
+    stage5Desc: "Using AI in testing, and testing AI-based systems.",
+    lessonsCount: "{n} lessons",
+    quizQsCount: "{n}-question quiz",
     statModulesCompleted: "Modules completed",
     statModulesInProgress: "Modules in progress",
     statQuizzesAttempted: "Quizzes attempted",
@@ -315,11 +329,32 @@
       html += '</a>';
     });
     html += '</div>';
+    html += renderLearningPath(MODULES);
     html += '<div class="cta-row" style="margin-top:36px;gap:14px;">';
     html += '<a class="btn" href="#/quiz/final">'+esc(t("ctaFinalExam"))+'</a>';
     html += '<a class="btn secondary" href="#/glossary">'+esc(t("ctaBrowseGlossary"))+'</a>';
     html += '</div>';
     root.innerHTML = html;
+  }
+  var PATH_STAGES = [[1,2,3],[4,5,6],[7,8],[9,10,11],[12]];
+  function renderLearningPath(MODULES){
+    var QUIZZES = curQuizzes();
+    var html = '<h2 style="margin-top:40px;">'+esc(t("pathHeading"))+'</h2>';
+    html += '<p style="max-width:62ch;color:var(--ink-soft);">'+esc(t("pathIntro"))+'</p>';
+    PATH_STAGES.forEach(function(nums, i){
+      html += '<section class="path-stage"><h3>'+esc(t("stage"+(i+1)+"Title"))+'</h3>';
+      html += '<p class="path-stage-desc">'+esc(t("stage"+(i+1)+"Desc"))+'</p>';
+      nums.forEach(function(num){
+        var m = MODULES.filter(function(x){ return x.num === num; })[0];
+        if(!m) return;
+        var qs = (QUIZZES[m.id] || []).length;
+        html += '<div class="path-module"><a href="#/module/'+esc(m.id)+'"><strong>'+esc(t("crumbModule"))+' '+esc(m.num)+' — '+esc(m.title)+'</strong></a>';
+        html += '<p>'+esc(m.overview || m.summary)+'</p>';
+        html += '<div class="path-meta">'+esc(tf("lessonsCount",{n:m.lessons.length}))+(qs?' · <a href="#/quiz/'+esc(m.id)+'">'+esc(tf("quizQsCount",{n:qs}))+'</a>':'')+'</div></div>';
+      });
+      html += '</section>';
+    });
+    return html;
   }
   function statTile(num, label){
     return '<div class="stat-tile"><div class="stat-num">'+esc(num)+'</div><div class="stat-label">'+esc(label)+'</div></div>';
@@ -337,6 +372,9 @@
     var html = '';
     html += '<div class="crumb"><a href="#/home">'+esc(t("navDashboard"))+'</a> / '+esc(t("crumbModule"))+' '+m.num+'</div>';
     html += '<h1>'+esc(m.title)+'</h1>';
+    if(m.overview){
+      html += '<p style="max-width:70ch;color:var(--ink-soft);font-size:1.05rem;">'+esc(m.overview)+'</p>';
+    }
     html += '<div class="callout"><div class="eyebrow">'+esc(t("calloutTakeaway"))+'</div><p>'+esc(m.takeaway)+'</p></div>';
     if(m.callout){
       html += '<div class="callout reading"><div class="eyebrow">'+esc(m.callout.label)+'</div><p>'+m.callout.body+'</p></div>';

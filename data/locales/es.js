@@ -13,7 +13,21 @@ window.QAHUB_LOCALES.es = {
     langLabel: "Idioma",
     heroEyebrow: "Curso de Pruebas de Software",
     homeTitle: "QA Learning Hub",
-    homeIntro: "Un recorrido estructurado por los fundamentos de las pruebas manuales, las técnicas de diseño de pruebas, el panorama completo de los tipos de pruebas, las pruebas ad hoc y exploratorias, las pruebas de API REST, y la preparación para el examen ISTQB® CTFL v4.0 — además de una caja de herramientas práctica y una referencia profesional, arquitectura de pruebas/QA, pruebas de seguridad de aplicaciones, y pruebas prácticas de rendimiento, UI/UX y automatización. Cada módulo va seguido de un cuestionario. El Módulo 12 trata las pruebas de IA: usar la IA para probar y probar sistemas basados en IA.",
+    homeIntro: "Un recorrido estructurado por las pruebas de software, desde tu primer caso de prueba manual hasta las pruebas de sistemas de IA. Empieza con los fundamentos y las técnicas de diseño de pruebas, repasa todos los tipos de pruebas y desarrolla habilidades prácticas con las pruebas ad hoc, exploratorias y de API REST. Después pasa a la preparación del examen ISTQB® CTFL v4.0, una caja de herramientas práctica y una referencia profesional, la arquitectura de pruebas/QA, la seguridad de aplicaciones y las pruebas prácticas de rendimiento, UI/UX y automatización. El Módulo 12 aborda las pruebas de IA desde ambos lados: usar la IA para probar y probar sistemas basados en IA. Cada módulo termina con un cuestionario, y un examen final mixto reúne preguntas de todos ellos.",
+    pathHeading: "Tu ruta de aprendizaje",
+    pathIntro: "Los módulos se agrupan en cinco etapas. Si eres nuevo en QA, síguelos en orden; si no, salta a la etapa que necesites. Completa el cuestionario de cada módulo antes de continuar; el examen final es el punto de control al terminar.",
+    stage1Title: "Etapa 1 · Fundamentos",
+    stage1Desc: "El vocabulario, los principios y las técnicas esenciales sobre los que se construyen los demás módulos.",
+    stage2Title: "Etapa 2 · Pruebas prácticas",
+    stage2Desc: "Pruebas sin guion y pruebas de API: encontrar los errores que los scripts pasan por alto y probar por debajo de la interfaz.",
+    stage3Title: "Etapa 3 · Certificación y carrera",
+    stage3Desc: "Formaliza lo que sabes para el examen ISTQB® CTFL v4.0 y arma tu caja de herramientas y tu plan de carrera.",
+    stage4Title: "Etapa 4 · Calidad a gran escala",
+    stage4Desc: "Arquitectura, seguridad y trabajo práctico de rendimiento, UI/UX y automatización.",
+    stage5Title: "Etapa 5 · Pruebas de IA",
+    stage5Desc: "Usar la IA en las pruebas y probar sistemas basados en IA.",
+    lessonsCount: "{n} lecciones",
+    quizQsCount: "Cuestionario de {n} preguntas",
     statModulesCompleted: "Módulos completados",
     statModulesInProgress: "Módulos en progreso",
     statQuizzesAttempted: "Cuestionarios intentados",
@@ -82,6 +96,7 @@ window.QAHUB_LOCALES.es = {
   num: 1,
   title: "Fundamentos de las Pruebas Manuales",
   summary: "Por qué los testers humanos siguen siendo importantes, y cómo llevar a cabo bien un esfuerzo de pruebas manuales.",
+  overview: "Empieza aquí. Aprenderás por qué existen las pruebas (error → defecto → fallo), los 7 principios de las pruebas, los niveles y tipos de prueba, y el proceso de pruebas desde la planificación hasta el cierre, incluidas la trazabilidad y las pruebas estáticas. La parte práctica explica paso a paso cómo realizar pruebas manuales, compara pruebas manuales y automatizadas, y muestra cómo valorar la severidad y la prioridad y redactar un informe de defecto con el que un desarrollador pueda trabajar.",
   takeaway: "Las pruebas manuales siguen siendo una parte vital del QA moderno — la flexibilidad y la intuición humana detectan errores complejos tempranamente, garantizando experiencias de usuario confiables. La automatización al 100% no es posible, lo que hace que las pruebas manuales sean imprescindibles.",
   lessons: [
     { h: "¿Qué son las Pruebas Manuales?", body: `
@@ -260,6 +275,7 @@ window.QAHUB_LOCALES.es = {
   num: 2,
   title: "Técnicas de Pruebas de Software y Diseño de Casos de Prueba",
   summary: "Técnicas estructuradas — límites, particiones, tablas de decisión, estados — para lograr una alta cobertura con menos casos de prueba.",
+  overview: "Cómo lograr una cobertura alta con pocos casos de prueba. Primero, las técnicas de caja negra: análisis de valores límite, partición de equivalencia, tablas de decisión, pruebas de transición de estados y predicción de errores. Después, las pruebas por pares y de casos de uso, las técnicas de caja blanca con cobertura de sentencias y de ramas, la combinación de técnicas (árboles de clasificación, PE + AVL) y la anatomía de un caso de prueba bien escrito.",
   takeaway: "Dado que las pruebas exhaustivas son imposibles, las técnicas estructuradas permiten a los testers lograr una alta cobertura con el mínimo de casos de prueba, enfocándose en las áreas propensas a errores: límites, particiones, combinaciones y estados.",
   lessons: [
     { h: "Los 7 principios de las pruebas de software", body: `
@@ -361,6 +377,7 @@ window.QAHUB_LOCALES.es = {
   num: 3,
   title: "Tipos de Pruebas de Software — Catálogo de Referencia",
   summary: "El panorama de los tipos de pruebas, y un top 20 seleccionado para conocer primero.",
+  overview: "Un mapa del mundo de las pruebas. Define qué es un tipo de prueba, presenta un top 20 seleccionado que todo QA debería conocer y clasifica los tipos en funcionales, no funcionales, estructurales, relacionados con cambios y especializados. Las pruebas no funcionales en la práctica (rendimiento, seguridad, usabilidad, compatibilidad) se tratan con más profundidad. El glosario funciona como catálogo completo junto a este módulo.",
   takeaway: "Un “tipo” de prueba es una clasificación con su propio objetivo, estrategia y entregables — por ejemplo, las Pruebas de Accesibilidad validan que una app sea utilizable por personas con discapacidades. Entender el panorama ayuda a los profesionales de QA a elegir la combinación correcta para lograr una cobertura completa.",
   lessons: [
     { h: "¿Qué es un tipo de Prueba de Software?", body: `
@@ -403,6 +420,7 @@ window.QAHUB_LOCALES.es = {
   num: 4,
   title: "Pruebas Ad Hoc",
   summary: "Pruebas no planificadas y no documentadas que intentan romper el sistema por intuición y creatividad.",
+  overview: "Pruebas no planificadas ni documentadas que se apoyan en la intuición. Aprenderás cuándo compensan las pruebas ad hoc, sus variantes (buddy testing, pruebas en pareja y monkey testing), sus ventajas y límites, y cómo integrarlas en los sprints ágiles. El módulo termina distinguiendo las pruebas ad hoc de las exploratorias y de la predicción de errores, con hábitos que hacen que las sesiones breves sin guion den resultados útiles.",
   takeaway: "Las pruebas ad hoc son pruebas no planificadas y no documentadas en las que el tester intenta “romper” el sistema usando intuición y creatividad — más valiosas cuando el tiempo es escaso o como complemento de las pruebas estructuradas.",
   lessons: [
     { h: "¿Qué son las Pruebas Ad Hoc?", body: `
@@ -491,6 +509,7 @@ window.QAHUB_LOCALES.es = {
   num: 5,
   title: "Pruebas Exploratorias",
   summary: "Diseño y ejecución de pruebas simultáneos — pruebas ad hoc con un propósito.",
+  overview: "Pruebas exploratorias bien hechas: aprendizaje, diseño y ejecución de pruebas al mismo tiempo. Cubre pruebas guionizadas frente a exploratorias, la gestión de pruebas basada en sesiones (SBTM), la redacción de charters de prueba y cómo ejecutar y cerrar con un debriefing sesiones de duración limitada. Heurísticas como SFDPOT y HICCUPPS se aplican a ejemplos prácticos basados en riesgos (inicio de sesión, API REST, multitenencia). Termina con cómo informar, medir y convertir los hallazgos en comprobaciones de regresión automatizadas.",
   takeaway: "Las pruebas exploratorias son el diseño y la ejecución simultáneos de pruebas — una actividad “de pensamiento” que enfatiza la investigación y el aprendizaje, ampliamente utilizada en Agile. Son pruebas ad hoc con un propósito: estructuradas y rigurosas, no aleatorias.",
   lessons: [
     { h: "¿Qué son las Pruebas Exploratorias?", body: `
@@ -695,6 +714,7 @@ Exploratory = Mission + Timebox + Investigation
   num: 6,
   title: "Pruebas de API REST",
   summary: "Validar servicios RESTful enviando solicitudes HTTP y comprobando las respuestas — sin necesidad de interfaz de usuario.",
+  overview: "Probar servicios sin interfaz de usuario. Verás los fundamentos de REST, los métodos HTTP, la anatomía de solicitudes y respuestas y los códigos de estado; después, el diseño de entradas y valores límite, la validación de respuestas y esquemas y las pruebas de contrato. Las lecciones avanzadas tratan la autenticación y la autorización, el aislamiento entre inquilinos, los flujos con estado y el OWASP API Security Top 10 (2023). Completan el módulo la automatización con Postman/Playwright en CI/CD, plantillas reutilizables y una hoja de ruta para QA junior.",
   takeaway: "Las pruebas de API REST validan servicios web RESTful enviando solicitudes HTTP (GET, POST, PUT, DELETE) y comprobando las respuestas — sin necesidad de interfaz de usuario.",
   lessons: [
     { h: "¿Qué es REST?", body: `
@@ -877,6 +897,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 7,
   title: "Ruta de Certificación ISTQB® CTFL v4.0",
   summary: "Un resumen de apoyo al estudio del temario del ISTQB Foundation Level — la certificación de pruebas de nivel de entrada, neutral respecto al proveedor.",
+  overview: "Una guía de estudio original para el examen ISTQB® Certified Tester Foundation Level v4.0. Sigue los seis capítulos del programa (fundamentos, pruebas a lo largo del ciclo de vida del desarrollo, pruebas estáticas, análisis y diseño de pruebas, gestión de las actividades de prueba y herramientas de prueba) y añade el formato del examen y el peso de cada capítulo, consejos de estudio, errores frecuentes y la escalera de certificaciones ISTQB.",
   takeaway: "ISTQB® Foundation Level es la certificación de nivel de entrada, neutral respecto al proveedor, para testers de software en todo el mundo. Su temario organiza el conocimiento de pruebas en 6 capítulos, con cada objetivo de aprendizaje etiquetado con un \"nivel K\" (K1 = recordar, K2 = comprender, K3 = aplicar) que indica con qué profundidad se espera conocerlo en el examen.",
   callout: {
     label: "Lectura recomendada",
@@ -982,6 +1003,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 8,
   title: "Caja de Herramientas de QA y Desarrollo Profesional",
   summary: "Una referencia práctica para el QA en activo: herramientas reales por categoría, las métricas que realmente se comentan en los standups, una hoja de repaso para entrevistas, y dónde seguir aprendiendo.",
+  overview: "La estantería de referencia del QA en activo. Repasa frameworks de automatización, lenguajes de programación, herramientas de API, rendimiento, seguimiento de defectos y CI/CD, las pruebas asistidas por IA, las herramientas de accesibilidad y las métricas y KPI de QA que vale la pena seguir (y las que conviene evitar). Para tu carrera incluye una chuleta para entrevistas, una escalera de competencias de junior a lead, un plan de desarrollo y certificaciones y comunidades a las que seguir.",
   takeaway: "Conocer la teoría de las pruebas te abre la puerta — saber qué herramienta usar, qué métrica le importa realmente a un stakeholder, y cómo hablar de tu experiencia es lo que te mantiene avanzando. Este módulo es una referencia viva, no un curso para \"terminar\".",
   lessons: [
     { h: "8.1 Frameworks de automatización de pruebas", body: `
@@ -1131,6 +1153,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 9,
   title: "QA y Arquitectura de Pruebas",
   summary: "Las decisiones de diseño detrás de una práctica de QA escalable: cómo se arquitectan realmente los frameworks de automatización, los entornos de prueba, los pipelines de CI/CD y las pruebas de sistemas distribuidos.",
+  overview: "Las decisiones de diseño detrás de una práctica de QA que escala. Los temas son la arquitectura de frameworks de automatización, los entornos y la gestión de datos de prueba, el diseño de pipelines de CI/CD, las pruebas de sistemas distribuidos y microservicios, los informes y la observabilidad, la estrategia frente al plan de pruebas con planificación basada en riesgos, y los procesos y la cultura que hacen de la calidad una responsabilidad compartida.",
   takeaway: "Probar bien a escala no es solo conocer técnicas — es arquitectónico: cómo se estructura un framework para que 200 pruebas no se conviertan en 200 lugares donde corregir el mismo localizador roto, cómo se gestionan los entornos y los datos para que las pruebas sean reproducibles, cómo se organiza un pipeline por etapas para que la retroalimentación llegue rápido, y cómo se adapta el testeo cuando un sistema deja de ser una sola unidad desplegable.",
   lessons: [
     { h: "9.1 Arquitectura de Frameworks de Automatización de Pruebas", body: `
@@ -1235,6 +1258,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 10,
   title: "Pruebas de Seguridad y AppSec",
   summary: "Pensar como un atacante: el OWASP Top 10, las herramientas que encuentran vulnerabilidades antes que los atacantes, y cómo la seguridad se integra en el SDLC en lugar de añadirse al final.",
+  overview: "La seguridad de aplicaciones desde el punto de vista del tester. Aprenderás a pensar como un atacante, recorrerás el OWASP Top 10 y las clases de vulnerabilidades más comunes, y usarás SAST, DAST y otras herramientas. El módulo introduce las pruebas de penetración, el modelado de amenazas y la revisión de código seguro, los controles de seguridad en CI/CD, las nociones básicas de cumplimiento normativo e ideas prácticas de pruebas de seguridad que se pueden priorizar pronto en el ciclo de vida.",
   takeaway: "Las pruebas de seguridad no son una disciplina separada añadida al QA al final — es la misma mentalidad de pruebas (encontrar dónde se rompe el sistema) aplicada a una pregunta distinta: no \"¿esto funciona como se pretende?\", sino \"¿se puede hacer que esto haga algo para lo que nunca estuvo pensado?\". Cuanto antes se haga esa pregunta, más barata resulta la respuesta.",
   lessons: [
     { h: "10.1 Fundamentos de las Pruebas de Seguridad y la Mentalidad del Atacante", body: `
@@ -1347,6 +1371,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 11,
   title: "Pruebas de Rendimiento, UI/UX y Automatización en la Práctica",
   summary: "Poniendo la caja de herramientas a trabajar: ejecutar una prueba de carga, evaluar la usabilidad con heurísticas reales, escribir tu primera prueba automatizada, y conocer qué herramientas adicionales cubren los vacíos.",
+  overview: "Práctica real con la caja de herramientas. Ejecuta una prueba de carga e interpreta las métricas de rendimiento, evalúa la usabilidad con heurísticas reconocidas y escribe tu primera prueba automatizada de UI. También verás pruebas de accesibilidad, de regresión visual y de localización, otras herramientas que conviene conocer y cómo decidir qué automatizar con la pirámide de pruebas.",
   takeaway: "Cada técnica y herramienta cubierta hasta ahora se junta aquí: este módulo trata de realmente ejecutar una prueba de carga, realmente evaluar una UI contra una heurística de usabilidad, y realmente escribir una prueba automatizada — no solo reconocer el vocabulario para ellas.",
   lessons: [
     { h: "11.1 Pruebas de Carga y Rendimiento en la Práctica", body: `
@@ -1453,6 +1478,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 12,
   title: "Pruebas de IA: usar la IA y probar la IA",
   summary: "Dos disciplinas en una: herramientas de prueba asistidas por IA y agénticas, y cómo probar sistemas de aprendizaje automático y de IA generativa.",
+  overview: "«Pruebas de IA» tiene dos significados, y este módulo cubre ambos. Usar la IA para probar: qué pueden hacer las herramientas asistidas por IA y las agénticas, y cómo evaluarlas antes de adoptarlas. Probar sistemas basados en IA: por qué los modelos no deterministas son difíciles de probar, los oráculos estadísticos, la matriz de confusión con precisión/exhaustividad (recall)/F1, la calidad de los datos, la monitorización de la deriva en producción y las comprobaciones de alucinaciones e inyección de prompts en funciones de IA generativa/LLM. Cierra con la ruta de certificación ISTQB CT-AI.",
   takeaway: "«Pruebas de IA» significa dos cosas distintas: usar la IA para ayudar a probar software y probar software que a su vez está basado en IA. Juzga las herramientas de IA por cuánto mantenimiento ahorran, no por lo rápido que escriben pruebas. En los sistemas de IA, sustituye los resultados esperados exactos por oráculos estadísticos: métricas, tolerancias y monitorización continua.",
   lessons: [
     { h: "12.1 Dos significados de «pruebas de IA»", body: `

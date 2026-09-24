@@ -13,7 +13,21 @@ window.QAHUB_LOCALES.pl = {
     langLabel: "Język",
     heroEyebrow: "Kurs testowania oprogramowania",
     homeTitle: "QA Learning Hub",
-    homeIntro: "Uporządkowana ścieżka nauki obejmująca podstawy testowania manualnego, techniki projektowania testów, pełną panoramę rodzajów testów, testowanie ad hoc i eksploracyjne, testowanie REST API oraz przygotowanie do egzaminu ISTQB® CTFL v4.0 — a także praktyczny zestaw narzędzi i przewodnik po karierze, architekturę QA i testów, testowanie bezpieczeństwa aplikacji oraz praktyczne testowanie wydajności, UI/UX i automatyzacji. Po każdym module znajduje się quiz. Moduł 12 omawia testowanie a AI: używanie AI do testowania oraz testowanie systemów opartych na AI.",
+    homeIntro: "Uporządkowana ścieżka przez testowanie oprogramowania — od pierwszego ręcznego przypadku testowego po testowanie systemów AI. Zaczyna się od podstaw i technik projektowania testów, przedstawia pełną panoramę rodzajów testów i buduje praktyczne umiejętności w testowaniu ad hoc, eksploracyjnym i REST API. Dalej są przygotowanie do egzaminu ISTQB® CTFL v4.0, praktyczny zestaw narzędzi i przewodnik po karierze, architektura testów/QA, bezpieczeństwo aplikacji oraz praktyczne testowanie wydajności, UI/UX i automatyzacji. Moduł 12 omawia testowanie AI z obu stron: wykorzystanie AI do testowania oraz testowanie systemów opartych na AI. Każdy moduł kończy się quizem, a mieszany egzamin końcowy obejmuje wszystkie moduły.",
+    pathHeading: "Twoja ścieżka nauki",
+    pathIntro: "Moduły są podzielone na pięć etapów. Jeśli dopiero zaczynasz w QA, przechodź je po kolei; jeśli nie — przejdź od razu do potrzebnego etapu. Przed przejściem dalej zalicz quiz z każdego modułu; egzamin końcowy to punkt kontrolny na końcu ścieżki.",
+    stage1Title: "Etap 1 · Podstawy",
+    stage1Desc: "Słownictwo, zasady i kluczowe techniki, na których opierają się wszystkie kolejne moduły.",
+    stage2Title: "Etap 2 · Testowanie w praktyce",
+    stage2Desc: "Testowanie bez skryptów i testowanie API: znajdowanie błędów, które umykają skryptom, i testowanie poniżej interfejsu.",
+    stage3Title: "Etap 3 · Certyfikacja i kariera",
+    stage3Desc: "Uporządkuj swoją wiedzę przed egzaminem ISTQB® CTFL v4.0 i zbuduj swój zestaw narzędzi oraz plan kariery.",
+    stage4Title: "Etap 4 · Jakość na dużą skalę",
+    stage4Desc: "Architektura, bezpieczeństwo oraz praktyczna praca z wydajnością, UI/UX i automatyzacją.",
+    stage5Title: "Etap 5 · Testowanie AI",
+    stage5Desc: "Wykorzystanie AI w testowaniu oraz testowanie systemów opartych na AI.",
+    lessonsCount: "Lekcje: {n}",
+    quizQsCount: "Quiz — pytania: {n}",
     statModulesCompleted: "Ukończone moduły",
     statModulesInProgress: "Moduły w trakcie",
     statQuizzesAttempted: "Podejścia do quizów",
@@ -82,6 +96,7 @@ window.QAHUB_LOCALES.pl = {
   num: 1,
   title: "Podstawy testowania manualnego",
   summary: "Dlaczego testerzy nadal mają znaczenie i jak dobrze prowadzić testowanie manualne.",
+  overview: "Zacznij tutaj. Dowiesz się, po co istnieje testowanie (pomyłka → defekt → awaria), poznasz 7 zasad testowania, poziomy i typy testów oraz proces testowy od planowania do zakończenia, w tym śledzenie powiązań i testowanie statyczne. Część praktyczna pokazuje krok po kroku, jak prowadzić testy manualne, porównuje testowanie manualne i automatyczne oraz uczy oceniać ważność i priorytet i pisać raporty o defektach, z którymi programista może od razu pracować.",
   takeaway: "Testowanie manualne pozostaje istotną częścią nowoczesnego QA — elastyczność i ludzka intuicja pozwalają wcześnie wychwycić złożone błędy, zapewniając niezawodne doświadczenia użytkownika. 100% automatyzacja nie jest możliwa, co czyni testowanie manualne niezbędnym.",
   lessons: [
     { h: "Czym jest testowanie manualne?", body: `
@@ -260,6 +275,7 @@ window.QAHUB_LOCALES.pl = {
   num: 2,
   title: "Techniki testowania oprogramowania i projektowanie przypadków testowych",
   summary: "Ustrukturyzowane techniki — granice, klasy równoważności, tablice decyzyjne, stany — pozwalające osiągnąć wysokie pokrycie przy mniejszej liczbie przypadków testowych.",
+  overview: "Jak osiągnąć wysokie pokrycie przy niewielkiej liczbie przypadków testowych. Najpierw techniki czarnoskrzynkowe: analiza wartości brzegowych, podział na klasy równoważności, tablice decyzyjne, testowanie przejść między stanami i zgadywanie błędów. Następnie testowanie par i przypadków użycia, techniki białoskrzynkowe z pokryciem instrukcji i gałęzi, łączenie technik (drzewa klasyfikacji, KR + AWB) oraz budowa dobrze napisanego przypadku testowego.",
   takeaway: "Ponieważ wyczerpujące testowanie jest niemożliwe, ustrukturyzowane techniki pozwalają testerom osiągnąć wysokie pokrycie przy minimalnej liczbie przypadków testowych, koncentrując się na obszarach podatnych na błędy: granicach, podziałach, kombinacjach i stanach.",
   lessons: [
     { h: "7 zasad testowania oprogramowania", body: `
@@ -361,6 +377,7 @@ window.QAHUB_LOCALES.pl = {
   num: 3,
   title: "Rodzaje testowania oprogramowania — katalog referencyjny",
   summary: "Panorama rodzajów testowania oraz wyselekcjonowana lista 20 najważniejszych do poznania.",
+  overview: "Mapa świata testowania. Moduł wyjaśnia, czym jest typ testów, przedstawia wybraną dwudziestkę, którą powinien znać każdy tester, i dzieli typy na funkcjonalne, niefunkcjonalne, strukturalne, związane ze zmianami oraz specjalistyczne. Testowanie niefunkcjonalne w praktyce (wydajność, bezpieczeństwo, użyteczność, kompatybilność) omówiono dokładniej. Słowniczek służy jako pełny katalog uzupełniający ten moduł.",
   takeaway: "„Rodzaj” testowania to klasyfikacja z własnym celem, strategią i produktami — na przykład Testowanie Dostępności (Accessibility Testing) weryfikuje, czy aplikacja jest użyteczna dla osób z niepełnosprawnościami. Zrozumienie tej panoramy pomaga specjalistom QA dobrać właściwą kombinację dla pełnego pokrycia.",
   lessons: [
     { h: "Czym jest rodzaj testowania oprogramowania?", body: `
@@ -403,6 +420,7 @@ window.QAHUB_LOCALES.pl = {
   num: 4,
   title: "Testowanie ad hoc",
   summary: "Niezaplanowane, nieudokumentowane testowanie, które próbuje przełamać system dzięki intuicji i kreatywności.",
+  overview: "Nieplanowane, nieudokumentowane testowanie oparte na intuicji. Dowiesz się, kiedy testowanie ad hoc się opłaca, jakie ma odmiany (buddy testing, testowanie w parach i monkey testing), jakie ma zalety i ograniczenia oraz jak włączyć je do sprintów zwinnych. Na koniec moduł odróżnia testowanie ad hoc od eksploracyjnego i od zgadywania błędów oraz pokazuje nawyki, dzięki którym krótkie sesje bez skryptu dają wartościowe wyniki.",
   takeaway: "Testowanie ad hoc to niezaplanowane, nieudokumentowane testowanie, w którym tester próbuje „złamać” system, wykorzystując intuicję i kreatywność — najbardziej wartościowe, gdy czasu jest mało, lub jako uzupełnienie testowania ustrukturyzowanego.",
   lessons: [
     { h: "Czym jest testowanie ad hoc?", body: `
@@ -491,6 +509,7 @@ window.QAHUB_LOCALES.pl = {
   num: 5,
   title: "Testowanie eksploracyjne",
   summary: "Jednoczesne projektowanie i wykonywanie testów — testowanie ad hoc z celem.",
+  overview: "Testowanie eksploracyjne zrobione porządnie: jednoczesne poznawanie systemu, projektowanie i wykonywanie testów. Omawia testowanie skryptowe a eksploracyjne, zarządzanie testami opartymi na sesjach (SBTM), pisanie kart testów oraz prowadzenie i podsumowywanie sesji ograniczonych czasowo. Heurystyki takie jak SFDPOT i HICCUPPS są stosowane w przykładach opartych na ryzyku (logowanie, REST API, wielodostępność). Na koniec: jak raportować, mierzyć i zamieniać odkrycia w automatyczne testy regresji.",
   takeaway: "Testowanie eksploracyjne to jednoczesne projektowanie i wykonywanie testów — czynność „myślowa”, kładąca nacisk na badanie i uczenie się, powszechnie stosowana w Agile. To testowanie ad hoc z celem: ustrukturyzowane i rygorystyczne, a nie przypadkowe.",
   lessons: [
     { h: "Czym jest testowanie eksploracyjne?", body: `
@@ -695,6 +714,7 @@ Exploratory = Mission + Timebox + Investigation
   num: 6,
   title: "Testowanie REST API",
   summary: "Walidacja usług RESTful poprzez wysyłanie żądań HTTP i sprawdzanie odpowiedzi — bez potrzeby interfejsu użytkownika.",
+  overview: "Testowanie usług bez interfejsu użytkownika. Poznasz podstawy REST, metody HTTP, budowę żądań i odpowiedzi oraz kody statusu, a potem projektowanie danych wejściowych i wartości brzegowych, walidację odpowiedzi i schematów oraz testowanie kontraktów. Zaawansowane lekcje dotyczą uwierzytelniania i autoryzacji, izolacji najemców, przepływów ze stanem oraz OWASP API Security Top 10 (2023). Moduł uzupełniają automatyzacja w Postman/Playwright w CI/CD, szablony wielokrotnego użytku i mapa drogowa dla juniora QA.",
   takeaway: "Testowanie REST API polega na walidacji usług sieciowych RESTful poprzez wysyłanie żądań HTTP (GET, POST, PUT, DELETE) i sprawdzanie odpowiedzi — bez potrzeby interfejsu użytkownika.",
   lessons: [
     { h: "Czym jest REST?", body: `
@@ -877,6 +897,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 7,
   title: "Ścieżka certyfikacji ISTQB® CTFL v4.0",
   summary: "Przegląd programu nauczania ISTQB Foundation Level w formie towarzysza nauki — podstawowej, niezależnej od dostawcy certyfikacji testowej.",
+  overview: "Autorski przewodnik do nauki przed egzaminem ISTQB® Certified Tester Foundation Level v4.0. Obejmuje sześć rozdziałów sylabusa (podstawy testowania, testowanie w cyklu życia wytwarzania oprogramowania, testowanie statyczne, analiza i projektowanie testów, zarządzanie czynnościami testowymi oraz narzędzia testowe), a do tego format egzaminu i wagę rozdziałów, wskazówki do nauki, typowe pułapki oraz dalszą ścieżkę certyfikacji ISTQB.",
   takeaway: "ISTQB® Foundation Level to podstawowa, niezależna od dostawcy certyfikacja dla testerów oprogramowania na całym świecie. Jej sylabus organizuje wiedzę o testowaniu w 6 rozdziałów, a każdy cel nauczania jest oznaczony „poziomem K” (K1 = zapamiętaj, K2 = zrozum, K3 = zastosuj), który wskazuje, jak dogłębnie egzamin oczekuje danej wiedzy.",
   callout: {
     label: "Polecana lektura",
@@ -982,6 +1003,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 8,
   title: "Zestaw narzędzi QA i rozwój kariery",
   summary: "Praktyczny przewodnik dla pracującego specjalisty QA: rzeczywiste narzędzia według kategorii, metryki, które naprawdę pojawiają się na standupach, ściąga na rozmowę kwalifikacyjną oraz miejsca, gdzie kontynuować naukę.",
+  overview: "Podręczna półka praktykującego testera. Przegląd frameworków automatyzacji, języków programowania, narzędzi do API, wydajności, śledzenia defektów i CI/CD, testowania wspomaganego przez AI, narzędzi dostępności oraz metryk i KPI QA, które warto śledzić (i tych, których lepiej unikać). Z myślą o karierze: ściągawka przed rozmową kwalifikacyjną, drabina kompetencji od juniora do leada, plan rozwoju oraz certyfikaty i społeczności, które warto śledzić.",
   takeaway: "Znajomość teorii testowania otwiera drzwi — to wiedza, po jakie narzędzie sięgnąć, na jakiej metryce naprawdę zależy interesariuszowi i jak mówić o swoim doświadczeniu, sprawia, że idziesz dalej. Ten moduł to żywy materiał referencyjny, a nie kurs do „ukończenia”.",
   lessons: [
     { h: "8.1 Frameworki automatyzacji testów", body: `
@@ -1131,6 +1153,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 9,
   title: "Architektura QA i testów",
   summary: "Decyzje projektowe stojące za skalowalną praktyką QA: jak w rzeczywistości projektuje się frameworki automatyzacji, środowiska testowe, pipeline'y CI/CD oraz testowanie systemów rozproszonych.",
+  overview: "Decyzje projektowe stojące za praktyką QA, która się skaluje. Tematy to architektura frameworków automatyzacji testów, środowiska testowe i zarządzanie danymi testowymi, projektowanie pipeline'ów CI/CD, testowanie systemów rozproszonych i mikroserwisów, raportowanie i obserwowalność, strategia testów a plan testów z planowaniem opartym na ryzyku oraz procesy i kultura, dzięki którym jakość jest odpowiedzialnością wszystkich.",
   takeaway: "Dobre testowanie na dużą skalę to nie tylko znajomość technik — to architektura: jak framework jest zbudowany, aby 200 testów nie stało się 200 miejscami do naprawienia tego samego zepsutego lokatora, jak zarządza się środowiskami i danymi, aby testy były powtarzalne, jak zaprojektowany jest pipeline, aby informacja zwrotna docierała szybko, oraz jak testowanie adaptuje się, gdy system przestaje być jedną wdrażalną jednostką.",
   lessons: [
     { h: "9.1 Architektura frameworku automatyzacji testów", body: `
@@ -1235,6 +1258,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 10,
   title: "Testowanie bezpieczeństwa i AppSec",
   summary: "Myślenie jak atakujący: OWASP Top 10, narzędzia znajdujące podatności, zanim zrobią to atakujący, oraz jak bezpieczeństwo jest wbudowywane w SDLC, zamiast być doklejane na końcu.",
+  overview: "Bezpieczeństwo aplikacji z perspektywy testera. Nauczysz się myśleć jak atakujący, przejdziesz przez OWASP Top 10 i najczęstsze klasy podatności oraz poznasz SAST, DAST i inne narzędzia. Moduł wprowadza w testy penetracyjne, modelowanie zagrożeń i bezpieczny przegląd kodu, bramki bezpieczeństwa w CI/CD, podstawy zgodności z regulacjami oraz praktyczne pomysły na testy bezpieczeństwa, które można ocenić wcześnie w cyklu życia.",
   takeaway: "Testowanie bezpieczeństwa nie jest odrębną dyscypliną doklejoną do QA na końcu — to ten sam sposób myślenia testowego (znajdź, gdzie system się psuje) skierowany na inne pytanie: nie „czy to działa zgodnie z zamierzeniem”, ale „czy można sprawić, by zrobiło coś, czego nigdy nie miało robić”. Im wcześniej zadane zostanie to pytanie, tym tańsza odpowiedź.",
   lessons: [
     { h: "10.1 Podstawy testowania bezpieczeństwa i sposób myślenia atakującego", body: `
@@ -1347,6 +1371,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 11,
   title: "Testowanie wydajności, UI/UX i automatyzacji w praktyce",
   summary: "Wykorzystanie zestawu narzędzi w praktyce: przeprowadzenie testu obciążeniowego, ocena użyteczności za pomocą prawdziwych heurystyk, napisanie pierwszego testu automatycznego oraz wiedza, które dodatkowe narzędzia wypełniają luki.",
+  overview: "Praktyczna praca z zestawem narzędzi. Przeprowadź test obciążeniowy i odczytaj metryki wydajności, oceń użyteczność za pomocą uznanych heurystyk i napisz swój pierwszy automatyczny test UI. Omówione są też testy dostępności, wizualnej regresji i lokalizacji, dodatkowe narzędzia warte poznania oraz to, jak z pomocą piramidy testów decydować, co automatyzować.",
   takeaway: "Wszystkie techniki i narzędzia omówione do tej pory łączą się tutaj: ten moduł dotyczy faktycznego przeprowadzenia testu obciążeniowego, faktycznej oceny interfejsu względem heurystyki użyteczności i faktycznego napisania testu automatycznego — a nie tylko rozpoznawania związanego z nimi słownictwa.",
   lessons: [
     { h: "11.1 Testowanie obciążeniowe i wydajnościowe w praktyce", body: `
@@ -1453,6 +1478,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 12,
   title: "Testowanie a AI: używanie AI i testowanie AI",
   summary: "Dwie dyscypliny w jednej: narzędzia testowe wspierane przez AI i agentowe oraz testowanie systemów uczenia maszynowego i generatywnej AI.",
+  overview: "„Testowanie AI” ma dwa znaczenia i ten moduł omawia oba. Wykorzystanie AI do testowania: co potrafią narzędzia wspomagane przez AI i narzędzia agentowe oraz jak je ocenić przed wdrożeniem. Testowanie systemów opartych na AI: dlaczego niedeterministyczne modele trudno testować, wyrocznie statystyczne, macierz pomyłek z precyzją/czułością (recall)/F1, jakość danych, monitorowanie dryfu na produkcji oraz sprawdzanie halucynacji i prompt injection w funkcjach generatywnej AI/LLM. Na koniec ścieżka certyfikacji ISTQB CT-AI.",
   takeaway: "„Testowanie AI” oznacza dwie różne rzeczy: używanie AI do pomocy w testowaniu oprogramowania oraz testowanie oprogramowania, które samo opiera się na AI. Oceniaj narzędzia AI po tym, ile pracy utrzymaniowej oszczędzają, a nie po tym, jak szybko piszą testy. W systemach AI zastąp dokładne oczekiwane wyniki wyroczniami statystycznymi: metrykami, tolerancjami i ciągłym monitoringiem.",
   lessons: [
     { h: "12.1 Dwa znaczenia „testowania AI”", body: `

@@ -242,3 +242,11 @@ footer.hub-foot{margin-top:50px; padding-top:20px; border-top:1px solid var(--bo
   .q-card{padding:16px 16px;}
   .result-score{font-size:2.2rem;}
 }
+
+/* Learning path (dashboard) */
+.path-stage{margin-top:22px; padding:18px 20px; background:var(--surface); border:1px solid var(--border); border-radius:12px;}
+.path-stage h3{margin:0 0 4px;}
+.path-stage-desc{margin:0 0 12px; color:var(--ink-soft);}
+.path-module{padding:12px 0; border-top:1px solid var(--border);}
+.path-module p{margin:6px 0; max-width:75ch;}
+.path-meta{font-size:.85rem; color:var(--ink-soft);}

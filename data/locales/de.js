@@ -13,7 +13,21 @@ window.QAHUB_LOCALES.de = {
     langLabel: "Sprache",
     heroEyebrow: "Softwaretest-Kurs",
     homeTitle: "QA Learning Hub",
-    homeIntro: "Ein strukturierter Weg durch die Grundlagen des manuellen Testens, Testdesign-Techniken, die gesamte Landschaft der Testarten, Ad-hoc- und explorative Tests, REST-API-Testing sowie die Prüfungsvorbereitung für ISTQB® CTFL v4.0 — dazu eine praktische Toolbox und Karrierereferenz, Test-/QA-Architektur sowie Sicherheitstests für Anwendungen und praxisnahe Performance-, UI/UX- und Automatisierungstests. Nach jedem Modul folgt ein Quiz. Modul 12 behandelt KI-Testen: KI zum Testen nutzen und KI-basierte Systeme testen.",
+    homeIntro: "Ein strukturierter Weg durch das Softwaretesten – vom ersten manuellen Testfall bis zum Testen von KI-Systemen. Er beginnt mit den Grundlagen und Testdesign-Techniken, gibt einen Überblick über alle Testarten und baut praktische Fähigkeiten im Ad-hoc-, explorativen und REST-API-Testen auf. Danach folgen die Prüfungsvorbereitung für ISTQB® CTFL v4.0, eine praktische Toolbox und Karrierereferenz, Test-/QA-Architektur, Anwendungssicherheit sowie praxisnahe Performance-, UI/UX- und Automatisierungstests. Modul 12 behandelt KI-Testen von beiden Seiten: KI zum Testen nutzen und KI-basierte Systeme testen. Jedes Modul endet mit einem Quiz, und eine gemischte Abschlussprüfung greift auf alle Module zurück.",
+    pathHeading: "Dein Lernpfad",
+    pathIntro: "Die Module sind in fünf Etappen gegliedert. Wenn du neu in der QA bist, arbeite sie der Reihe nach durch – oder springe direkt zur Etappe, die du brauchst. Schließe das Quiz jedes Moduls ab, bevor du weitermachst; die Abschlussprüfung ist der Kontrollpunkt am Ende.",
+    stage1Title: "Etappe 1 · Grundlagen",
+    stage1Desc: "Das Vokabular, die Prinzipien und die Kerntechniken, auf denen alle weiteren Module aufbauen.",
+    stage2Title: "Etappe 2 · Praktisches Testen",
+    stage2Desc: "Ungeskriptetes Testen und API-Testen: Fehler finden, die Skripte übersehen, und unterhalb der Benutzeroberfläche testen.",
+    stage3Title: "Etappe 3 · Zertifizierung & Karriere",
+    stage3Desc: "Festige dein Wissen für die Prüfung ISTQB® CTFL v4.0 und stelle deine Toolbox und deinen Karriereplan zusammen.",
+    stage4Title: "Etappe 4 · Qualität im großen Maßstab",
+    stage4Desc: "Architektur, Sicherheit sowie praktische Performance-, UI/UX- und Automatisierungsarbeit.",
+    stage5Title: "Etappe 5 · KI-Testen",
+    stage5Desc: "KI im Testen einsetzen und KI-basierte Systeme testen.",
+    lessonsCount: "{n} Lektionen",
+    quizQsCount: "Quiz mit {n} Fragen",
     statModulesCompleted: "Abgeschlossene Module",
     statModulesInProgress: "Module in Bearbeitung",
     statQuizzesAttempted: "Versuchte Quizze",
@@ -82,6 +96,7 @@ window.QAHUB_LOCALES.de = {
   num: 1,
   title: "Grundlagen des manuellen Testens",
   summary: "Warum menschliche Tester weiterhin wichtig sind und wie man manuelles Testen gut durchführt.",
+  overview: "Hier beginnst du. Du lernst, warum es Tests gibt (Fehlhandlung → Fehlerzustand → Fehlerwirkung), die 7 Grundsätze des Testens, Teststufen und Testarten sowie den Testprozess von der Planung bis zum Abschluss, einschließlich Rückverfolgbarkeit und statischem Testen. Der praktische Teil zeigt Schritt für Schritt, wie man manuell testet, wägt manuelles gegen automatisiertes Testen ab und erklärt, wie man Schweregrad und Priorität bewertet und einen Fehlerbericht schreibt, mit dem Entwickler arbeiten können.",
   takeaway: "Manuelles Testen bleibt ein wesentlicher Bestandteil moderner QA — Flexibilität und menschliche Intuition entdecken komplexe Fehler frühzeitig und sorgen für zuverlässige Nutzererlebnisse. 100% Automatisierung ist nicht möglich, was manuelles Testen unverzichtbar macht.",
   lessons: [
     { h: "Was ist manuelles Testen?", body: `
@@ -260,6 +275,7 @@ window.QAHUB_LOCALES.de = {
   num: 2,
   title: "Softwaretest-Techniken & Testfalldesign",
   summary: "Strukturierte Techniken — Grenzwerte, Partitionen, Entscheidungstabellen, Zustände — für hohe Abdeckung mit weniger Testfällen.",
+  overview: "Wie man mit wenigen Testfällen eine hohe Abdeckung erreicht. Zuerst kommen Black-Box-Verfahren: Grenzwertanalyse, Äquivalenzklassenbildung, Entscheidungstabellen, zustandsbasiertes Testen und intuitive Testfallermittlung. Danach folgen paarweises und anwendungsfallbasiertes Testen, White-Box-Verfahren mit Anweisungs- und Zweigüberdeckung, die Kombination von Verfahren (Klassifikationsbäume, ÄK + GWA) und der Aufbau eines gut geschriebenen Testfalls.",
   takeaway: "Da erschöpfendes Testen unmöglich ist, ermöglichen strukturierte Techniken Testern hohe Abdeckung mit minimalen Testfällen, indem sie sich auf fehleranfällige Bereiche konzentrieren: Grenzwerte, Partitionen, Kombinationen und Zustände.",
   lessons: [
     { h: "Die 7 Prinzipien des Softwaretestens", body: `
@@ -361,6 +377,7 @@ window.QAHUB_LOCALES.de = {
   num: 3,
   title: "Arten des Softwaretestens — Referenzkatalog",
   summary: "Die Landschaft der Testarten und eine kuratierte Top 20, die man zuerst kennen sollte.",
+  overview: "Eine Landkarte der Testwelt. Das Modul definiert, was eine Testart ist, stellt eine kuratierte Top 20 vor, die jede QA-Fachkraft kennen sollte, und ordnet Testarten den Kategorien funktional, nicht-funktional, strukturell, änderungsbezogen und spezialisiert zu. Nicht-funktionales Testen in der Praxis (Performance, Sicherheit, Gebrauchstauglichkeit, Kompatibilität) wird vertieft. Das Glossar dient ergänzend als vollständiger Katalog.",
   takeaway: "Eine „Art“ des Testens ist eine Klassifizierung mit eigenem Ziel, eigener Strategie und eigenen Ergebnissen — zum Beispiel validiert Accessibility Testing, dass eine App für Menschen mit Behinderungen nutzbar ist. Das Verständnis der Landschaft hilft QA-Fachleuten, die richtige Kombination für vollständige Abdeckung auszuwählen.",
   lessons: [
     { h: "Was ist eine Softwaretestart?", body: `
@@ -403,6 +420,7 @@ window.QAHUB_LOCALES.de = {
   num: 4,
   title: "Ad-hoc-Testing",
   summary: "Ungeplantes, undokumentiertes Testen, das versucht, das System mit Intuition und Kreativität zum Absturz zu bringen.",
+  overview: "Ungeplantes, undokumentiertes Testen, das auf Intuition setzt. Du lernst, wann sich Ad-hoc-Testen lohnt, welche Varianten es gibt (Buddy-, Paar- und Monkey-Testing), welche Vor- und Nachteile es hat und wie man es in agile Sprints einbindet. Zum Schluss grenzt das Modul Ad-hoc-Testen von explorativem Testen und intuitiver Testfallermittlung ab und zeigt Gewohnheiten, mit denen kurze ungeskriptete Sitzungen verwertbare Ergebnisse liefern.",
   takeaway: "Ad-hoc-Testing ist ungeplantes, undokumentiertes Testen, bei dem der Tester versucht, das System mit Intuition und Kreativität zu „brechen“ — am wertvollsten, wenn die Zeit knapp ist oder als Ergänzung zu strukturiertem Testen.",
   lessons: [
     { h: "Was ist Ad-hoc-Testing?", body: `
@@ -491,6 +509,7 @@ window.QAHUB_LOCALES.de = {
   num: 5,
   title: "Exploratives Testen",
   summary: "Gleichzeitiges Testdesign und Testausführung — Ad-hoc-Testing mit einem Zweck.",
+  overview: "Exploratives Testen, richtig gemacht: gleichzeitiges Lernen, Testentwurf und Testdurchführung. Behandelt werden geskriptetes vs. exploratives Testen, Session-Based Test Management, das Schreiben von Test-Chartas sowie das Durchführen und Nachbesprechen zeitlich begrenzter Sessions. Heuristiken wie SFDPOT und HICCUPPS werden auf risikobasierte Praxisbeispiele angewendet (Login, REST-API, Mandantenfähigkeit). Zum Abschluss geht es darum, wie man berichtet, misst und Entdeckungen in automatisierte Regressionsprüfungen überführt.",
   takeaway: "Exploratives Testen ist gleichzeitiges Testdesign und Testausführung — eine „denkende“ Aktivität, die Untersuchung und Lernen betont, weit verbreitet in Agile. Es ist Ad-hoc-Testing mit einem Zweck: strukturiert und rigoros, nicht zufällig.",
   lessons: [
     { h: "Was ist exploratives Testen?", body: `
@@ -695,6 +714,7 @@ Exploratory = Mission + Timebox + Investigation
   num: 6,
   title: "REST-API-Testing",
   summary: "Validierung von RESTful-Diensten durch das Senden von HTTP-Anfragen und die Überprüfung der Antworten — keine UI erforderlich.",
+  overview: "Services ohne Benutzeroberfläche testen. Du lernst REST-Grundlagen, HTTP-Methoden, den Aufbau von Anfragen und Antworten sowie Statuscodes, danach Eingabe- und Grenzwertdesign, Antwort- und Schemavalidierung sowie Vertragstests. Fortgeschrittene Lektionen behandeln Authentifizierung und Autorisierung, Mandantenisolation, zustandsbehaftete Abläufe und die OWASP API Security Top 10 (2023). Automatisierung mit Postman/Playwright in CI/CD, wiederverwendbare Vorlagen und eine Roadmap für Junior-QA runden das Modul ab.",
   takeaway: "REST-API-Testing validiert RESTful-Webdienste, indem HTTP-Anfragen (GET, POST, PUT, DELETE) gesendet und die Antworten geprüft werden — keine UI erforderlich.",
   lessons: [
     { h: "Was ist REST?", body: `
@@ -877,6 +897,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 7,
   title: "ISTQB® CTFL v4.0 Zertifizierungspfad",
   summary: "Ein Studienbegleiter-Überblick über den ISTQB-Foundation-Level-Lehrplan — die anbieterneutrale Einstiegszertifizierung im Testen.",
+  overview: "Ein eigenständig verfasster Lernbegleiter für die Prüfung ISTQB® Certified Tester Foundation Level v4.0. Er folgt den sechs Kapiteln des Lehrplans (Grundlagen, Testen im Softwareentwicklungslebenszyklus, statisches Testen, Testanalyse und -entwurf, Management der Testaktivitäten und Testwerkzeuge) und ergänzt Prüfungsformat und Kapitelgewichtung, Lerntipps, häufige Stolperfallen und die weitere ISTQB-Zertifizierungsleiter.",
   takeaway: "ISTQB® Foundation Level ist die weltweit anbieterneutrale Einstiegszertifizierung für Softwaretester. Der Lehrplan gliedert Testwissen in 6 Kapitel, wobei jedes Lernziel mit einem „K-Level“ (K1 = erinnern, K2 = verstehen, K3 = anwenden) versehen ist, das anzeigt, wie tief die Prüfung dieses Wissen erwartet.",
   callout: {
     label: "Empfohlene Lektüre",
@@ -982,6 +1003,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 8,
   title: "QA-Toolbox & Karrierewachstum",
   summary: "Eine praktische Referenz für die arbeitende QA-Fachkraft: reale Werkzeuge nach Kategorie, die Metriken, die in Standups wirklich besprochen werden, ein Interview-Spickzettel und wo man weiterlernen kann.",
+  overview: "Das Nachschlageregal für die QA-Praxis. Es gibt einen Überblick über Automatisierungsframeworks, Programmiersprachen, API-, Performance-, Bugtracking- und CI/CD-Werkzeuge, KI-gestütztes Testen, Barrierefreiheits-Tools sowie die QA-Metriken und KPIs, die sich zu verfolgen lohnen (und die man vermeiden sollte). Für die Karriere gibt es einen Spickzettel fürs Vorstellungsgespräch, eine Kompetenzleiter von Junior bis Lead, einen Entwicklungsplan sowie Zertifizierungen und Communities, denen man folgen sollte.",
   takeaway: "Testtheorie zu kennen verschafft dir Zugang — zu wissen, zu welchem Werkzeug man greift, welche Metrik einen Stakeholder tatsächlich interessiert, und wie man über die eigene Erfahrung spricht, ist das, was einen weiterbringt. Dieses Modul ist eine lebendige Referenz, kein Kurs zum „Abschließen“.",
   lessons: [
     { h: "8.1 Testautomatisierungs-Frameworks", body: `
@@ -1131,6 +1153,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 9,
   title: "QA & Test-Architektur",
   summary: "Die Designentscheidungen hinter einer skalierbaren QA-Praxis: wie Automatisierungs-Frameworks, Testumgebungen, CI/CD-Pipelines und das Testen verteilter Systeme tatsächlich architektiert werden.",
+  overview: "Die Designentscheidungen hinter einer skalierbaren QA-Praxis. Themen sind die Architektur von Testautomatisierungsframeworks, Testumgebungen und Testdatenmanagement, das Design von CI/CD-Pipelines, das Testen verteilter Systeme und Microservices, Reporting und Observability, Teststrategie vs. Testplan mit risikobasierter Planung sowie die Prozesse und die Kultur, die Qualität zur Verantwortung aller machen.",
   takeaway: "Gutes Testen im großen Maßstab bedeutet nicht nur, Techniken zu kennen — es ist architektonisch: wie ein Framework strukturiert ist, damit 200 Tests nicht zu 200 Stellen werden, an denen derselbe kaputte Locator repariert werden muss, wie Umgebungen und Daten verwaltet werden, damit Tests reproduzierbar sind, wie eine Pipeline gestaffelt ist, damit Feedback schnell ankommt, und wie sich Testen anpasst, sobald ein System nicht mehr eine einzige deploybare Einheit ist.",
   lessons: [
     { h: "9.1 Testautomatisierungs-Framework-Architektur", body: `
@@ -1235,6 +1258,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 10,
   title: "Sicherheitstests & AppSec",
   summary: "Wie ein Angreifer denken: die OWASP Top 10, die Werkzeuge, die Schwachstellen finden, bevor Angreifer es tun, und wie Sicherheit in den SDLC eingebaut wird, statt erst am Ende angeflanscht zu werden.",
+  overview: "Anwendungssicherheit aus Sicht der Testenden. Du lernst, wie ein Angreifer zu denken, gehst die OWASP Top 10 und häufige Schwachstellenklassen durch und nutzt SAST, DAST und weitere Werkzeuge. Das Modul führt in Penetrationstests, Bedrohungsmodellierung und sichere Code-Reviews ein und behandelt Sicherheits-Gates in CI/CD, Compliance-Grundlagen sowie praktische Sicherheitstestideen, die sich früh im Lebenszyklus einordnen lassen.",
   takeaway: "Sicherheitstests sind keine separate Disziplin, die am Ende an QA angeflanscht wird — es ist dieselbe Testmentalität (herausfinden, wo das System bricht), nur auf eine andere Frage gerichtet: nicht „funktioniert das wie beabsichtigt“, sondern „kann man das dazu bringen, etwas zu tun, wofür es nie gedacht war“. Je früher diese Frage gestellt wird, desto günstiger ist die Antwort.",
   lessons: [
     { h: "10.1 Grundlagen des Sicherheitstestens & die Denkweise eines Angreifers", body: `
@@ -1347,6 +1371,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 11,
   title: "Performance-, UI/UX- und Automatisierungstests in der Praxis",
   summary: "Die Toolbox in Aktion: einen Lasttest durchführen, Usability anhand echter Heuristiken bewerten, den ersten automatisierten Test schreiben und wissen, welche zusätzlichen Werkzeuge die Lücken schließen.",
+  overview: "Praktische Arbeit mit der Toolbox. Führe einen Lasttest durch und lies Performance-Metriken, bewerte die Gebrauchstauglichkeit mit etablierten Heuristiken und schreibe deinen ersten automatisierten UI-Test. Außerdem geht es um Barrierefreiheits-, visuelle Regressions- und Lokalisierungstests, weitere nützliche Werkzeuge und darum, mithilfe der Testpyramide zu entscheiden, was automatisiert werden sollte.",
   takeaway: "Hier laufen alle bisher behandelten Techniken und Werkzeuge zusammen: In diesem Modul geht es darum, tatsächlich einen Lasttest durchzuführen, eine UI tatsächlich anhand einer Usability-Heuristik zu bewerten und tatsächlich einen automatisierten Test zu schreiben — nicht nur das Vokabular dafür zu erkennen.",
   lessons: [
     { h: "11.1 Last- und Performance-Testing in der Praxis", body: `
@@ -1453,6 +1478,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 12,
   title: "KI-Testen: KI nutzen & KI testen",
   summary: "Zwei Disziplinen in einer: KI-gestützte und agentische Testwerkzeuge sowie das Testen von Machine-Learning- und generativen KI-Systemen.",
+  overview: "KI-Testen hat zwei Bedeutungen, und dieses Modul behandelt beide. KI zum Testen nutzen: was KI-gestützte und agentenbasierte Werkzeuge leisten und wie man sie vor der Einführung bewertet. KI-basierte Systeme testen: warum nichtdeterministische Modelle schwer zu testen sind, statistische Testorakel, die Konfusionsmatrix mit Precision/Recall/F1, Datenqualität, Drift-Überwachung im Betrieb sowie Prüfungen auf Halluzinationen und Prompt-Injection in generativen KI-/LLM-Funktionen. Zum Abschluss wird der Zertifizierungsweg ISTQB CT-AI vorgestellt.",
   takeaway: "„KI-Testen“ meint zwei verschiedene Dinge: KI zum Testen von Software nutzen und Software testen, die selbst auf KI basiert. Beurteile KI-Werkzeuge danach, wie viel Wartung sie einsparen, nicht wie schnell sie Tests schreiben. Ersetze bei KI-Systemen exakte Soll-Ergebnisse durch statistische Orakel: Metriken, Toleranzen und kontinuierliches Monitoring.",
   lessons: [
     { h: "12.1 Zwei Bedeutungen von „KI-Testen“", body: `

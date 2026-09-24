@@ -13,7 +13,21 @@ window.QAHUB_LOCALES.it = {
     langLabel: "Lingua",
     heroEyebrow: "Corso di Software Testing",
     homeTitle: "QA Learning Hub",
-    homeIntro: "Un percorso strutturato attraverso i fondamenti del test manuale, le tecniche di progettazione dei test, l'intero panorama dei tipi di test, il test ad hoc ed esplorativo, il test delle API REST e la preparazione all'esame ISTQB® CTFL v4.0 — oltre a una cassetta degli attrezzi pratica e a una guida di carriera, all'architettura di test/QA, al test di sicurezza applicativa, e al test pratico di performance, UI/UX e automazione. Ogni modulo è seguito da un quiz. Il Modulo 12 tratta il testing dell'IA: usare l'IA per testare e testare sistemi basati sull'IA.",
+    homeIntro: "Un percorso strutturato nel testing del software, dal primo caso di test manuale fino al test dei sistemi di IA. Si parte dai fondamenti e dalle tecniche di progettazione dei test, si passa in rassegna l'intero panorama dei tipi di test e si sviluppano competenze pratiche con il test ad hoc, esplorativo e delle API REST. Seguono la preparazione all'esame ISTQB® CTFL v4.0, una cassetta degli attrezzi pratica e una guida di carriera, l'architettura di test/QA, la sicurezza applicativa e il test pratico di performance, UI/UX e automazione. Il Modulo 12 affronta il testing dell'IA da entrambi i lati: usare l'IA per testare e testare sistemi basati sull'IA. Ogni modulo si chiude con un quiz, e un esame finale misto attinge a tutti i moduli.",
+    pathHeading: "Il tuo percorso di apprendimento",
+    pathIntro: "I moduli sono raggruppati in cinque tappe. Se sei agli inizi con il QA, seguili in ordine; altrimenti vai direttamente alla tappa che ti serve. Completa il quiz di ogni modulo prima di proseguire; l'esame finale è il punto di verifica conclusivo.",
+    stage1Title: "Tappa 1 · Fondamenti",
+    stage1Desc: "Il lessico, i principi e le tecniche di base su cui si fondano tutti gli altri moduli.",
+    stage2Title: "Tappa 2 · Test sul campo",
+    stage2Desc: "Test non scriptato e test delle API: trovare i bug che gli script non vedono e testare sotto l'interfaccia.",
+    stage3Title: "Tappa 3 · Certificazione e carriera",
+    stage3Desc: "Consolida ciò che sai per l'esame ISTQB® CTFL v4.0 e costruisci la tua cassetta degli attrezzi e il tuo piano di carriera.",
+    stage4Title: "Tappa 4 · Qualità su larga scala",
+    stage4Desc: "Architettura, sicurezza e lavoro pratico su performance, UI/UX e automazione.",
+    stage5Title: "Tappa 5 · Testing dell'IA",
+    stage5Desc: "Usare l'IA nel testing e testare sistemi basati sull'IA.",
+    lessonsCount: "{n} lezioni",
+    quizQsCount: "Quiz da {n} domande",
     statModulesCompleted: "Moduli completati",
     statModulesInProgress: "Moduli in corso",
     statQuizzesAttempted: "Quiz tentati",
@@ -82,6 +96,7 @@ window.QAHUB_LOCALES.it = {
   num: 1,
   title: "Fondamenti del Test Manuale",
   summary: "Perché i tester umani contano ancora, e come condurre bene un'attività di test manuale.",
+  overview: "Si comincia da qui. Imparerai perché esiste il testing (errore → difetto → malfunzionamento), i 7 principi del testing, i livelli e i tipi di test e il processo di test dalla pianificazione alla chiusura, compresi tracciabilità e test statico. La parte pratica spiega passo per passo come eseguire il test manuale, confronta test manuale e automatizzato e mostra come valutare gravità e priorità e scrivere una segnalazione di difetto su cui uno sviluppatore possa davvero lavorare.",
   takeaway: "Il test manuale rimane una parte vitale della QA moderna — la flessibilità e l'intuito umano individuano bug complessi in anticipo, garantendo esperienze utente affidabili. Il 100% di automazione non è possibile, il che rende il test manuale indispensabile.",
   lessons: [
     { h: "Cos'è il Test Manuale?", body: `
@@ -260,6 +275,7 @@ window.QAHUB_LOCALES.it = {
   num: 2,
   title: "Tecniche di Software Testing & Progettazione dei Casi di Test",
   summary: "Tecniche strutturate — limiti, partizioni, tabelle decisionali, stati — per un'alta copertura con meno casi di test.",
+  overview: "Come ottenere un'alta copertura con pochi casi di test. Prima le tecniche black-box: analisi dei valori limite, partizionamento in classi di equivalenza, tabelle decisionali, test delle transizioni di stato e error guessing. Poi il test pairwise e basato sui casi d'uso, le tecniche white-box con copertura delle istruzioni e dei rami, la combinazione di tecniche (alberi di classificazione, CE + AVL) e l'anatomia di un caso di test ben scritto.",
   takeaway: "Poiché il test esaustivo è impossibile, le tecniche strutturate permettono ai tester di ottenere un'alta copertura con un numero minimo di casi di test, concentrandosi sulle aree più soggette a errori: limiti, partizioni, combinazioni e stati.",
   lessons: [
     { h: "I 7 Principi del Software Testing", body: `
@@ -361,6 +377,7 @@ window.QAHUB_LOCALES.it = {
   num: 3,
   title: "Tipi di Software Testing — Catalogo di Riferimento",
   summary: "Il panorama dei tipi di test, e una selezione dei 20 principali da conoscere per prime.",
+  overview: "Una mappa del mondo del testing. Definisce cos'è un tipo di test, propone una top 20 selezionata che ogni QA dovrebbe conoscere e classifica i tipi in funzionali, non funzionali, strutturali, legati alle modifiche e specializzati. Il test non funzionale nella pratica (performance, sicurezza, usabilità, compatibilità) viene approfondito. Il glossario funge da catalogo completo a complemento del modulo.",
   takeaway: "Un \"tipo\" di test è una classificazione con un proprio obiettivo, strategia e deliverable — ad esempio, il Test di Accessibilità verifica che un'app sia utilizzabile da persone con disabilità. Comprendere il panorama aiuta i professionisti QA a scegliere la combinazione giusta per una copertura completa.",
   lessons: [
     { h: "Cos'è un Tipo di Software Testing?", body: `
@@ -403,6 +420,7 @@ window.QAHUB_LOCALES.it = {
   num: 4,
   title: "Test Ad Hoc",
   summary: "Test non pianificato e non documentato che cerca di rompere il sistema basandosi su intuito e creatività.",
+  overview: "Test non pianificato e non documentato che si affida all'intuito. Imparerai quando il test ad hoc ripaga, le sue varianti (buddy testing, pair testing e monkey testing), vantaggi e limiti e come inserirlo negli sprint agili. Il modulo si chiude distinguendo il test ad hoc dal test esplorativo e dall'error guessing, con abitudini che rendono utili anche brevi sessioni senza script.",
   takeaway: "Il test ad hoc è un test non pianificato e non documentato in cui il tester cerca di \"rompere\" il sistema usando intuito e creatività — più prezioso quando il tempo è poco o come complemento al testing strutturato.",
   lessons: [
     { h: "Cos'è il Test Ad Hoc?", body: `
@@ -491,6 +509,7 @@ window.QAHUB_LOCALES.it = {
   num: 5,
   title: "Test Esplorativo",
   summary: "Progettazione ed esecuzione simultanea dei test — test ad hoc con uno scopo.",
+  overview: "Il test esplorativo fatto bene: apprendimento, progettazione ed esecuzione dei test in contemporanea. Tratta il confronto tra test scriptato ed esplorativo, il Session-Based Test Management, la scrittura dei test charter e come condurre sessioni a tempo e il relativo debriefing. Euristiche come SFDPOT e HICCUPPS vengono applicate a esempi pratici basati sul rischio (login, API REST, multi-tenancy). Si conclude con come riportare, misurare e trasformare le scoperte in controlli di regressione automatizzati.",
   takeaway: "Il test esplorativo è progettazione ed esecuzione simultanea dei test — un'attività di \"pensiero\" che enfatizza l'indagine e l'apprendimento, ampiamente usata in Agile. È un test ad hoc con uno scopo: strutturato e rigoroso, non casuale.",
   lessons: [
     { h: "Cos'è il Test Esplorativo?", body: `
@@ -695,6 +714,7 @@ Exploratory = Mission + Timebox + Investigation
   num: 6,
   title: "Test delle API REST",
   summary: "Validare i servizi RESTful inviando richieste HTTP e controllando le risposte — nessuna interfaccia grafica richiesta.",
+  overview: "Testare servizi senza interfaccia utente. Vedrai le basi di REST, i metodi HTTP, l'anatomia di richieste e risposte e i codici di stato, poi la progettazione degli input e dei valori limite, la validazione delle risposte e degli schemi e il contract testing. Le lezioni avanzate trattano autenticazione e autorizzazione, isolamento tra tenant, flussi con stato e l'OWASP API Security Top 10 (2023). Completano il modulo l'automazione con Postman/Playwright in CI/CD, modelli riutilizzabili e una roadmap per QA junior.",
   takeaway: "Il test delle API REST valida i servizi web RESTful inviando richieste HTTP (GET, POST, PUT, DELETE) e controllando le risposte — nessuna interfaccia grafica richiesta.",
   lessons: [
     { h: "Cos'è REST?", body: `
@@ -877,6 +897,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 7,
   title: "Percorso di Certificazione ISTQB® CTFL v4.0",
   summary: "Una panoramica da compagno di studio del syllabus ISTQB Foundation Level — la certificazione di testing entry-level, neutrale rispetto ai vendor.",
+  overview: "Una guida di studio originale per l'esame ISTQB® Certified Tester Foundation Level v4.0. Segue i sei capitoli del syllabus (fondamenti, test lungo il ciclo di vita dello sviluppo, test statico, analisi e progettazione dei test, gestione delle attività di test e strumenti di test) e aggiunge formato d'esame e peso dei capitoli, consigli di studio, errori frequenti e la scala delle certificazioni ISTQB.",
   takeaway: "ISTQB® Foundation Level è la certificazione entry-level, neutrale rispetto ai vendor, per i tester di software in tutto il mondo. Il suo syllabus organizza la conoscenza del testing in 6 capitoli, ciascun obiettivo di apprendimento etichettato con un \"livello K\" (K1 = ricordare, K2 = comprendere, K3 = applicare) che indica quanto in profondità l'esame si aspetta che tu lo conosca.",
   callout: {
     label: "Lettura consigliata",
@@ -982,6 +1003,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 8,
   title: "Cassetta degli Attrezzi QA & Crescita Professionale",
   summary: "Un riferimento pratico per il QA sul campo: strumenti reali per categoria, le metriche di cui si discute davvero negli standup, un foglio di ripasso per i colloqui, e dove continuare a imparare.",
+  overview: "Lo scaffale di riferimento del QA al lavoro. Passa in rassegna framework di automazione, linguaggi di programmazione, strumenti per API, performance, bug tracking e CI/CD, il testing assistito dall'IA, gli strumenti per l'accessibilità e le metriche e i KPI di QA che vale la pena monitorare (e quelli da evitare). Per la carriera ci sono un promemoria per i colloqui, una scala delle competenze da junior a lead, un piano di sviluppo e certificazioni e community da seguire.",
   takeaway: "Conoscere la teoria del testing ti fa entrare dalla porta — sapere quale strumento usare, quale metrica interessa davvero a uno stakeholder, e come parlare della tua esperienza è ciò che ti fa avanzare. Questo modulo è un riferimento vivo, non un corso da \"finire\".",
   lessons: [
     { h: "8.1 Framework di Automazione dei Test", body: `
@@ -1131,6 +1153,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 9,
   title: "QA & Architettura dei Test",
   summary: "Le decisioni di progettazione dietro una pratica QA scalabile: come vengono architettati davvero i framework di automazione, gli ambienti di test, le pipeline CI/CD e il testing dei sistemi distribuiti.",
+  overview: "Le scelte progettuali dietro una pratica di QA che scala. Gli argomenti sono l'architettura dei framework di automazione, gli ambienti di test e la gestione dei dati di test, la progettazione delle pipeline CI/CD, il test di sistemi distribuiti e microservizi, reportistica e osservabilità, strategia di test contro piano di test con pianificazione basata sul rischio, e i processi e la cultura che rendono la qualità una responsabilità di tutti.",
   takeaway: "Un buon testing su larga scala non è solo conoscere le tecniche — è architetturale: come viene strutturato un framework così che 200 test non diventino 200 posti in cui correggere lo stesso locatore rotto, come vengono gestiti ambienti e dati così che i test siano riproducibili, come viene organizzata una pipeline così che il feedback arrivi velocemente, e come il testing si adatta una volta che un sistema non è più un'unica unità distribuibile.",
   lessons: [
     { h: "9.1 Architettura dei Framework di Automazione dei Test", body: `
@@ -1235,6 +1258,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 10,
   title: "Test di Sicurezza & AppSec",
   summary: "Pensare come un attaccante: la OWASP Top 10, gli strumenti che trovano le vulnerabilità prima degli attaccanti, e come la sicurezza viene integrata nell'SDLC invece di essere aggiunta alla fine.",
+  overview: "La sicurezza applicativa dal punto di vista del tester. Imparerai a pensare come un attaccante, esaminerai l'OWASP Top 10 e le classi di vulnerabilità più comuni e userai SAST, DAST e altri strumenti. Il modulo introduce il penetration testing, il threat modeling e la revisione sicura del codice, i controlli di sicurezza in CI/CD, le basi della conformità normativa e idee pratiche di test di sicurezza da valutare già nelle prime fasi del ciclo di vita.",
   takeaway: "Il test di sicurezza non è una disciplina separata aggiunta alla QA alla fine — è la stessa mentalità di testing (trovare dove il sistema si rompe) rivolta a una domanda diversa: non \"questo funziona come previsto\", ma \"si può far fare a questo qualcosa per cui non era mai stato pensato\". Prima viene posta questa domanda, più economica è la risposta.",
   lessons: [
     { h: "10.1 Fondamenti del Test di Sicurezza & la Mentalità dell'Attaccante", body: `
@@ -1347,6 +1371,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 11,
   title: "Performance, UI/UX & Test di Automazione nella Pratica",
   summary: "Mettere in pratica la cassetta degli attrezzi: eseguire un test di carico, valutare l'usabilità con euristiche reali, scrivere il primo test automatizzato, e sapere quali strumenti aggiuntivi colmano le lacune.",
+  overview: "Pratica concreta con la cassetta degli attrezzi. Esegui un test di carico e interpreta le metriche di performance, valuta l'usabilità con euristiche consolidate e scrivi il tuo primo test automatizzato della UI. Vedrai anche test di accessibilità, di regressione visiva e di localizzazione, altri strumenti utili da conoscere e come decidere cosa automatizzare usando la piramide dei test.",
   takeaway: "Ogni tecnica e strumento trattato finora converge qui: questo modulo riguarda l'eseguire davvero un test di carico, il valutare davvero una UI rispetto a un'euristica di usabilità, e lo scrivere davvero un test automatizzato — non solo riconoscere il vocabolario che li descrive.",
   lessons: [
     { h: "11.1 Test di Carico & Performance nella Pratica", body: `
@@ -1453,6 +1478,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 12,
   title: "Testing e IA: usare l'IA e testare l'IA",
   summary: "Due discipline in una: strumenti di test assistiti dall'IA e agentici, e come testare sistemi di machine learning e di IA generativa.",
+  overview: "\"Testing dell'IA\" ha due significati, e questo modulo li tratta entrambi. Usare l'IA per testare: cosa sanno fare gli strumenti assistiti dall'IA e quelli agentici, e come valutarli prima di adottarli. Testare sistemi basati sull'IA: perché i modelli non deterministici sono difficili da testare, gli oracoli statistici, la matrice di confusione con precision/recall/F1, la qualità dei dati, il monitoraggio del drift in produzione e i controlli su allucinazioni e prompt injection nelle funzionalità di IA generativa/LLM. Si chiude con il percorso di certificazione ISTQB CT-AI.",
   takeaway: "«Testing dell'IA» significa due cose diverse: usare l'IA per aiutare a testare il software e testare software che è a sua volta basato sull'IA. Giudica gli strumenti di IA da quanta manutenzione fanno risparmiare, non da quanto velocemente scrivono test. Nei sistemi di IA, sostituisci i risultati attesi esatti con oracoli statistici: metriche, tolleranze e monitoraggio continuo.",
   lessons: [
     { h: "12.1 Due significati di «testing dell'IA»", body: `

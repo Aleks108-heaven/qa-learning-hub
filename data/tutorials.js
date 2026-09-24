@@ -5,6 +5,7 @@ window.QAHUB_MODULES = [
   num: 1,
   title: "Manual Testing Fundamentals",
   summary: "Why human testers still matter, and how to run a manual testing effort well.",
+  overview: "Start here. You'll learn why testing exists (error → defect → failure), the 7 testing principles, test levels and types, and the test process from planning to closure, including traceability and static testing. The practical side covers how to perform manual testing step by step, manual vs. automation trade-offs, and how to rate severity and priority and write a bug report a developer can act on.",
   takeaway: "Manual testing remains a vital part of modern QA — flexibility and human intuition catch complex bugs early, ensuring reliable user experiences. 100% automation is not possible, which makes manual testing imperative.",
   lessons: [
     { h: "What is Manual Testing?", body: `
@@ -183,6 +184,7 @@ window.QAHUB_MODULES = [
   num: 2,
   title: "Software Testing Techniques & Test Case Design",
   summary: "Structured techniques — boundaries, partitions, decision tables, states — for high coverage with fewer test cases.",
+  overview: "How to get high coverage from few test cases. Black-box techniques come first: boundary value analysis, equivalence partitioning, decision tables, state transition testing and error guessing. Then pairwise and use-case testing, white-box techniques with statement and branch coverage, combining techniques (classification trees, EP + BVA), and the anatomy of a well-written test case.",
   takeaway: "Since exhaustive testing is impossible, structured techniques let testers achieve high coverage with minimal test cases by focusing on error-prone areas: boundaries, partitions, combinations, and states.",
   lessons: [
     { h: "The 7 Principles of Software Testing", body: `
@@ -284,6 +286,7 @@ window.QAHUB_MODULES = [
   num: 3,
   title: "Types of Software Testing — Reference Catalogue",
   summary: "The landscape of testing types, and a curated top 20 to know first.",
+  overview: "A map of the testing world. It defines what a testing type is, gives a curated top 20 every QA should know, and sorts types into functional, non-functional, structural, change-related and specialized categories. Non-functional testing in practice (performance, security, usability, compatibility) is covered in more depth. The glossary works as the full catalogue alongside this module.",
   takeaway: "A “type” of testing is a classification with its own objective, strategy, and deliverables — for example, Accessibility Testing validates that an app is usable by people with disabilities. Understanding the landscape helps QA professionals pick the right combination for full coverage.",
   lessons: [
     { h: "What is a Software Testing Type?", body: `
@@ -326,6 +329,7 @@ window.QAHUB_MODULES = [
   num: 4,
   title: "Ad Hoc Testing",
   summary: "Unplanned, undocumented testing that tries to break the system on intuition and creativity.",
+  overview: "Unplanned, undocumented testing that relies on intuition. You'll learn when ad hoc testing pays off, its variants (buddy, pair and monkey testing), its advantages and limits, and how to fit it into agile sprints. The module ends by separating ad hoc testing from exploratory testing and error guessing, with habits that make short unscripted sessions produce useful findings.",
   takeaway: "Ad hoc testing is unplanned, undocumented testing where the tester tries to “break” the system using intuition and creativity — most valuable when time is short or as a supplement to structured testing.",
   lessons: [
     { h: "What is Ad Hoc Testing?", body: `
@@ -414,6 +418,7 @@ window.QAHUB_MODULES = [
   num: 5,
   title: "Exploratory Testing",
   summary: "Simultaneous test design and execution — ad hoc testing with a purpose.",
+  overview: "Exploratory testing done properly: simultaneous learning, test design and execution. It covers scripted vs. exploratory testing, Session-Based Test Management, writing test charters, and running and debriefing time-boxed sessions. Heuristics such as SFDPOT and HICCUPPS are applied to risk-based worked examples (login, REST API, multi-tenancy). It finishes with how to report, measure and turn discoveries into automated regression checks.",
   takeaway: "Exploratory testing is simultaneous test design and execution — a “thinking” activity emphasizing investigation and learning, widely used in Agile. It is ad hoc testing with a purpose: structured and rigorous, not random.",
   lessons: [
     { h: "What is Exploratory Testing?", body: `
@@ -618,6 +623,7 @@ Exploratory = Mission + Timebox + Investigation
   num: 6,
   title: "REST API Testing",
   summary: "Validating RESTful services by sending HTTP requests and checking the responses — no UI required.",
+  overview: "Testing services without a UI. You'll cover REST basics, HTTP methods, request/response anatomy and status codes, then input and boundary design, response and schema validation, and contract testing. Advanced lessons deal with authentication and authorization, tenant isolation, stateful workflows, and the OWASP API Security Top 10 (2023). Postman/Playwright automation in CI/CD, reusable templates and a junior QA roadmap complete the module.",
   takeaway: "REST API testing validates RESTful web services by sending HTTP requests (GET, POST, PUT, DELETE) and checking the responses — no UI required.",
   lessons: [
     { h: "What is REST?", body: `
@@ -800,6 +806,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 7,
   title: "ISTQB® CTFL v4.0 Certification Track",
   summary: "A study-companion overview of the ISTQB Foundation Level syllabus — the entry-level, vendor-neutral testing certification.",
+  overview: "An original study companion for the ISTQB® Certified Tester Foundation Level v4.0 exam. It follows the six syllabus chapters (fundamentals, testing throughout the SDLC, static testing, test analysis and design, managing test activities, and test tools) and adds the exam format and chapter weighting, study tips, common pitfalls and the wider ISTQB certification ladder.",
   takeaway: "ISTQB® Foundation Level is the entry-level, vendor-neutral certification for software testers worldwide. Its syllabus organizes testing knowledge into 6 chapters, each learning objective tagged with a \"K-level\" (K1 = remember, K2 = understand, K3 = apply) that signals how deeply the exam expects you to know it.",
   callout: {
     label: "Recommended reading",
@@ -905,6 +912,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 8,
   title: "QA Toolbox & Career Growth",
   summary: "A practical reference for the working QA: real tools by category, the metrics that actually get discussed in standups, an interview cram sheet, and where to keep learning.",
+  overview: "The working QA's reference shelf. It surveys automation frameworks, programming languages, API, performance, bug-tracking and CI/CD tools, AI-assisted testing, accessibility tools, and the QA metrics and KPIs worth tracking (plus the ones to avoid). For your career, there's an interview cram sheet, a junior-to-lead competency ladder, a development plan, and certifications and communities to follow.",
   takeaway: "Knowing testing theory gets you in the door — knowing which tool to reach for, which metric a stakeholder actually cares about, and how to talk about your experience is what keeps you moving. This module is a living reference, not a course to \"finish.\"",
   lessons: [
     { h: "8.1 Test Automation Frameworks", body: `
@@ -1054,6 +1062,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 9,
   title: "QA & Test Architecture",
   summary: "The design decisions behind a scalable QA practice: how automation frameworks, test environments, CI/CD pipelines, and distributed-systems testing are actually architected.",
+  overview: "The design decisions behind a QA practice that scales. Topics are test automation framework architecture, test environments and test data management, CI/CD pipeline design, testing distributed systems and microservices, reporting and observability, test strategy vs. test plan with risk-based planning, and the process and culture that keep quality everyone's responsibility.",
   takeaway: "Good testing at scale isn't just knowing techniques — it's architectural: how a framework is structured so 200 tests don't become 200 places to fix the same broken locator, how environments and data are managed so tests are reproducible, how a pipeline is staged so feedback arrives fast, and how testing adapts once a system is no longer one deployable unit.",
   lessons: [
     { h: "9.1 Test Automation Framework Architecture", body: `
@@ -1158,6 +1167,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 10,
   title: "Security Testing & AppSec",
   summary: "Thinking like an attacker: the OWASP Top 10, the tools that find vulnerabilities before attackers do, and how security gets built into the SDLC rather than bolted on at the end.",
+  overview: "Application security from a tester's point of view. You'll learn to think like an attacker, go through the OWASP Top 10 and common vulnerability classes, and use SAST, DAST and other tools. The module introduces penetration testing, threat modeling and secure code review, security gates in CI/CD, compliance basics, and practical security test ideas you can triage early in the lifecycle.",
   takeaway: "Security testing isn't a separate discipline bolted onto QA at the end — it's the same testing mindset (find where the system breaks) pointed at a different question: not \"does this work as intended,\" but \"can this be made to do something it was never intended to do.\" The earlier that question gets asked, the cheaper the answer.",
   lessons: [
     { h: "10.1 Security Testing Fundamentals & the Attacker Mindset", body: `
@@ -1270,6 +1280,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 11,
   title: "Performance, UI/UX & Automation Testing in Practice",
   summary: "Putting the toolbox to work: running a load test, evaluating usability with real heuristics, writing your first automated test, and knowing which additional tools fill the gaps.",
+  overview: "Hands-on practice with the toolbox. Run a load test and read performance metrics, evaluate usability with established heuristics, and write your first automated UI test. You'll also cover accessibility, visual regression and localization testing, the extra tools worth knowing, and how to decide what to automate using the test pyramid.",
   takeaway: "Every technique and tool covered so far comes together here: this module is about actually running a load test, actually evaluating a UI against a usability heuristic, and actually writing an automated test — not just recognizing the vocabulary for them.",
   lessons: [
     { h: "11.1 Load & Performance Testing in Practice", body: `
@@ -1376,6 +1387,7 @@ expect(response.status()).toBe(201);</code></pre>
   num: 12,
   title: "AI Testing: Using AI & Testing AI",
   summary: "Two disciplines in one: AI-assisted and agentic testing tools, and how to test machine-learning and generative-AI systems.",
+  overview: "AI testing has two meanings, and this module covers both. Using AI to test: what AI-assisted and agentic tools can do and how to judge them before you adopt one. Testing AI-based systems: why non-deterministic models are hard to test, statistical oracles, the confusion matrix with precision/recall/F1, data quality, drift monitoring in production, and checks for hallucination and prompt injection in generative-AI/LLM features. It closes with the ISTQB CT-AI certification path.",
   takeaway: "\"AI testing\" means two different things: using AI to help test software, and testing software that is itself built on AI. For AI tools, judge them by how much maintenance they save, not how fast they write tests. For AI systems, replace exact expected results with statistical oracles: metrics, tolerances and continuous monitoring.",
   lessons: [
     { h: "12.1 Two Meanings of \"AI Testing\"", body: `

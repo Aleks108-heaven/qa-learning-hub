@@ -10,7 +10,22 @@ An interactive, self-contained software testing course — built as a single-pag
 - **190 quiz questions** across per-module quiz banks, plus a 20-question mixed Final Exam drawn from all modules
 - **175-term glossary**, searchable and filterable by category, with alphabet-aware A-Z navigation
 - **6 languages** — English, Ukrainian, Polish, Spanish, Italian, German — with a language switcher; every lesson, quiz question, and glossary entry is translated, not just the UI chrome
+- **A guided learning path** on the dashboard that groups the modules into five stages, with a detailed overview of each module, its lesson count, and a link to its quiz
 - **Per-viewer progress tracking** (module completion, quiz best-scores) saved locally in the browser — nothing is sent to a server
+
+## Learning path
+
+The dashboard groups the modules into five stages. Newcomers can take them in order; experienced testers can jump to the stage they need. Each module also opens with a detailed overview of what it covers.
+
+| Stage | Modules | Focus |
+|-------|---------|-------|
+| 1 · Foundations | 1–3 | Vocabulary, principles, test design techniques, the testing-types landscape |
+| 2 · Hands-on testing | 4–6 | Ad hoc, exploratory and REST API testing |
+| 3 · Certification & career | 7–8 | ISTQB® CTFL v4.0 exam prep, the QA toolbox and career growth |
+| 4 · Engineering quality at scale | 9–11 | Test/QA architecture, application security, performance, UI/UX and automation |
+| 5 · AI testing | 12 | Using AI to test, and testing AI-based systems |
+
+Every module ends with a quiz; the mixed Final Exam is the checkpoint at the end.
 
 ## Modules
 
