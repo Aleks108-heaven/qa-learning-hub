@@ -1,0 +1,107 @@
+# GitLab CI/CD for QA Learning Hub (static site: no build step, no npm dependencies).
+#
+# Pipeline:  validate  ->  test  ->  deploy (GitLab Pages, default branch only)
+#   - validate: syntax-check every JS file, check that the self-hosted fonts and scripts referenced exist
+#   - test:     browser-driven security / sanitizer / UI checks from tests/ in headless Chromium,
+#               plus GitLab's SAST and Secret Detection templates
+#   - deploy:   publishes the site to GitLab Pages
+#
+# Note: GitLab Pages cannot set custom HTTP headers, so on Pages the <meta> CSP in index.html is the only
+# policy and clickjacking protection (frame-ancestors) is not available. See SECURITY.md.
+
+stages:
+  - validate
+  - test
+  - deploy
+
+default:
+  image: node:22-bookworm        # Node 22+ is required: the tests use the built-in WebSocket client
+  interruptible: true
+
+variables:
+  NO_SANDBOX: "1"                # Chromium refuses to run as root in a container without --no-sandbox
+  BROWSER: /usr/bin/chromium
+  SECRET_DETECTION_HISTORIC_SCAN: "true"
+
+# Run on merge requests and on the default branch; avoid duplicate branch + MR pipelines.
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+# ---------------------------------------------------------------- validate
+
+syntax:
+  stage: validate
+  script:
+    - for f in app.js data/*.js data/locales/*.js tests/*.js; do node --check "$f" && echo "ok  $f"; done
+
+assets:
+  stage: validate
+  script:
+    # every script/style/font referenced by index.html and fonts.css must exist (a typo would 404 in production)
+    - |
+      missing=0
+      for ref in $(grep -oE '(src|href)="[^"#:]+"' index.html | sed -E 's/^(src|href)="//; s/"$//'); do
+        [ -e "$ref" ] || { echo "missing: $ref (index.html)"; missing=1; }
+      done
+      for ref in $(grep -oE 'url\(fonts/[^)]+\)' fonts.css | sed -E 's/^url\(//; s/\)$//'); do
+        [ -e "$ref" ] || { echo "missing: $ref (fonts.css)"; missing=1; }
+      done
+      exit $missing
+    # the CSP must not regress to allow inline code or third-party hosts
+    - |
+      csp=$(grep -o 'Content-Security-Policy" content="[^"]*"' index.html)
+      echo "$csp"
+      echo "$csp" | grep -q "default-src 'none'" || { echo "CSP must start from default-src 'none'"; exit 1; }
+      if echo "$csp" | grep -Eq "unsafe-inline|unsafe-eval|https?://|\*"; then echo "CSP must not contain unsafe-inline, unsafe-eval, wildcards or third-party hosts"; exit 1; fi
+
+# ---------------------------------------------------------------- test
+
+.browser: &browser
+  stage: test
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq --no-install-recommends chromium fonts-liberation > /dev/null
+    - chromium --version
+    - node tests/serve.js > /tmp/serve.log 2>&1 &
+    - sleep 2
+
+security-attacks:
+  <<: *browser
+  script:
+    - node tests/attack.js        # fails on any VULNERABLE line (hash-route XSS, crafted ids, poisoned storage, CSP bypass, third-party hosts)
+
+sanitizer-and-csp:
+  <<: *browser
+  script:
+    - node tests/sanitizer-csp.js # sanitizer lossless on all 756 lessons x 6 locales; hostile HTML neutralised; CSP silent on real content
+
+ui-regression:
+  <<: *browser
+  script:
+    - node tests/ui.js            # accessibility / UX / encoding / mobile-menu checks
+
+# SAST and Secret Detection jobs come from the included templates (both run in the `test` stage).
+
+# ---------------------------------------------------------------- deploy
+
+pages:
+  stage: deploy
+  script:
+    - mkdir -p public
+    - cp index.html styles.css fonts.css app.js public/
+    - cp -r fonts data public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  environment:
+    name: production
+    url: $CI_PAGES_URL

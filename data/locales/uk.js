@@ -80,7 +80,10 @@ window.QAHUB_LOCALES.uk = {
     allCategories: "Усі категорії",
     termsCount: "{n} термінів",
     noTermsMatch: "Немає термінів, що відповідають вашому пошуку.",
-    alsoLabel: "також:"
+    alsoLabel: "також:",
+    checkAnswer: "Перевірити відповідь",
+    ctaContinue: "Продовжити: {title}",
+    filterByCategory: "Фільтр за категорією"
   },
   catLabels: {
     "Functional": "Функціональне",

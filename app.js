@@ -81,7 +81,10 @@
     allCategories: "All categories",
     termsCount: "{n} terms",
     noTermsMatch: "No terms match your search.",
-    alsoLabel: "also:"
+    alsoLabel: "also:",
+    checkAnswer: "Check answer",
+    ctaContinue: "Continue: {title}",
+    filterByCategory: "Filter by category"
   };
   var EN_CAT_LABELS = {
     "Functional": "Functional",
@@ -110,9 +113,49 @@
   };
 
   var LOCALE_KEY = "qahub_locale_v1";
-  // Own-property check so stored values like "__proto__" or "constructor" can't pass as a locale.
+  // Own-property check so values like "__proto__" or "constructor" (from the URL or localStorage) never resolve to inherited members.
+  function hasOwn(o, k){
+    return Object.prototype.hasOwnProperty.call(o, k);
+  }
   function hasLocale(code){
-    return Object.prototype.hasOwnProperty.call(window.QAHUB_LOCALES, code);
+    return hasOwn(window.QAHUB_LOCALES, code);
+  }
+
+  // ---------- HTML allowlist sanitizer ----------
+  // Lesson bodies, callouts and the footer are author-written HTML rendered with innerHTML. They are trusted
+  // today, but every render goes through this allowlist so a bad edit or translation contribution cannot
+  // introduce script, handlers, styles, frames or unsafe links. Anything not listed is dropped.
+  var SAFE_TAGS = { A:1, BR:1, CODE:1, DIV:1, EM:1, LI:1, OL:1, P:1, PRE:1, SPAN:1, STRONG:1, SUB:1, SUP:1, TABLE:1, TBODY:1, TD:1, TH:1, THEAD:1, TR:1, UL:1 };
+  var SAFE_CLASSES = { "chip-list":1, "k-badge":1, "table-wrap":1, "worked-example":1 };
+  function sanitizeHTML(html){
+    var tpl = document.createElement("template");   // inert: nothing loads or runs while parsing
+    tpl.innerHTML = html;
+    (function walk(node){
+      Array.prototype.slice.call(node.childNodes).forEach(function(ch){
+        if(ch.nodeType === 3) return;                                   // text
+        if(ch.nodeType !== 1 || !hasOwn(SAFE_TAGS, ch.tagName)){ node.removeChild(ch); return; }
+        Array.prototype.slice.call(ch.attributes).forEach(function(a){
+          var name = a.name.toLowerCase();
+          if(name === "class"){
+            var kept = a.value.split(/\s+/).filter(function(c){ return hasOwn(SAFE_CLASSES, c); }).join(" ");
+            if(kept) ch.setAttribute("class", kept); else ch.removeAttribute("class");
+          } else if(!(name === "href" && ch.tagName === "A")){
+            ch.removeAttribute(a.name);
+          }
+        });
+        if(ch.tagName === "A"){
+          var href = ch.getAttribute("href") || "";
+          if(/^https:\/\//i.test(href)){
+            ch.setAttribute("target", "_blank");
+            ch.setAttribute("rel", "noopener noreferrer");
+          } else if(!/^#\/?[\w\/-]*$/.test(href)){
+            ch.removeAttribute("href");                                 // javascript:, data:, http:, etc.
+          }
+        }
+        walk(ch);
+      });
+    })(tpl.content);
+    return tpl.innerHTML;
   }
   function loadLocale(){
     try{
@@ -151,8 +194,10 @@
     if(tagline) tagline.textContent = t("brandTagline");
     var menuBtn = document.getElementById("qh-menu-btn");
     if(menuBtn) menuBtn.textContent = t("menuButton");
+    var navEl = document.getElementById("qh-sidebar-inner");
+    if(navEl) navEl.setAttribute("aria-label", t("navTutorials"));
     var footer = document.getElementById("qh-footer");
-    if(footer) footer.innerHTML = t("footerText");
+    if(footer) footer.innerHTML = sanitizeHTML(t("footerText"));
   }
   function setLocale(code){
     if(!hasLocale(code)) return;
@@ -164,27 +209,41 @@
   }
 
   var PASS_THRESHOLD = 0.7;
+  var FINAL_EXAM_SIZE = 20;
 
   // ---------- Progress persistence (per-viewer convenience only) ----------
   var STORAGE_KEY = "qahub_progress_v1";
+  var VALID_STATUSES = { "not-started":1, "in-progress":1, "completed":1 };
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  // localStorage is attacker-writable (another script on the origin, a shared browser, DevTools), so stored
+  // progress is never trusted: it is rebuilt from known module/quiz ids with validated values only.
+  function sanitizeProgress(p){
+    var clean = { modules:{}, quizzes:{} };
+    if(!isObj(p)) return clean;
+    var mods = window.QAHUB_MODULES || [];
+    mods.forEach(function(m){
+      var rec = isObj(p.modules) && hasOwn(p.modules, m.id) ? p.modules[m.id] : null;
+      if(isObj(rec) && typeof rec.status === "string" && hasOwn(VALID_STATUSES, rec.status)) clean.modules[m.id] = { status: rec.status };
+    });
+    ["final"].concat(mods.map(function(m){ return m.id; })).forEach(function(k){
+      var rec = isObj(p.quizzes) && hasOwn(p.quizzes, k) ? p.quizzes[k] : null;
+      if(isObj(rec) && typeof rec.best === "number" && isFinite(rec.best) && rec.best >= 0 && rec.best <= 100) clean.quizzes[k] = { best: Math.round(rec.best) };
+    });
+    return clean;
+  }
   function loadProgress(){
     try{
       var raw = localStorage.getItem(STORAGE_KEY);
-      var p = raw ? JSON.parse(raw) : null;
-      // Tampered or corrupt data (null, arrays, strings) falls back to a fresh record instead of crashing the app.
-      var isObj = function(o){ return o && typeof o === "object" && !Array.isArray(o); };
-      if(!isObj(p) || !isObj(p.modules) || !isObj(p.quizzes)) return { modules:{}, quizzes:{} };
-      return p;
+      return sanitizeProgress(raw ? JSON.parse(raw) : null);
     }catch(e){ return { modules:{}, quizzes:{} }; }
   }
   function saveProgress(p){
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }catch(e){}
   }
   var progress = loadProgress();
-  var VALID_STATUSES = { "not-started":1, "in-progress":1, "completed":1 };
   function moduleStatus(id){
     var s = progress.modules[id] && progress.modules[id].status;
-    return VALID_STATUSES[s] ? s : "not-started";
+    return s && hasOwn(VALID_STATUSES, s) ? s : "not-started";
   }
   function setModuleStatus(id, status){
     progress.modules[id] = progress.modules[id] || {};
@@ -221,11 +280,27 @@
     }
     return a;
   }
-  function el(tag, attrs, html){
-    var e = document.createElement(tag);
-    if(attrs) for(var k in attrs) e.setAttribute(k, attrs[k]);
-    if(html != null) e.innerHTML = html;
-    return e;
+  var APP_NAME = "QA Learning Hub";
+  function setTitle(part){
+    document.title = part ? part + " · " + APP_NAME : APP_NAME;
+  }
+  function scrollBehavior(){
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  }
+  function bindAnchorScroll(selector){
+    root.querySelectorAll(selector).forEach(function(a){
+      a.addEventListener("click", function(e){
+        e.preventDefault();
+        var target = document.getElementById(a.getAttribute("href").slice(1));
+        if(target) target.scrollIntoView({behavior:scrollBehavior(), block:"start"});
+      });
+    });
+  }
+  // Best-score badge: green only when the pass threshold was met, otherwise a neutral "attempted".
+  function quizBadge(score){
+    if(score == null) return '<span class="badge not-started">'+esc(t("notAttempted"))+'</span>';
+    if(score/100 >= PASS_THRESHOLD) return '<span class="badge completed">'+esc(t("passed"))+'</span>';
+    return '<span class="badge in-progress">'+esc(t("attempted"))+'</span>';
   }
   function moduleById(id){
     var MODULES = curModules();
@@ -240,32 +315,32 @@
     var wrap = document.getElementById("qh-sidebar-inner");
     var MODULES = curModules();
     var html = "";
-    html += '<div class="nav-group lang-switcher"><select id="qh-lang-select" class="filter-select" aria-label="'+esc(t("langLabel"))+'">';
-    availableLocales().forEach(function(l){
-      html += '<option value="'+l.code+'" '+(l.code===currentLocale?'selected':'')+'>'+esc(l.label)+'</option>';
-    });
-    html += '</select></div>';
+    // Order: the frequent destinations first (dashboard, practice), then the 12 modules, then the rarely used language picker.
     html += '<div class="nav-group">';
     html += navLink("#/home", t("navDashboard"), activeRoute==="home", null);
+    html += navLink("#/quiz", t("navQuizzes"), activeRoute==="quiz-picker", null);
+    html += navLink("#/glossary", t("navGlossary"), activeRoute==="glossary", null);
     html += '</div>';
     html += '<div class="nav-group"><div class="nav-label">'+esc(t("navTutorials"))+'</div>';
     MODULES.forEach(function(m){
       var status = moduleStatus(m.id);
       var dotClass = status === "completed" ? "done" : (status === "in-progress" ? "progress" : "");
+      var statusText = status === "completed" ? t("badgeCompleted") : (status === "in-progress" ? t("badgeInProgress") : "");
       var isActive = activeRoute === "module:" + m.id;
-      html += '<a class="nav-link'+(isActive?' active':'')+'" href="#/module/'+m.id+'"><span class="num">'+m.num+'</span><span>'+esc(m.title)+'</span><span class="status-dot '+dotClass+'"></span></a>';
+      html += '<a class="nav-link'+(isActive?' active':'')+'" href="#/module/'+esc(m.id)+'"'+(isActive?' aria-current="page"':'')+'><span class="num">'+esc(m.num)+'</span><span>'+esc(m.title)+'</span><span class="status-dot '+dotClass+'" aria-hidden="true"></span>'+(statusText?'<span class="sr-only">'+esc(statusText)+'</span>':'')+'</a>';
     });
     html += '</div>';
-    html += '<div class="nav-group"><div class="nav-label">'+esc(t("navPractice"))+'</div>';
-    html += navLink("#/quiz", t("navQuizzes"), activeRoute==="quiz-picker", null);
-    html += navLink("#/glossary", t("navGlossary"), activeRoute==="glossary", null);
-    html += '</div>';
+    html += '<div class="nav-group lang-switcher"><select id="qh-lang-select" class="filter-select" aria-label="'+esc(t("langLabel"))+'">';
+    availableLocales().forEach(function(l){
+      html += '<option value="'+l.code+'" '+(l.code===currentLocale?'selected':'')+'>'+esc(l.label)+'</option>';
+    });
+    html += '</select></div>';
     wrap.innerHTML = html;
     var langSelect = document.getElementById("qh-lang-select");
     if(langSelect) langSelect.addEventListener("change", function(e){ setLocale(e.target.value); });
   }
   function navLink(href, label, active, num){
-    return '<a class="nav-link'+(active?' active':'')+'" href="'+href+'">'+(num!=null?'<span class="num">'+num+'</span>':'')+'<span>'+esc(label)+'</span></a>';
+    return '<a class="nav-link'+(active?' active':'')+'" href="'+href+'"'+(active?' aria-current="page"':'')+'>'+(num!=null?'<span class="num">'+num+'</span>':'')+'<span>'+esc(label)+'</span></a>';
   }
 
   // ---------- Router ----------
@@ -288,13 +363,33 @@
       (route.name === "glossary" ? "glossary" : "home"));
     renderSidebar(activeKey);
     document.getElementById("qh-sidebar").classList.remove("open");
+    document.getElementById("qh-menu-btn").setAttribute("aria-expanded", "false");
     window.scrollTo(0,0);
-    if(route.name === "home") return renderHome();
-    if(route.name === "module") return renderModule(route.id);
-    if(route.name === "quiz-picker") return renderQuizPicker();
-    if(route.name === "quiz-run") return renderQuizRun(route.id);
-    if(route.name === "glossary") return renderGlossary();
-    renderHome();
+    if(route.name === "home") renderHome();
+    else if(route.name === "module") renderModule(route.id);
+    else if(route.name === "quiz-picker") renderQuizPicker();
+    else if(route.name === "quiz-run") renderQuizRun(route.id);
+    else if(route.name === "glossary") renderGlossary();
+    else renderHome();
+    // Keyboard and screen-reader users land on the new page's heading (skipped on first load).
+    if(rendered && route.name !== "quiz-run") focusHeading();
+    rendered = true;
+  }
+  var rendered = false;
+  function focusHeading(){
+    var h = root.querySelector("h1, h2");
+    if(h){ h.setAttribute("tabindex", "-1"); h.focus({preventScroll:true}); }
+  }
+  // Scrollable tables become keyboard-reachable regions; header cells get a scope for screen readers.
+  function enhanceContent(){
+    root.querySelectorAll(".table-wrap").forEach(function(w){
+      var lesson = w.closest(".lesson");
+      var heading = lesson && lesson.querySelector("h2, h3");
+      w.setAttribute("tabindex", "0");
+      w.setAttribute("role", "region");
+      if(heading) w.setAttribute("aria-label", heading.textContent);
+    });
+    root.querySelectorAll("th:not([scope])").forEach(function(th){ th.setAttribute("scope", "col"); });
   }
 
   // ---------- Home / Dashboard ----------
@@ -305,23 +400,29 @@
     var inProgress = MODULES.filter(function(m){ return moduleStatus(m.id)==="in-progress"; }).length;
     var quizzesTaken = Object.keys(progress.quizzes).length;
     var html = '';
+    setTitle("");
     html += '<div class="hero-eyebrow">'+esc(t("heroEyebrow"))+'</div>';
     html += '<h1>'+esc(t("homeTitle"))+'</h1>';
-    html += '<p style="max-width:62ch;color:var(--ink-soft);font-size:1.05rem;">'+esc(t("homeIntro"))+'</p>';
+    html += '<p class="lede">'+esc(t("homeIntro"))+'</p>';
+    // Resume point: the first module (in course order) that isn't completed yet.
+    var resume = MODULES.filter(function(m){ return moduleStatus(m.id) !== "completed"; })[0];
+    if(resume && (completed > 0 || inProgress > 0)){
+      html += '<div class="continue-row"><a class="btn" href="#/module/'+esc(resume.id)+'">'+esc(tf("ctaContinue",{title:resume.title}))+' &rarr;</a></div>';
+    }
     html += '<div class="stat-row">';
     html += statTile(completed+" / "+MODULES.length, t("statModulesCompleted"));
     html += statTile(inProgress, t("statModulesInProgress"));
     html += statTile(quizzesTaken, t("statQuizzesAttempted"));
     html += statTile(GLOSSARY.length, t("statGlossaryTerms"));
     html += '</div>';
-    html += '<h2 style="margin-top:34px;">'+esc(t("tutorialModulesHeading"))+'</h2>';
+    html += '<h2 class="h2-section">'+esc(t("tutorialModulesHeading"))+'</h2>';
     html += '<div class="dashboard-grid">';
     MODULES.forEach(function(m){
       var status = moduleStatus(m.id);
       var badgeClass = status.replace("_","-");
       var badgeLabel = status === "not-started" ? t("badgeNotStarted") : (status === "in-progress" ? t("badgeInProgress") : t("badgeCompleted"));
       var qScore = bestScore(m.id);
-      html += '<a class="card" href="#/module/'+m.id+'" style="text-decoration:none;">';
+      html += '<a class="card" href="#/module/'+esc(m.id)+'">';
       html += '<span class="card-num">'+esc(t("moduleWord"))+' '+pad2(m.num)+'</span>';
       html += '<h3>'+esc(m.title)+'</h3>';
       html += '<p>'+esc(m.summary)+'</p>';
@@ -330,7 +431,7 @@
     });
     html += '</div>';
     html += renderLearningPath(MODULES);
-    html += '<div class="cta-row" style="margin-top:36px;gap:14px;">';
+    html += '<div class="cta-row wide">';
     html += '<a class="btn" href="#/quiz/final">'+esc(t("ctaFinalExam"))+'</a>';
     html += '<a class="btn secondary" href="#/glossary">'+esc(t("ctaBrowseGlossary"))+'</a>';
     html += '</div>';
@@ -339,8 +440,8 @@
   var PATH_STAGES = [[1,2,3],[4,5,6],[7,8],[9,10,11],[12]];
   function renderLearningPath(MODULES){
     var QUIZZES = curQuizzes();
-    var html = '<h2 style="margin-top:40px;">'+esc(t("pathHeading"))+'</h2>';
-    html += '<p style="max-width:62ch;color:var(--ink-soft);">'+esc(t("pathIntro"))+'</p>';
+    var html = '<h2 class="h2-section">'+esc(t("pathHeading"))+'</h2>';
+    html += '<p class="lede">'+esc(t("pathIntro"))+'</p>';
     PATH_STAGES.forEach(function(nums, i){
       html += '<section class="path-stage"><h3>'+esc(t("stage"+(i+1)+"Title"))+'</h3>';
       html += '<p class="path-stage-desc">'+esc(t("stage"+(i+1)+"Desc"))+'</p>';
@@ -363,7 +464,7 @@
   // ---------- Module page ----------
   function renderModule(id){
     var m = moduleById(id);
-    if(!m){ renderHome(); return; }
+    if(!m){ renderSidebar("home"); renderHome(); return; }
     touchModule(id);
     renderSidebar("module:"+id);
     var MODULES = curModules();
@@ -371,24 +472,25 @@
     var prev = MODULES[idx-1], next = MODULES[idx+1];
     var html = '';
     html += '<div class="crumb"><a href="#/home">'+esc(t("navDashboard"))+'</a> / '+esc(t("crumbModule"))+' '+m.num+'</div>';
+    setTitle(m.title);
     html += '<h1>'+esc(m.title)+'</h1>';
     if(m.overview){
-      html += '<p style="max-width:70ch;color:var(--ink-soft);font-size:1.05rem;">'+esc(m.overview)+'</p>';
+      html += '<p class="lede">'+esc(m.overview)+'</p>';
     }
     html += '<div class="callout"><div class="eyebrow">'+esc(t("calloutTakeaway"))+'</div><p>'+esc(m.takeaway)+'</p></div>';
     if(m.callout){
-      html += '<div class="callout reading"><div class="eyebrow">'+esc(m.callout.label)+'</div><p>'+m.callout.body+'</p></div>';
+      html += '<div class="callout reading"><div class="eyebrow">'+esc(m.callout.label)+'</div><p>'+sanitizeHTML(m.callout.body)+'</p></div>';
     }
     html += '<div class="lesson-nav">';
     m.lessons.forEach(function(l, i){
-      html += '<a class="lesson-pill" href="#lesson-'+i+'" onclick="event.preventDefault();document.getElementById(\'lesson-'+i+'\').scrollIntoView({behavior:\'smooth\',block:\'start\'});">'+esc(l.h)+'</a>';
+      html += '<a class="lesson-pill" href="#lesson-'+i+'">'+esc(l.h)+'</a>';
     });
     html += '</div>';
     m.lessons.forEach(function(l, i){
-      html += '<div class="lesson" id="lesson-'+i+'"><h3>'+esc(l.h)+'</h3>'+l.body+'</div>';
+      html += '<section class="lesson" id="lesson-'+i+'"><h2>'+esc(l.h)+'</h2>'+sanitizeHTML(l.body)+'</section>';
     });
     var status = moduleStatus(id);
-    html += '<div class="cta-row" style="flex-direction:column;align-items:center;gap:12px;margin-top:10px;">';
+    html += '<div class="cta-row stack">';
     if(status !== "completed"){
       html += '<button class="btn secondary" id="qh-mark-complete">'+esc(t("markComplete"))+'</button>';
     } else {
@@ -396,11 +498,13 @@
     }
     html += '<a class="btn" href="#/quiz/'+m.id+'">'+esc(tf("takeModuleQuiz",{num:m.num}))+'</a>';
     html += '</div>';
-    html += '<div class="cta-row" style="justify-content:space-between;margin-top:34px;">';
-    html += prev ? '<a class="btn ghost" href="#/module/'+prev.id+'">&larr; '+esc(prev.title)+'</a>' : '<span></span>';
-    html += next ? '<a class="btn ghost" href="#/module/'+next.id+'">'+esc(next.title)+' &rarr;</a>' : '<a class="btn ghost" href="#/quiz">'+esc(t("allQuizzes"))+'</a>';
+    html += '<div class="cta-row split">';
+    html += prev ? '<a class="btn ghost" href="#/module/'+esc(prev.id)+'">&larr; '+esc(prev.title)+'</a>' : '<span></span>';
+    html += next ? '<a class="btn ghost" href="#/module/'+esc(next.id)+'">'+esc(next.title)+' &rarr;</a>' : '<a class="btn ghost" href="#/quiz">'+esc(t("allQuizzes"))+'</a>';
     html += '</div>';
     root.innerHTML = html;
+    enhanceContent();
+    bindAnchorScroll(".lesson-pill");
     var btn = document.getElementById("qh-mark-complete");
     if(btn) btn.addEventListener("click", function(){
       setModuleStatus(id, "completed");
@@ -414,20 +518,21 @@
     var QUIZZES = curQuizzes();
     var html = '';
     html += '<div class="crumb"><a href="#/home">'+esc(t("navDashboard"))+'</a> / '+esc(t("quizzesTitle"))+'</div>';
+    setTitle(t("quizzesTitle"));
     html += '<h1>'+esc(t("quizzesTitle"))+'</h1>';
-    html += '<p style="color:var(--ink-soft);max-width:60ch;">'+esc(t("quizzesIntro"))+'</p>';
+    html += '<p class="lede">'+esc(t("quizzesIntro"))+'</p>';
     html += '<div class="quiz-picker-grid">';
-    html += '<a class="card final-card" href="#/quiz/final" style="text-decoration:none;">';
-    html += '<span class="card-num">'+esc(t("finalExamCardNum"))+'</span><h3>'+esc(t("finalExamTitle"))+'</h3><p>'+esc(tf("finalExamDesc",{n:20,m:MODULES.length}))+'</p>';
+    html += '<a class="card final-card" href="#/quiz/final">';
+    html += '<span class="card-num">'+esc(t("finalExamCardNum"))+'</span><h3>'+esc(t("finalExamTitle"))+'</h3><p>'+esc(tf("finalExamDesc",{n:FINAL_EXAM_SIZE,m:MODULES.length}))+'</p>';
     var fb = bestScore("final");
-    html += '<div class="card-foot"><span class="badge '+(fb!=null?'completed':'not-started')+'">'+(fb!=null?esc(t("attempted")):esc(t("notAttempted")))+'</span>'+(fb!=null?'<span class="score-pill">'+esc(tf("bestScoreLabel",{pct:fb}))+'</span>':'')+'</div>';
+    html += '<div class="card-foot">'+quizBadge(fb)+(fb!=null?'<span class="score-pill">'+esc(tf("bestScoreLabel",{pct:fb}))+'</span>':'')+'</div>';
     html += '</a>';
     MODULES.forEach(function(m){
       var qs = QUIZZES[m.id] || [];
       var sc = bestScore(m.id);
-      html += '<a class="card" href="#/quiz/'+m.id+'" style="text-decoration:none;">';
+      html += '<a class="card" href="#/quiz/'+esc(m.id)+'">';
       html += '<span class="card-num">'+esc(tf("moduleQuizCardNum",{num:pad2(m.num)}))+'</span><h3>'+esc(m.title)+'</h3><p>'+esc(tf("quizQuestionsCount",{n:qs.length}))+'</p>';
-      html += '<div class="card-foot"><span class="badge '+(sc!=null?'completed':'not-started')+'">'+(sc!=null?esc(t("attempted")):esc(t("notAttempted")))+'</span>'+(sc!=null?'<span class="score-pill">'+esc(tf("bestScoreLabel",{pct:sc}))+'</span>':'')+'</div>';
+      html += '<div class="card-foot">'+quizBadge(sc)+(sc!=null?'<span class="score-pill">'+esc(tf("bestScoreLabel",{pct:sc}))+'</span>':'')+'</div>';
       html += '</a>';
     });
     html += '</div>';
@@ -447,17 +552,19 @@
         });
       });
       pool = shuffle(pool);
-      return pool.slice(0, Math.min(20, pool.length));
+      return pool.slice(0, Math.min(FINAL_EXAM_SIZE, pool.length));
     }
-    var qs = QUIZZES[quizId] || [];
+    var qs = hasOwn(QUIZZES, quizId) && Array.isArray(QUIZZES[quizId]) ? QUIZZES[quizId] : [];
     return shuffle(qs);
   }
   function prepQuestion(q){
     var opts = q.options.map(function(text, i){ return { text: text, isCorrect: i === q.correct }; });
     opts = shuffle(opts);
-    return { q: q.q, explain: q.explain, source: q.source, options: opts, answeredIndex: null };
+    return { q: q.q, explain: q.explain, source: q.source, options: opts, selectedIndex: null, answeredIndex: null };
   }
   function renderQuizRun(quizId){
+    // Only "final" and real module ids are quizzes; anything else in the URL falls back to the picker.
+    if(quizId !== "final" && !moduleById(quizId)){ renderQuizPicker(); return; }
     var mod = moduleById(quizId);
     var title = quizId === "final" ? t("finalExamTitleLabel") : (mod ? mod.title + " " + t("quizSuffix") : t("quizzesTitle"));
     var rawQs = buildQuizQuestions(quizId);
@@ -472,64 +579,86 @@
       current: 0,
       score: 0
     };
-    renderQuizQuestion();
+    renderQuizQuestion("question");
   }
-  function renderQuizQuestion(){
+  // focusTarget: "question" moves focus to the question text (new question), "next" to the Next button (after checking).
+  function renderQuizQuestion(focusTarget){
     var st = quizState;
     var total = st.questions.length;
     var q = st.questions[st.current];
+    var answered = q.answeredIndex != null;
     var html = '';
+    setTitle(st.title);
     html += '<div class="crumb"><a href="#/home">'+esc(t("navDashboard"))+'</a> / <a href="#/quiz">'+esc(t("quizzesTitle"))+'</a> / '+esc(st.title)+'</div>';
-    html += '<div class="quiz-meta"><h2 style="margin:0;">'+esc(st.title)+'</h2><span class="score-pill">'+esc(tf("questionOf",{a:st.current+1,b:total}))+'</span></div>';
-    html += '<div class="progress-bar"><div style="width:'+Math.round((st.current)/total*100)+'%"></div></div>';
+    html += '<div class="quiz-meta"><h2>'+esc(st.title)+'</h2><span class="score-pill">'+esc(tf("questionOf",{a:st.current+1,b:total}))+'</span></div>';
+    html += '<div class="progress-bar" role="progressbar" aria-label="'+esc(tf("questionOf",{a:st.current+1,b:total}))+'" aria-valuemin="0" aria-valuemax="'+total+'" aria-valuenow="'+st.current+'"><div id="qh-pbar"></div></div>';
     html += '<div class="q-card">';
     html += '<div class="q-num">'+esc(t("questionLabel"))+' '+(st.current+1)+(q.source?' &middot; '+esc(q.source):'')+'</div>';
-    html += '<div class="q-text">'+esc(q.q)+'</div>';
-    html += '<div id="qh-opts">';
+    html += '<div class="q-text" id="qh-qtext" tabindex="-1">'+esc(q.q)+'</div>';
+    html += '<div id="qh-opts" role="radiogroup" aria-labelledby="qh-qtext">';
     q.options.forEach(function(o, i){
       var cls = "opt";
-      if(q.answeredIndex != null){
+      var srNote = "";
+      if(answered){
         cls += " disabled";
-        if(o.isCorrect) cls += " correct";
-        else if(i === q.answeredIndex) cls += " incorrect";
+        if(o.isCorrect){ cls += " correct"; srNote = t("correctAnswer"); }
+        else if(i === q.answeredIndex){ cls += " incorrect"; srNote = t("yourAnswer"); }
+      } else if(q.selectedIndex === i){
+        cls += " selected";
       }
-      html += '<label class="'+cls+'" data-i="'+i+'"><input type="radio" name="qh-opt" '+(q.answeredIndex!=null?'disabled':'')+' '+(q.answeredIndex===i?'checked':'')+'/><span>'+esc(o.text)+'</span></label>';
+      var checked = answered ? q.answeredIndex === i : q.selectedIndex === i;
+      html += '<label class="'+cls+'" data-i="'+i+'"><input type="radio" name="qh-opt" value="'+i+'"'+(answered?' disabled':'')+(checked?' checked':'')+'/>'+(srNote?'<span class="sr-only">'+esc(srNote)+' </span>':'')+'<span>'+esc(o.text)+'</span></label>';
     });
     html += '</div>';
-    if(q.answeredIndex != null){
+    if(answered){
       var wasCorrect = q.options[q.answeredIndex].isCorrect;
-      html += '<div class="explain '+(wasCorrect?'correct-note':'incorrect-note')+'"><strong>'+esc(wasCorrect?t("correctPrefix"):t("incorrectPrefix"))+'</strong>'+esc(q.explain)+'</div>';
+      html += '<div class="explain '+(wasCorrect?'correct-note':'incorrect-note')+'" id="qh-explain"><strong>'+esc(wasCorrect?t("correctPrefix"):t("incorrectPrefix"))+'</strong>'+esc(q.explain)+'</div>';
     }
     html += '</div>';
     html += '<div class="quiz-nav">';
     html += '<a class="btn ghost" href="#/quiz">'+esc(t("exitQuiz"))+'</a>';
-    if(q.answeredIndex != null){
-      html += '<button class="btn" id="qh-next">'+esc(st.current+1 < total ? t("nextQuestion") : t("seeResults"))+'</button>';
+    if(answered){
+      html += '<button class="btn" id="qh-next" type="button" aria-describedby="qh-explain">'+esc(st.current+1 < total ? t("nextQuestion") : t("seeResults"))+'</button>';
     } else {
-      html += '<span></span>';
+      html += '<button class="btn" id="qh-check" type="button"'+(q.selectedIndex==null?' disabled':'')+'>'+esc(t("checkAnswer"))+'</button>';
     }
     html += '</div>';
     root.innerHTML = html;
+    // Width is set through the CSSOM (not a style attribute) so the CSP can forbid inline styles.
+    document.getElementById("qh-pbar").style.width = Math.round((st.current)/total*100) + "%";
 
-    var opts = document.querySelectorAll('#qh-opts .opt');
-    opts.forEach(function(optEl){
-      optEl.addEventListener("click", function(){
-        if(q.answeredIndex != null) return;
-        var i = parseInt(optEl.getAttribute("data-i"), 10);
-        q.answeredIndex = i;
-        if(q.options[i].isCorrect) st.score++;
-        renderQuizQuestion();
+    // Selecting only marks a choice (in place, so keyboard focus and arrow-key navigation survive);
+    // the answer is committed by "Check answer", so a stray click or arrow key can't lock in a mistake.
+    var checkBtn = document.getElementById("qh-check");
+    if(!answered){
+      root.querySelectorAll('#qh-opts input').forEach(function(input){
+        input.addEventListener("change", function(){
+          q.selectedIndex = parseInt(input.value, 10);
+          root.querySelectorAll('#qh-opts .opt').forEach(function(l){
+            l.classList.toggle("selected", parseInt(l.getAttribute("data-i"), 10) === q.selectedIndex);
+          });
+          if(checkBtn) checkBtn.disabled = false;
+        });
       });
-    });
+      if(checkBtn) checkBtn.addEventListener("click", function(){
+        if(q.selectedIndex == null) return;
+        q.answeredIndex = q.selectedIndex;
+        if(q.options[q.answeredIndex].isCorrect) st.score++;
+        renderQuizQuestion("next");
+      });
+    }
     var nextBtn = document.getElementById("qh-next");
     if(nextBtn) nextBtn.addEventListener("click", function(){
       if(st.current + 1 < total){
         st.current++;
-        renderQuizQuestion();
+        window.scrollTo(0,0);
+        renderQuizQuestion("question");
       } else {
         renderQuizResults();
       }
     });
+    var focusEl = focusTarget === "next" ? nextBtn : (focusTarget === "question" ? document.getElementById("qh-qtext") : null);
+    if(focusEl) focusEl.focus({preventScroll:true});
   }
   function renderQuizResults(){
     var st = quizState;
@@ -539,12 +668,14 @@
     recordScore(st.quizId, pct);
     var html = '';
     html += '<div class="crumb"><a href="#/home">'+esc(t("navDashboard"))+'</a> / <a href="#/quiz">'+esc(t("quizzesTitle"))+'</a> / '+esc(st.title)+' '+esc(t("resultsSuffix"))+'</div>';
+    setTitle(st.title + " " + t("resultsSuffix"));
+    html += '<h1 class="sr-only" id="qh-result-h">'+esc(st.title)+' '+esc(t("resultsSuffix"))+'</h1>';
     html += '<div class="result-hero">';
-    html += '<div style="color:var(--ink-soft);font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">'+esc(st.title)+'</div>';
+    html += '<div class="result-kicker">'+esc(st.title)+'</div>';
     html += '<div class="result-score">'+pct+'%</div>';
-    html += '<p style="margin:8px 0 0;">'+esc(tf("resultsCorrectLine",{score:st.score,total:total,pct:Math.round(PASS_THRESHOLD*100)}))+'</p>';
-    html += '<p class="'+(passed?'result-pass':'result-fail')+'" style="margin-top:6px;">'+esc(passed?t("passed"):t("failed"))+'</p>';
-    html += '<div class="cta-row" style="margin-top:20px;gap:12px;">';
+    html += '<p class="result-line">'+esc(tf("resultsCorrectLine",{score:st.score,total:total,pct:Math.round(PASS_THRESHOLD*100)}))+'</p>';
+    html += '<p class="result-verdict '+(passed?'result-pass':'result-fail')+'">'+esc(passed?t("passed"):t("failed"))+'</p>';
+    html += '<div class="cta-row tight">';
     html += '<button class="btn" id="qh-retry">'+esc(t("retakeQuiz"))+'</button>';
     html += '<a class="btn secondary" href="#/quiz">'+esc(t("backToQuizzes"))+'</a>';
     html += '</div></div>';
@@ -555,13 +686,15 @@
       var wasCorrect = userOpt && userOpt.isCorrect;
       html += '<div class="lesson review-item">';
       html += '<div class="q-num">'+esc(t("questionLabel"))+' '+(i+1)+(q.source?' &middot; '+esc(q.source):'')+'</div>';
-      html += '<h3 style="font-size:1.02rem;">'+esc(q.q)+'</h3>';
-      html += '<p style="margin-bottom:6px;"><strong>'+esc(t("yourAnswer"))+'</strong> <span style="color:'+(wasCorrect?'var(--good)':'var(--bad)')+'">'+(userOpt?esc(userOpt.text):esc(t("skipped")))+'</span></p>';
-      if(!wasCorrect) html += '<p style="margin-bottom:6px;"><strong>'+esc(t("correctAnswer"))+'</strong> <span style="color:var(--good);">'+esc(correctOpt.text)+'</span></p>';
+      html += '<h3>'+esc(q.q)+'</h3>';
+      html += '<p><strong>'+esc(t("yourAnswer"))+'</strong> <span class="'+(wasCorrect?'ans-good':'ans-bad')+'">'+(userOpt?esc(userOpt.text):esc(t("skipped")))+'</span></p>';
+      if(!wasCorrect) html += '<p><strong>'+esc(t("correctAnswer"))+'</strong> <span class="ans-good">'+esc(correctOpt.text)+'</span></p>';
       html += '<div class="explain">'+esc(q.explain)+'</div>';
       html += '</div>';
     });
     root.innerHTML = html;
+    var resultH = document.getElementById("qh-result-h");
+    if(resultH){ resultH.setAttribute("tabindex", "-1"); resultH.focus({preventScroll:true}); }
     document.getElementById("qh-retry").addEventListener("click", function(){
       renderQuizRun(st.quizId);
     });
@@ -574,18 +707,19 @@
     var GLOSSARY = curGlossary();
     var html = '';
     html += '<div class="crumb"><a href="#/home">'+esc(t("navDashboard"))+'</a> / '+esc(t("navGlossary"))+'</div>';
+    setTitle(t("glossaryTitle"));
     html += '<h1>'+esc(t("glossaryTitle"))+'</h1>';
-    html += '<p style="color:var(--ink-soft);max-width:65ch;">'+esc(tf("glossaryIntro",{n:GLOSSARY.length}))+'</p>';
-    html += '<div class="glossary-toolbar">';
-    html += '<input class="search-input" id="qh-search" type="text" placeholder="'+esc(t("searchPlaceholder"))+'" value="'+esc(glossaryState.query)+'" />';
-    html += '<select class="filter-select" id="qh-filter">';
+    html += '<p class="lede">'+esc(tf("glossaryIntro",{n:GLOSSARY.length}))+'</p>';
+    html += '<div class="glossary-toolbar" role="search">';
+    html += '<input class="search-input" id="qh-search" type="search" aria-label="'+esc(t("searchPlaceholder").replace(/…$/, ""))+'" placeholder="'+esc(t("searchPlaceholder"))+'" value="'+esc(glossaryState.query)+'" />';
+    html += '<select class="filter-select" id="qh-filter" aria-label="'+esc(t("filterByCategory"))+'">';
     ["all"].concat(GLOSSARY_CATS).forEach(function(c){
       html += '<option value="'+c+'" '+(glossaryState.cat===c?'selected':'')+'>'+(c==="all"?esc(t("allCategories")):esc(catLabel(c)))+'</option>';
     });
     html += '</select>';
     html += '</div>';
     html += '<div id="qh-az"></div>';
-    html += '<div id="qh-count" class="glossary-count"></div>';
+    html += '<div id="qh-count" class="glossary-count" role="status" aria-live="polite"></div>';
     html += '<div id="qh-gloss-list"></div>';
     root.innerHTML = html;
 
@@ -636,8 +770,8 @@
     azWrap.querySelectorAll("a").forEach(function(a){
       a.addEventListener("click", function(e){
         e.preventDefault();
-        var el = document.getElementById(a.getAttribute("href").slice(1));
-        if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+        var target = document.getElementById(a.getAttribute("href").slice(1));
+        if(target) target.scrollIntoView({behavior:scrollBehavior(), block:"start"});
       });
     });
 
@@ -665,8 +799,9 @@
   }
 
   // ---------- Mobile menu ----------
-  document.getElementById("qh-menu-btn").addEventListener("click", function(){
-    document.getElementById("qh-sidebar").classList.toggle("open");
+  document.getElementById("qh-menu-btn").addEventListener("click", function(e){
+    var open = document.getElementById("qh-sidebar").classList.toggle("open");
+    e.currentTarget.setAttribute("aria-expanded", open ? "true" : "false");
   });
 
   applyStaticStrings();

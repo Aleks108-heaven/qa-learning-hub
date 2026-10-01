@@ -80,7 +80,10 @@ window.QAHUB_LOCALES.es = {
     allCategories: "Todas las categorías",
     termsCount: "{n} términos",
     noTermsMatch: "Ningún término coincide con tu búsqueda.",
-    alsoLabel: "también:"
+    alsoLabel: "también:",
+    checkAnswer: "Comprobar respuesta",
+    ctaContinue: "Continuar: {title}",
+    filterByCategory: "Filtrar por categoría"
   },
   catLabels: {
     "Functional": "Funcional",
