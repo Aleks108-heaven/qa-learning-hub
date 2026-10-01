@@ -66,6 +66,7 @@ qa-learning-hub/
 ├── _headers                # security headers for hosts that support them (Netlify, Cloudflare Pages)
 ├── SECURITY.md             # threat model, controls, review findings, how to re-run the checks
 ├── tests/                  # browser-driven checks: attack.js, sanitizer-csp.js, ui.js, serve.js
+├── tools/build-artifact.js # builds the copy published as the live demo (see "Rebuilding the demo artifact")
 ├── .gitlab-ci.yml          # GitLab pipeline: validate -> test (+ SAST, secret detection) -> Pages deploy
 └── data/
     ├── tutorials.js         # window.QAHUB_MODULES — all lesson content (English)
@@ -132,6 +133,16 @@ node tests/ui.js               # a11y / UX regression checks (focus, titles, qui
 ```
 
 The tests exit non-zero on any `FAIL` or `VULNERABLE` result, so they can gate a pipeline. Set `NO_SANDBOX=1` when running as root in a container.
+
+## Rebuilding the demo artifact
+
+The live demo is hosted by Claude's artifact viewer, which differs from a normal static site: it wraps the page in its own skeleton and CSP, allows fonts only from Google Fonts, drives light/dark through a `data-theme` attribute, and sets its own `body` font. `node tools/build-artifact.js [outDir]` produces a copy that accounts for that:
+
+- `page.html` is the page as a fragment (title, Google Fonts link, stylesheet, markup) with no meta CSP of its own;
+- `styles.css` gets `:root[data-theme="dark"]` / `:not([data-theme="light"])` token blocks, a safe-area-aware mobile header, and the app font restored on `body`;
+- `index.html` is the same page inside an emulated host skeleton, for local testing: `ROOT=<outDir> node tests/serve.js`, then `node tests/ui.js`.
+
+Publish `page.html` plus `styles.css`, `app.js` and `data/**` to the existing artifact URL. The self-hosted fonts, `_headers` and the meta CSP are for normal hosting and are not part of the artifact.
 
 ## Continuous integration (GitLab)
 

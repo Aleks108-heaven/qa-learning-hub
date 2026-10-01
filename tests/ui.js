@@ -41,7 +41,7 @@ const getJson = url => new Promise((res, rej) => http.get(url, r => { let d = ''
   check('menu button hidden on desktop', (await ev("getComputedStyle(document.getElementById('qh-menu-btn')).display")) === 'none');
   check('nav order: Quizzes before first module', (await ev("(function(){var a=[].slice.call(document.querySelectorAll('.nav-link'));return a.findIndex(x=>x.getAttribute('href')==='#/quiz') < a.findIndex(x=>x.getAttribute('href').indexOf('#/module/')===0)})()")) === true);
   check('Quizzes+Glossary links within 900px viewport', (await ev("(function(){var l=document.querySelector('a[href=\"#/glossary\"]').getBoundingClientRect();return l.bottom<=900})()")) === true);
-  check('color-scheme set', (await ev("getComputedStyle(document.documentElement).colorScheme")).includes('light'));
+  check('color-scheme set (light dark, or dark when the dark theme is active)', /light|dark/.test(await ev("getComputedStyle(document.documentElement).colorScheme")));
   check('compat mode off (CSS1Compat)', (await ev('document.compatMode')) === 'CSS1Compat');
 
   await nav('#/module/test-techniques');

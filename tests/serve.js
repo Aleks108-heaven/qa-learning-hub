@@ -1,6 +1,6 @@
 // Tiny static server for the tests. Sends no charset (like python -m http.server) so encoding bugs would show up.
 const http = require('http'), fs = require('fs'), path = require('path');
-const root = path.resolve(__dirname, '..');
+const root = path.resolve(process.env.ROOT || path.join(__dirname, '..'));   // ROOT lets the artifact build be served instead
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.woff2': 'font/woff2' };
 http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]); if (p === '/') p = '/index.html';
