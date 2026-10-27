@@ -42,6 +42,12 @@ syntax:
   script:
     - for f in app.js data/*.js data/locales/*.js tests/*.js; do node --check "$f" && echo "ok  $f"; done
 
+content:
+  stage: validate
+  script:
+    # no browser needed: structure, locale parity (modules, lessons, quizzes, glossary, UI keys), quiz and glossary hygiene, toolkit data
+    - node tests/content.js
+
 assets:
   stage: validate
   script:
@@ -75,12 +81,12 @@ assets:
 security-attacks:
   <<: *browser
   script:
-    - node tests/attack.js        # fails on any VULNERABLE line (hash-route XSS, crafted ids, poisoned storage, CSP bypass, third-party hosts)
+    - node tests/attack.js        # fails on any VULNERABLE line (hash-route XSS, crafted ids, poisoned storage, toolkit free-text input, CSP bypass, third-party hosts)
 
 sanitizer-and-csp:
   <<: *browser
   script:
-    - node tests/sanitizer-csp.js # sanitizer lossless on all 756 lessons x 6 locales; hostile HTML neutralised; CSP silent on real content
+    - node tests/sanitizer-csp.js # sanitizer lossless on every lesson x 6 locales; hostile HTML neutralised; CSP silent on real content
 
 ui-regression:
   <<: *browser
@@ -95,7 +101,7 @@ pages:
   stage: deploy
   script:
     - mkdir -p public
-    - cp index.html styles.css fonts.css app.js public/
+    - cp index.html styles.css fonts.css app.js favicon.svg public/
     - cp -r fonts data public/
   artifacts:
     paths:

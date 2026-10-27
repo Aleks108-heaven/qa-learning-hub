@@ -71,9 +71,9 @@ const getJson = url => new Promise((res, rej) => http.get(url, r => { let d = ''
     })()`, true);
     const r = JSON.parse(res); totalLessons += r.n; mismatches = mismatches.concat(r.mism);
   }
-  check('sanitizer is lossless on all real content', mismatches.length === 0 && totalLessons > 700, totalLessons + ' lessons checked' + (mismatches.length ? '; mismatches: ' + mismatches.slice(0, 5).join(',') : ''));
+  check('sanitizer is lossless on all real content', mismatches.length === 0 && totalLessons >= 804, totalLessons + ' lessons checked' + (mismatches.length ? '; mismatches: ' + mismatches.slice(0, 5).join(',') : ''));
 
-  check('CSP silent while rendering all real content (6 locales, 756 lessons)', violations.length === 0 && failedReqs.length === 0, violations.concat(failedReqs).join(' | ').slice(0, 160));
+  check('CSP silent while rendering all real content (6 locales, ' + totalLessons + ' lessons)', violations.length === 0 && failedReqs.length === 0, violations.concat(failedReqs).join(' | ').slice(0, 160));
   violations = [];
   // 2. Hostile content injected into the data layer must be neutralised
   await send('Page.addScriptToEvaluateOnNewDocument', { source: `

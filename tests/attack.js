@@ -76,6 +76,25 @@ const getJson = url => new Promise((res, rej) => http.get(url, r => { let d = ''
   // A5: third-party requests made by a plain page load
   const reqs = await ev("performance.getEntriesByType('resource').map(r=>new URL(r.name).host).filter((v,i,a)=>a.indexOf(v)===i && v.indexOf('localhost')<0 && v!=='example.invalid').join(',')");
   rec('A5 third-party hosts contacted on load', reqs.length > 0, reqs || 'none');
+  // A7: the toolkit takes free text. Hostile input must stay text in every field, in the preview and in what is downloaded.
+  await nav('#/toolkit');
+  const payload = '<img src=x onerror=alert(7)><script>alert(8)</script>"\'`${alert(9)}';
+  await ev("['tk-rec-id','tk-rec-title','tk-rec-impact','tk-rec-env','tk-rec-pre','tk-rec-steps','tk-rec-expected','tk-rec-actual','tk-rec-evidence','tk-rec-root','tk-rec-regression'].forEach(function(i){var e=document.getElementById(i);e.value=" + JSON.stringify(payload) + ";e.dispatchEvent(new Event('input',{bubbles:true}))})");
+  await sleep(400);
+  const injected7 = await ev("document.querySelectorAll('#qh-app img[src=x], #qh-app script').length");
+  const asText = await ev("document.getElementById('tk-rec-md').textContent.indexOf('<img src=x onerror=alert(7)>')>=0");
+  rec('A7 toolkit free text executes or is parsed as markup', dialogs.length > 0 || injected7 > 0 || asText !== true, 'dialogs=' + dialogs.length + ' injectedNodes=' + injected7 + ' shownAsText=' + asText);
+  // A8: crafted toolkit routes and a poisoned locale must not execute either
+  for (const h of ['#/toolkit/<img src=x onerror=alert(10)>', '#/toolkit?x="><img src=x onerror=alert(11)>']) {
+    await nav(h);
+    rec('A8 XSS via toolkit route ' + h.slice(0, 28), dialogs.length > 0 || (await ev("!!document.querySelector('#qh-app img[src=x]')")) === true, 'dialogs=' + dialogs.length);
+  }
+  // A9: the toolkit (clipboard, blob download, reference lists) must not contact anyone or trip the CSP
+  await nav('#/toolkit');
+  await ev("document.getElementById('tk-rec-copy').click(); document.getElementById('tk-cmd-copy').click();");
+  await sleep(400);
+  const reqs9 = await ev("performance.getEntriesByType('resource').map(r=>new URL(r.name).host).filter((v,i,a)=>a.indexOf(v)===i && v.indexOf('localhost')<0 && v!=='example.invalid').join(',')");
+  rec('A9 third-party hosts contacted by the toolkit', reqs9.length > 0, reqs9 || 'none');
   // A6: framing
   out.push('residual    A6 can be framed (clickjacking): meta CSP cannot set frame-ancestors; needs host headers, see _headers');
   console.log(out.join('\n'));

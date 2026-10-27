@@ -4,7 +4,7 @@ This is a static, front-end-only web app (plain HTML/CSS/JavaScript, no backend,
 
 ## Scope and threat model
 
-The app renders content from its own bundled data files (`data/tutorials.js`, `data/quiz.js`, `data/glossary.js`, `data/locales/*.js`) and stores per-viewer progress in the browser's `localStorage`. It makes **no network requests at all**: scripts, styles and fonts are all served from the same origin. There are no secrets, API keys or credentials in this repository.
+The app renders content from its own bundled data files (`data/tutorials.js`, `data/quiz.js`, `data/glossary.js`, `data/toolkit.js`, `data/locales/*.js`) and stores per-viewer progress in the browser's `localStorage`. It makes **no network requests at all**: scripts, styles and fonts are all served from the same origin. There are no secrets, API keys or credentials in this repository.
 
 What an attacker could realistically try, and where each is handled:
 
@@ -13,6 +13,7 @@ What an attacker could realistically try, and where each is handled:
 | URL hash (`#/module/…`, `#/quiz/…`), including crafted links sent to a victim | Anyone | Route ids are validated against the real module list; every id is escaped (`esc()`) before it is written into HTML |
 | `localStorage` (`qahub_progress_v1`, `qahub_locale_v1`) | Anything running on the origin, a shared browser, DevTools | Rebuilt from known ids with validated values on every load |
 | Lesson/callout/footer HTML in `data/*.js` | Repo contributors, translators, a compromised dependency or PR | Allowlist sanitizer on every render, plus the CSP |
+| Free text typed into the QA Toolkit (defect-record builder) and the toolkit route | The learner, or anyone who tricks them into pasting | Values are read with `.value` and shown with `textContent` or `esc()`, never `innerHTML`; see control 10 |
 | Third-party resources (fonts) | Google Fonts, CDN, network attackers | Removed: fonts are self-hosted |
 | Hosting layer (headers, framing) | Whoever hosts the site | `_headers` file for hosts that support it |
 
@@ -29,6 +30,7 @@ What an attacker could realistically try, and where each is handled:
 7. **Referrer policy.** `<meta name="referrer" content="no-referrer">`.
 8. **Host headers** (`_headers`, read by Netlify and Cloudflare Pages): the same CSP plus `frame-ancestors 'none'`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, a restrictive `Permissions-Policy`, COOP/CORP `same-origin`, and HSTS.
 9. **No secrets or personal data in the tree.** A scan of the working tree and git history found none (the only matches were testing vocabulary such as "Bearer token" in lessons).
+10. **QA Toolkit input handling.** The defect-record builder takes free text. It is read from form controls with `.value`, assembled as a Markdown string and written to the preview with `textContent`, so markup typed or pasted into any field stays text. The reference lists in `data/toolkit.js` are plain strings: only backtick spans become `<code>`, and everything passes through `esc()`. Nothing typed is stored (no `localStorage`, no network). *Copy* uses the Clipboard API on a user click, with a select-and-copy fallback; *Download* builds a `Blob`, links to it with a temporary `<a download>` and revokes the URL. Neither needs a CSP change: the download works under `default-src 'none'`, which `tests/ui.js` verifies by saving the file. The one caveat is outside the app: a downloaded `.md` file contains exactly what the learner typed, so a viewer that renders raw HTML in Markdown would render it.
 
 ## Last review: October 2026
 
@@ -46,6 +48,18 @@ Scope: whole repository, static analysis plus live attacks against the running a
 
 Other things checked and found fine: all seven external links in lessons already had `rel="noopener"` (the eighth link is an in-app `#/glossary` route); no event handlers, `javascript:` URLs, scripts, iframes or forms exist anywhere in the content data (all six languages); no regular expressions are built from user input (the glossary search uses `indexOf`); no dependency manifest exists, so there is no package supply chain to audit.
 
+### Follow-up review: late October 2026 (QA Toolkit and Module 13)
+
+Scope: the new toolkit route, its free-text inputs, the clipboard and download paths, and the new content. Method: the same live attacks, extended with three cases in `tests/attack.js`.
+
+| # | Finding | Severity | How it was shown | Status |
+|---|---------|----------|------------------|--------|
+| 8 | Markup, a `<script>` tag, quotes, backticks and `${…}` typed into all 11 free-text fields of the record builder executing or being parsed | n/a | `A7`: payload entered into every field; no dialog, no injected node, preview shows the payload as text | Not vulnerable |
+| 9 | Crafted toolkit routes (`#/toolkit/<img onerror…>`, `#/toolkit?x="><img…>`) | n/a | `A8`: no dialog, no injected node | Not vulnerable |
+| 10 | The toolkit contacting a third party, or the CSP blocking copy/download | n/a | `A9` and the download check in `ui.js`: no external host; the Blob download completed under the CSP | Not vulnerable |
+
+No new vulnerabilities were found. The functional findings from the same review (Final Exam coverage, heading order, favicon, reversible completion) are in the README changelog. **Not tested:** Firefox and Safari (clipboard and download behaviour differ between browsers), and the GitLab Pages deployment.
+
 ### Residual risks to be aware of
 
 - **Framing** (finding 6) on hosts that ignore `_headers`.
@@ -58,15 +72,16 @@ Other things checked and found fine: all seven external links in lessons already
 The harnesses in `tests/` need Node 22+ and a Chromium-based browser (Edge or Chrome; set `BROWSER=/path/to/browser` if it isn't auto-detected). They launch the browser headless and drive it over the DevTools protocol, so they exercise the real app, CSP included.
 
 ```bash
+node tests/content.js               # no browser: structure, locale parity, quiz/glossary hygiene, toolkit data
 node tests/serve.js &               # static server on http://localhost:8766 (no charset header, like python -m http.server)
-node tests/attack.js                # attacks: hash-route XSS, crafted ids, poisoned localStorage, CSP bypass, third-party hosts
-node tests/sanitizer-csp.js         # sanitizer is lossless on all 756 real lessons x 6 locales; hostile payloads are neutralised; CSP stays silent on real content
-node tests/ui.js                    # accessibility/UX regression checks (focus, titles, quiz flow, mobile menu, encoding)
+node tests/attack.js                # attacks: hash-route XSS, crafted ids, poisoned localStorage, toolkit free text, CSP bypass, third-party hosts
+node tests/sanitizer-csp.js         # sanitizer is lossless on every real lesson x 6 locales (804 today); hostile payloads are neutralised; CSP stays silent on real content
+node tests/ui.js                    # accessibility/UX regression checks (focus, titles, quiz flow, toolkit, mobile menu, encoding)
 ```
 
-`attack.js` prints `held` for a defence that stood, `VULNERABLE` for a hole, and `residual` for a known limitation. A passing run has no `VULNERABLE` lines, and all three scripts exit non-zero on any `VULNERABLE` or `FAIL` result.
+`attack.js` prints `held` for a defence that stood, `VULNERABLE` for a hole, and `residual` for a known limitation. A passing run has no `VULNERABLE` lines, and all four scripts exit non-zero on any `VULNERABLE` or `FAIL` result.
 
-**In CI** (`.gitlab-ci.yml`): the same three suites run on every merge request and branch, together with GitLab's SAST and Secret Detection (history scan on). A separate `assets` job fails the pipeline if the CSP in `index.html` regresses to `unsafe-inline`, `unsafe-eval`, wildcards or third-party hosts. GitLab Pages cannot send custom headers, so a Pages deployment relies on the meta CSP only (finding 6 stays residual there).
+**In CI** (`.gitlab-ci.yml`): `content.js` runs in the validate stage and the three browser suites run on every merge request and branch, together with GitLab's SAST and Secret Detection (history scan on). A separate `assets` job fails the pipeline if the CSP in `index.html` regresses to `unsafe-inline`, `unsafe-eval`, wildcards or third-party hosts. GitLab Pages cannot send custom headers, so a Pages deployment relies on the meta CSP only (finding 6 stays residual there).
 
 ### When you change the app
 
